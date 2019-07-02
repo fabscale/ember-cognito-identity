@@ -5,4 +5,89 @@
 <CognitoResetPasswordForm
   @verificationCode={{this.verificationCode}}
   @username={{this.username}}
-/>
+  as |resetPasswordForm|
+>
+
+  {{!-- Form to select the username to reset the password for --}}
+  <resetPasswordForm.SelectUsernameForm
+    as |selectUsernameForm|
+  >
+
+    <div>
+      <label for="reset-password-username">
+        Username (E-mail)
+      </label>
+
+      <div>
+        <selectUsernameForm.UsernameInput
+          id="reset-password-username"
+          type="email"
+          required="true"
+          class="custom-input-class"
+        />
+      </div>
+    </div>
+
+    {{selectUsernameForm.ErrorDisplay}}
+
+    {{#unless selectUsernameForm.verificationCode}}
+      <button>Send verification code</button>
+    {{/unless}}
+
+    <button type="button" {{action selectUsernameForm.skipTriggerResetPasswordEmail}}>
+      I already have a verification code
+    </button>
+
+  </resetPasswordForm.SelectUsernameForm>
+
+  {{!-- Form to update your password (once the username was selected) --}}
+  <resetPasswordForm.UpdatePasswordForm
+    as |updatePasswordForm|
+  >
+
+    <div>
+      Reset password for: {{updatePasswordForm.username}}
+    </div>
+
+    <div>
+      <label for="reset-password-verification-code">
+        Verification code
+      </label>
+
+      <div>
+        <updatePasswordForm.VerificationCodeInput
+          id="reset-password-verification-code"
+          required="true"
+          class="custom-input-class"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label for="reset-password-password">
+        New password
+      </label>
+
+      <div>
+        <updatePasswordForm.PasswordInput
+          @id="reset-password-password"
+          required="true"
+          class="custom-input-class"
+        />
+      </div>
+    </div>
+
+    {{updatePasswordForm.ErrorDisplay}}
+
+    <button>Update password</button>
+
+    <button
+      type="button"
+      {{action updatePasswordForm.resendVerificationCode}}
+    >
+      Resend verification code
+    </button>
+
+  </resetPasswordForm.UpdatePasswordForm>
+
+</CognitoResetPasswordForm>

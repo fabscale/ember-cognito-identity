@@ -1,0 +1,15 @@
+<input
+  type={{this.displayType}}
+  id={{this.inputId}}
+  value={{@value}}
+  class="cognito-password-input"
+  onchange={{action "onChange"}}
+  ...attributes
+>
+<button
+  type="button"
+  class="cognito-password-input-toggle-button"
+  {{action "toggleDisplayType"}}
+>
+  {{this.passwordToggleText}}
+</button>

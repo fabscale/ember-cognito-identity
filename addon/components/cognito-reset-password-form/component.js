@@ -18,32 +18,29 @@ export default Component.extend({
   selectedUsername: null,
   selectedVerificationCode: null,
 
-  _username: null,
+  showPasswordForm: false,
 
   init() {
     this._super(...arguments);
     set(this, 'selectedUsername', this.username);
     set(this, 'selectedVerificationCode', this.verificationCode);
+
+    if (this.selectedUsername) {
+      set(this, 'showPasswordForm', true);
+    }
   },
 
   actions: {
-    updateUsername(event) {
-      set(this, '_username', event.srcElement.value);
-    },
-    updateVerificationCode(event) {
-      set(this, 'selectedVerificationCode', event.srcElement.value);
-    },
-    updatePassword(event) {
-      set(this, 'password', event.srcElement.value);
-    },
-
-    skipTriggerResetPasswordEmail() {
-      set(this, 'selectedUsername', this._username);
+    skipTriggerResetPasswordEmail(username) {
+      set(this, 'selectedUsername', username);
       set(this, 'error', null);
+
+      set(this, 'showPasswordForm', true);
     },
 
-    async triggerResetPasswordEmail() {
-      let { cognito, _username: username } = this;
+    async triggerResetPasswordEmail(username) {
+      console.log(username);
+      let { cognito } = this;
 
       set(this, 'error', null);
 
@@ -55,17 +52,17 @@ export default Component.extend({
       }
 
       set(this, 'selectedUsername', username);
+      set(this, 'showPasswordForm', true);
     },
 
-    async resetPassword() {
-      let {
-        cognito,
-        selectedVerificationCode: verificationCode,
-        password,
-        selectedUsername: username
-      } = this;
+    resendVerificationCode() {
+      set(this, 'showPasswordForm', false);
+    },
 
-      if (!verificationCode || !password) {
+    async resetPassword({ username, password, verificationCode }) {
+      let { cognito } = this;
+
+      if (!verificationCode || !password || !username) {
         set(this, 'error', 'Please fill in a code and a new password.');
         return;
       }

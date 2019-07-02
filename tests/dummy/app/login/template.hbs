@@ -2,4 +2,67 @@
   Sign in
 </h1>
 
-<CognitoLoginForm />
+<CognitoLoginForm
+  as |loginForm|
+>
+
+  <div>
+    <label for="login-username">
+      Username (E-mail)
+    </label>
+
+    <div>
+      <loginForm.UsernameInput
+        id="login-username"
+        type="email"
+        required="true"
+        disabled={{loginForm.mustEnterNewPassword}}
+        class="custom-input-class"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label for="login-password">
+      Password
+    </label>
+
+    <div>
+      <loginForm.PasswordInput
+        @id="login-password"
+        required="true"
+        disabled={{loginForm.mustEnterNewPassword}}
+        class="custom-input-class"
+      />
+    </div>
+  </div>
+
+  {{#if loginForm.mustEnterNewPassword}}
+    <p>
+      You must set a new password in order to continue.
+    </p>
+
+    <div>
+      <label for="login-new-password">
+        New password
+      </label>
+
+      <loginForm.NewPasswordInput
+        @id="login-new-password"
+        required="true"
+        class="custom-input-class"
+      />
+    </div>
+  {{/if}}
+
+  {{loginForm.ErrorDisplay}}
+
+  <button>
+    Submit
+  </button>
+
+  {{#link-to "reset-password"}}
+    Forgot your password?
+  {{/link-to}}
+
+</CognitoLoginForm>

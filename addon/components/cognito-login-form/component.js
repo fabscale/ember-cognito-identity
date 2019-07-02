@@ -1,9 +1,7 @@
 import Component from '@ember/component';
 import layout from './template';
-import { set, computed } from '@ember/object';
+import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { reads } from '@ember/object/computed';
-import { assign } from '@ember/polyfills';
 import { NewPasswordRequiredError } from 'ember-cognito-identity/errors/cognito';
 
 export default Component.extend({
@@ -11,47 +9,24 @@ export default Component.extend({
   cognito: service(),
   router: service(),
 
-  // Attributes
-  messages: null,
-
   // Properties
   username: null,
   password: null,
   newPassword: null,
 
-  actualMessages: null,
   mustEnterNewPassword: false,
 
   error: null,
-  resetPasswordRoute: reads('cognito.resetPasswordRoute'),
-
-  defaultMessages: computed(function() {
-    return {
-      username: 'E-mail',
-      password: 'Password',
-      newPassword: 'New password',
-      submit: 'Submit',
-      resetPassword: 'Password forgotten?',
-      pleaseFillInRequired: 'Please fill in an email and a password.',
-      newPasswordMessage: 'You must set a new password in order to continue.'
-    };
-  }),
-
-  init() {
-    this._super(...arguments);
-
-    this._setupMessages();
-  },
 
   actions: {
-    updateUsername(event) {
-      set(this, 'username', event.srcElement.value);
+    updateUsername(username) {
+      set(this, 'username', username);
     },
-    updatePassword(event) {
-      set(this, 'password', event.srcElement.value);
+    updatePassword(password) {
+      set(this, 'password', password);
     },
-    updateNewPassword(event) {
-      set(this, 'newPassword', event.srcElement.value);
+    updateNewPassword(newPassword) {
+      set(this, 'newPassword', newPassword);
     },
 
     async submitForm() {
@@ -90,14 +65,7 @@ export default Component.extend({
         }
 
         set(this, 'error', error);
-        return;
       }
     }
-  },
-
-  _setupMessages() {
-    let { messages, defaultMessages } = this;
-    let mergedMessages = assign({}, defaultMessages, messages);
-    set(this, 'actualMessages', mergedMessages);
   }
 });
