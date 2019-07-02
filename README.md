@@ -1,15 +1,7 @@
 ember-cognito-identity
 ==============================================================================
 
-[Short description of the addon.]
-
-
-Compatibility
-------------------------------------------------------------------------------
-
-* Ember.js v2.18 or above
-* Ember CLI v2.13 or above
-* Node.js v8 or above
+Interact with AWS Cognito from your Ember app.
 
 
 Installation
@@ -19,11 +11,17 @@ Installation
 ember install ember-cognito-identity
 ```
 
+This expects an .env file (via [ember-cli-dotenv](https://github.com/fivetanley/ember-cli-dotenv) or similar), with the env. variables:
+
+```
+COGNITO_USER_POOL_ID=XX
+COGNITO_CLIENT_ID=YY
+```
 
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+TODO
 
 
 Contributing

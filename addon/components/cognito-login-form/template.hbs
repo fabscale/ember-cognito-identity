@@ -1,0 +1,56 @@
+<form {{action "submitForm" on="submit" preventDefault=true}}>
+  <div>
+    <label>{{this.actualMessages.username}}</label>
+    <input
+      type="email"
+      required="true"
+      value={{this.username}}
+      disabled={{this.mustEnterNewPassword}}
+      placeholder={{this.actualMessages.usernamePlaceholder}}
+      onchange={{action "updateUsername"}}
+    >
+  </div>
+
+  <div>
+    <label>{{this.actualMessages.password}}</label>
+    <input
+      type="password"
+      required="true"
+      value={{this.password}}
+      disabled={{this.mustEnterNewPassword}}
+      placeholder={{this.actualMessages.passwordPlaceholder}}
+      onchange={{action "updatePassword"}}
+    >
+  </div>
+
+  {{#if this.mustEnterNewPassword}}
+    <p>
+      {{this.actualMessages.newPasswordMessage}}
+    </p>
+
+    <div>
+      <label>{{this.actualMessages.newPassword}}</label>
+      <input
+        type="password"
+        required="true"
+        value={{this.newPassword}}
+        placeholder={{this.actualMessages.newPasswordPlaceholder}}
+        onchange={{action "updateNewPassword"}}
+      >
+    </div>
+  {{/if}}
+
+  {{#if this.error}}
+    <CognitoError
+      @error={{this.error}}
+    />
+  {{/if}}
+
+  <button>
+    {{this.actualMessages.submit}}
+  </button>
+
+  {{#link-to this.resetPasswordRoute}}
+    {{this.actualMessages.resetPassword}}
+  {{/link-to}}
+</form>

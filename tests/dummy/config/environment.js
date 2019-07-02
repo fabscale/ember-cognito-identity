@@ -20,6 +20,11 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+
+    cognito: {
+      userPoolId: process.env.COGNITO_USER_POOL_ID,
+      clientId: process.env.COGNITO_CLIENT_ID
     }
   };
 

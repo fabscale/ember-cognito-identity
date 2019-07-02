@@ -4,17 +4,24 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
-  plugins: [
-    'ember'
-  ],
+  plugins: ['ember'],
   extends: [
     'eslint:recommended',
-    'plugin:ember/recommended'
+    'plugin:ember/recommended',
+    'plugin:prettier/recommended'
   ],
   env: {
     browser: true
   },
   rules: {
+    'prefer-destructuring': [
+      'error',
+      {
+        array: false,
+        object: true
+      }
+    ],
+    'ember/no-deeply-nested-dependent-keys-with-each': 2
   },
   overrides: [
     // node files
@@ -37,16 +44,18 @@ module.exports = {
       ],
       parserOptions: {
         sourceType: 'script',
-        ecmaVersion: 2015
+        ecmaVersion: 2018
       },
       env: {
         browser: false,
         node: true
-      },
-      plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
-      })
+      }
+    },
+    {
+      files: ['tests/**/*.js'],
+      rules: {
+        'ember/avoid-leaking-state-in-ember-objects': 'off'
+      }
     }
   ]
 };

@@ -1,0 +1,60 @@
+{{#if this.selectedUsername}}
+  <form {{action "resetPassword" on="submit" preventDefault=true}}>
+    <div>
+      Reset password for
+      {{this.selectedUsername}}
+    </div>
+
+    <div>
+      <label>Verification code</label>
+      <input
+        type="text"
+        required="true"
+        value={{this.selectedVerificationCode}}
+        onchange={{action "updateVerificationCode"}}
+      >
+    </div>
+
+    <div>
+      <label>New password</label>
+      <input
+        type="password"
+        required="true"
+        onchange={{action "updatePassword"}}
+      >
+    </div>
+
+    {{#if this.error}}
+      <CognitoError
+        @error={{this.error}}
+      />
+    {{/if}}
+
+    <button>Update password</button>
+  </form>
+{{else}}
+  <form {{action "triggerResetPasswordEmail" on="submit" preventDefault=true}}>
+    <div>
+      <label>Email</label>
+      <input
+        type="email"
+        required="true"
+        onchange={{action "updateUsername"}}
+      >
+    </div>
+
+    {{#if this.error}}
+      <CognitoError
+        @error={{this.error}}
+      />
+    {{/if}}
+
+    {{#unless this.verificationCode}}
+      <button>Send verification code</button>
+    {{/unless}}
+
+    <button type="button" {{action "skipTriggerResetPasswordEmail"}}>
+      I already have a verification code
+    </button>
+  </form>
+{{/if}}
