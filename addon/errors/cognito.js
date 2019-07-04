@@ -67,7 +67,8 @@ export function dispatchError(error) {
     NotAuthorizedException: InvalidAuthorizationError,
     CodeMismatchException: VerificationCodeMismatchError,
     InvalidPasswordException: InvalidPasswordError,
-    UserNotFoundException: UserNotFoundError
+    UserNotFoundException: UserNotFoundError,
+    ExpiredCodeException: VerificationCodeMismatchError
   };
 
   if (!error || typeof error !== 'object') {

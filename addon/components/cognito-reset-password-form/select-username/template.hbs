@@ -2,7 +2,7 @@
 
   {{yield
     (hash
-      skipTriggerResetPasswordEmail=(action @skipTriggerResetPasswordEmail this.username)
+      skipTriggerResetPasswordEmail=(action @skipTriggerResetPasswordEmail this.currentUsername)
 
       UsernameInput=(component
         "cognito-text-input"
