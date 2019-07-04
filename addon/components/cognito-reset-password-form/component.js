@@ -39,7 +39,6 @@ export default Component.extend({
     },
 
     async triggerResetPasswordEmail(username) {
-      console.log(username);
       let { cognito } = this;
 
       set(this, 'error', null);

@@ -1,5 +1,3 @@
-import Error from '@ember/error';
-
 export class CognitoError extends Error {
   constructor(error, message) {
     if (typeof error === 'string') {
@@ -30,7 +28,7 @@ export class NewPasswordRequiredError extends CognitoError {
 
 export class InvalidAuthorizationError extends CognitoError {
   constructor(error) {
-    super(error, 'Invalid username or password provided.');
+    super(error, 'The password you provided is incorrect.');
     this.name = 'InvalidAuthorizationError';
   }
 }
@@ -71,6 +69,10 @@ export function dispatchError(error) {
     InvalidPasswordException: InvalidPasswordError,
     UserNotFoundException: UserNotFoundError
   };
+
+  if (!error || typeof error !== 'object') {
+    return error;
+  }
 
   let ErrorType = errorMap[error.code];
   return ErrorType ? new ErrorType(error) : new CognitoError(error);

@@ -9,6 +9,7 @@ import {
 } from 'ember-cognito-identity/errors/cognito';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
+import { waitForPromise } from 'ember-test-waiters';
 
 const {
   CognitoUserPool,
@@ -23,6 +24,9 @@ export default Service.extend({
   loginRoute: 'login',
   resetPasswordRoute: 'reset-password',
   afterLoginRoute: 'index',
+
+  // Overwrite for testing
+  _cognitoStorage: undefined,
 
   config: computed(function() {
     let config = getOwner(this).resolveRegistration('config:environment');
@@ -47,8 +51,10 @@ export default Service.extend({
 
     let poolData = {
       UserPoolId: userPoolId,
-      ClientId: clientId
+      ClientId: clientId,
+      Storage: this._cognitoStorage
     };
+
     return new CognitoUserPool(poolData);
   }),
 
@@ -72,9 +78,8 @@ export default Service.extend({
 
     let cognitoData = {};
 
-    return new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
       let cognitoUser = userPool.getCurrentUser();
-
       if (!cognitoUser) {
         return reject(null);
       }
@@ -109,6 +114,9 @@ export default Service.extend({
         });
       });
     });
+
+    waitForPromise(promise);
+    return promise;
   },
 
   async authenticate({ username, password }) {
@@ -140,7 +148,7 @@ export default Service.extend({
     };
     let authenticationDetails = new AuthenticationDetails(authenticationData);
 
-    return new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: () => {
           resolve(cognitoUser);
@@ -159,6 +167,9 @@ export default Service.extend({
         }
       });
     });
+
+    waitForPromise(promise);
+    return promise;
   },
 
   logout() {
@@ -173,7 +184,7 @@ export default Service.extend({
   triggerResetPasswordMail({ username }) {
     let cognitoUser = this._createCognitoUser({ username });
 
-    return new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
       cognitoUser.forgotPassword({
         onSuccess() {
           resolve();
@@ -183,6 +194,9 @@ export default Service.extend({
         }
       });
     });
+
+    waitForPromise(promise);
+    return promise;
   },
 
   /*
@@ -193,7 +207,7 @@ export default Service.extend({
   updateResetPassword({ username, code, newPassword }) {
     let cognitoUser = this._createCognitoUser({ username });
 
-    return new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
       cognitoUser.confirmPassword(code, newPassword, {
         onSuccess() {
           resolve();
@@ -209,6 +223,9 @@ export default Service.extend({
         }
       });
     });
+
+    waitForPromise(promise);
+    return promise;
   },
 
   /*
@@ -218,7 +235,7 @@ export default Service.extend({
   setNewPassword({ username, password, newPassword }) {
     let cognitoUser = this._createCognitoUser({ username });
 
-    return new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
       let data = {
         email: username,
         // TODO: We do not need this in the future...
@@ -248,6 +265,9 @@ export default Service.extend({
         reject
       );
     });
+
+    waitForPromise(promise);
+    return promise;
   },
 
   updatePassword(oldPassword, newPassword) {
@@ -258,7 +278,7 @@ export default Service.extend({
 
     let { cognitoUser } = this.cognitoData;
 
-    return new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
       cognitoUser.changePassword(oldPassword, newPassword, function(error) {
         if (error) {
           return reject(dispatchError(error));
@@ -267,14 +287,18 @@ export default Service.extend({
         resolve();
       });
     });
+
+    waitForPromise(promise);
+    return promise;
   },
 
   _createCognitoUser({ username }) {
-    let { userPool } = this;
+    let { userPool, _cognitoStorage: storage } = this;
 
     let userData = {
       Username: username,
-      Pool: userPool
+      Pool: userPool,
+      Storage: storage
     };
 
     return new CognitoUser(userData);

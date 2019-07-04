@@ -18,6 +18,7 @@
         required="true"
         disabled={{loginForm.mustEnterNewPassword}}
         class="custom-input-class"
+        data-test-login-form-username
       />
     </div>
   </div>
@@ -33,6 +34,7 @@
         required="true"
         disabled={{loginForm.mustEnterNewPassword}}
         class="custom-input-class"
+        data-test-login-form-password
       />
     </div>
   </div>
@@ -51,13 +53,14 @@
         @id="login-new-password"
         required="true"
         class="custom-input-class"
+        data-test-login-form-new-password
       />
     </div>
   {{/if}}
 
   {{loginForm.ErrorDisplay}}
 
-  <button>
+  <button data-test-login-form-submit>
     Submit
   </button>
 
