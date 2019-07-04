@@ -88,11 +88,13 @@ export default Service.extend({
 
       cognitoUser.getSession((error, cognitoUserSession) => {
         if (error) {
+          cognitoUser.signOut();
           return reject(dispatchError(error));
         }
 
         cognitoUser.getUserAttributes((error, cognitoUserAttributes) => {
           if (error) {
+            cognitoUser.signOut();
             return reject(dispatchError(error));
           }
 

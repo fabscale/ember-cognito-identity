@@ -7,8 +7,7 @@ export function setupCognitoMocks(hooks) {
     cognito.config.clientId = 'TEST-CLIENT-ID';
     cognito.config.userPoolId = 'eu-west-1_testuserpool';
     this.cognito = cognito;
-
-    set(cognito, '_cognitoStorage', {
+    this.cognitoStorage = {
       _data: {},
       clear() {
         this._data = {};
@@ -24,7 +23,9 @@ export function setupCognitoMocks(hooks) {
       removeItem(key) {
         delete this._data[key];
       }
-    });
+    };
+
+    set(cognito, '_cognitoStorage', this.cognitoStorage);
 
     let _this = this;
     this.awsHooks = {};
