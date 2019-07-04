@@ -239,11 +239,7 @@ export default Service.extend({
 
     let promise = new Promise((resolve, reject) => {
       let data = {
-        email: username,
-        // TODO: We do not need this in the future...
-        name: 'Francesco Novy',
-        family_name: 'Novy',
-        locale: 'en'
+        email: username
       };
 
       this._authenticate({ username, password, cognitoUser }).then(

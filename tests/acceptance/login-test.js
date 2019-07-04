@@ -347,11 +347,7 @@ module('Acceptance | login', function(hooks) {
               ChallengeResponses: {
                 'userAttributes.email': 'johnwick@fabscale.com',
                 NEW_PASSWORD: 'test1234-NEW',
-                USERNAME: 'TEST-USER-ID',
-                // TODO FN: This is currently hard-coded for testing purposes, remove later
-                'userAttributes.family_name': 'Novy',
-                'userAttributes.locale': 'en',
-                'userAttributes.name': 'Francesco Novy'
+                USERNAME: 'TEST-USER-ID'
               },
               Session: 'TEST-SESSION-ID'
             },
