@@ -10,8 +10,8 @@ import {
 } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { assign } from '@ember/polyfills';
-import { createJWTToken } from './../helpers/create-jwt-token';
-import { setupCognitoMocks } from './../helpers/setup-cognito-mocks';
+import { createJWTToken } from 'ember-cognito-identity/test-support/helpers/create-jwt-token';
+import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
 import { CognitoError } from 'ember-cognito-identity/errors/cognito';
 
 module('Acceptance | reset-password', function(hooks) {

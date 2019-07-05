@@ -1,5 +1,4 @@
 import { assign } from '@ember/polyfills';
-import CryptoJS from 'crypto-js';
 
 export function createJWTToken(payload) {
   let header = {
@@ -14,18 +13,15 @@ export function createJWTToken(payload) {
     payload
   );
 
-  let stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
-  let encodedHeader = base64url(stringifiedHeader);
-
-  let stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
-  let encodedData = base64url(stringifiedData);
+  let encodedHeader = base64url(header);
+  let encodedData = base64url(data);
 
   return encodedHeader + '.' + encodedData;
 }
 
 function base64url(source) {
   // Encode in classical base64
-  let encodedSource = CryptoJS.enc.Base64.stringify(source);
+  let encodedSource = btoa(JSON.stringify(source));
 
   // Remove padding equal characters
   encodedSource = encodedSource.replace(/=+$/, '');
