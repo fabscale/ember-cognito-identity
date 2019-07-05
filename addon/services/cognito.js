@@ -268,7 +268,7 @@ export default Service.extend({
     return promise;
   },
 
-  updatePassword(oldPassword, newPassword) {
+  updatePassword({ oldPassword, newPassword }) {
     assert(
       'cognitoData is not set, make sure to be authenticated before calling `updatePassword()`',
       this.cognitoData

@@ -3,7 +3,14 @@
   {{yield
     (hash
       mustEnterNewPassword=this.mustEnterNewPassword
-      error=this.error
+      error=(readonly this.error)
+      username=(readonly this.username)
+      password=(readonly this.password)
+      newPassword=(readonly this.newPassword)
+
+      updateUsername=(action "updateUsername")
+      updatePassword=(action "updatePassword")
+      updateNewPassword=(action "updateNewPassword")
 
       UsernameInput=(component
         "cognito-text-input"

@@ -31,6 +31,16 @@ export default Component.extend({
   },
 
   actions: {
+    updateUsername(username) {
+      set(this, 'selectedUsername', username);
+    },
+    updateVerificationCode(verificationCode) {
+      set(this, 'selectedVerificationCode', verificationCode);
+    },
+    updatePassword(password) {
+      set(this, 'password', password);
+    },
+
     skipTriggerResetPasswordEmail(username) {
       set(this, 'selectedUsername', username);
       set(this, 'error', null);
