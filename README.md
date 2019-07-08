@@ -91,6 +91,13 @@ Log out the user from the current device.
 Triggers `onUnauthenticated()` on the cognito-service,
 which by default redirects to `loginRoute` (`login`, by default).
 
+### invalidateAccessTokens()
+
+Logout & invalidate all issues access tokens (also on other devices).
+In contrast, `logout()` does not revoke access tokens, it only removes them locally.
+
+Returns a promise.
+
 ### triggerResetPasswordMail({ username })
 
 Trigger an email to get a verification code to reset the password.

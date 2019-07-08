@@ -183,6 +183,23 @@ export default Service.extend({
     this.onUnauthenticated();
   },
 
+  invalidateAccessTokens() {
+    let promise = new Promise((resolve, reject) => {
+      this.cognitoData.cognitoUser.globalSignOut({
+        onSuccess: () => {
+          this.onUnauthenticated();
+          resolve();
+        },
+        onFailure(err) {
+          reject(dispatchError(err));
+        }
+      });
+    });
+
+    waitForPromise(promise);
+    return promise;
+  },
+
   triggerResetPasswordMail({ username }) {
     let cognitoUser = this._createCognitoUser({ username });
 
