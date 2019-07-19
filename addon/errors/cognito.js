@@ -76,5 +76,14 @@ export function dispatchError(error) {
   }
 
   let ErrorType = errorMap[error.code];
+
+  // Special case: When updating attributes, this can be thrown, which is incorrectly assumed to be a password issue
+  if (
+    ErrorType === InvalidAuthorizationError &&
+    error.message === 'A client attempted to write unauthorized attribute'
+  ) {
+    ErrorType = CognitoError;
+  }
+
   return ErrorType ? new ErrorType(error) : new CognitoError(error);
 }

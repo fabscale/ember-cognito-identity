@@ -14,7 +14,8 @@ import { waitForPromise } from 'ember-test-waiters';
 const {
   CognitoUserPool,
   AuthenticationDetails,
-  CognitoUser
+  CognitoUser,
+  CognitoUserAttribute
 } = AmazonCognitoIdentity;
 
 export default Service.extend({
@@ -92,28 +93,23 @@ export default Service.extend({
           return reject(dispatchError(error));
         }
 
-        cognitoUser.getUserAttributes((error, cognitoUserAttributes) => {
-          if (error) {
+        this._getUserAttributes(cognitoUser).then(
+          (userAttributes) => {
+            cognitoData.userAttributes = userAttributes;
+            cognitoData.cognitoUserSession = cognitoUserSession;
+            cognitoData.jwtToken = cognitoUserSession
+              .getAccessToken()
+              .getJwtToken();
+
+            set(this, 'cognitoData', cognitoData);
+
+            resolve(cognitoData);
+          },
+          (error) => {
             cognitoUser.signOut();
-            return reject(dispatchError(error));
+            reject(error);
           }
-
-          let userAttributes = {};
-          cognitoUserAttributes.forEach((cognitoUserAttribute) => {
-            userAttributes[cognitoUserAttribute.Name] =
-              cognitoUserAttribute.Value;
-          });
-
-          cognitoData.userAttributes = userAttributes;
-          cognitoData.cognitoUserSession = cognitoUserSession;
-          cognitoData.jwtToken = cognitoUserSession
-            .getAccessToken()
-            .getJwtToken();
-
-          set(this, 'cognitoData', cognitoData);
-
-          resolve(cognitoData);
-        });
+        );
       });
     });
 
@@ -307,6 +303,40 @@ export default Service.extend({
     return promise;
   },
 
+  updateAttributes(attributes) {
+    assert(
+      'cognitoData is not set, make sure to be authenticated before calling `updateAttributes()`',
+      this.cognitoData
+    );
+
+    let { cognitoUser } = this.cognitoData;
+
+    let attributeList = Object.keys(attributes).map((attributeName) => {
+      return new CognitoUserAttribute({
+        Name: attributeName,
+        Value: attributes[attributeName]
+      });
+    });
+
+    let promise = new Promise((resolve, reject) => {
+      cognitoUser.updateAttributes(attributeList, (error) => {
+        if (error) {
+          return reject(dispatchError(error));
+        }
+
+        this._getUserAttributes(cognitoUser)
+          .then((userAttributes) => {
+            set(this.cognitoData, 'userAttributes', userAttributes);
+            resolve(userAttributes);
+          })
+          .catch(reject);
+      });
+    });
+
+    waitForPromise(promise);
+    return promise;
+  },
+
   _createCognitoUser({ username }) {
     let { userPool, _cognitoStorage: storage } = this;
 
@@ -317,5 +347,26 @@ export default Service.extend({
     };
 
     return new CognitoUser(userData);
+  },
+
+  _getUserAttributes(cognitoUser) {
+    let promise = new Promise((resolve, reject) => {
+      cognitoUser.getUserAttributes((error, cognitoUserAttributes) => {
+        if (error) {
+          return reject(dispatchError(error));
+        }
+
+        let userAttributes = {};
+        cognitoUserAttributes.forEach((cognitoUserAttribute) => {
+          userAttributes[cognitoUserAttribute.Name] =
+            cognitoUserAttribute.Value;
+        });
+
+        resolve(userAttributes);
+      });
+    });
+
+    waitForPromise(promise);
+    return promise;
   }
 });
