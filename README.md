@@ -15,6 +15,16 @@ COGNITO_USER_POOL_ID=XX
 COGNITO_CLIENT_ID=YY
 ```
 
+And add this to your `config/environment.js`:
+
+
+```
+cognito: {
+  userPoolId: process.env.COGNITO_USER_POOL_ID,
+  clientId: process.env.COGNITO_CLIENT_ID
+}
+```
+
 ## Usage
 
 This addon provides a `cognito` service with some methods to be used to work with AWS Cognito.
