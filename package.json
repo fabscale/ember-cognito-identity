@@ -22,7 +22,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^3.0.14",
+    "amazon-cognito-identity-js": "^3.0.15",
     "ember-auto-import": "^1.5.2",
     "ember-cli-babel": "^7.7.3",
     "ember-cli-htmlbars": "^3.1.0",
