@@ -43,8 +43,7 @@ module.exports = {
         'tests/dummy/app/**'
       ],
       parserOptions: {
-        sourceType: 'script',
-        ecmaVersion: 2018
+        sourceType: 'script'
       },
       env: {
         browser: false,
