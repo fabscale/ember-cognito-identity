@@ -2,6 +2,8 @@ import Component from '@ember/component';
 import layout from './template';
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { task } from 'ember-concurrency';
+import { or } from '@ember/object/computed';
 
 export default Component.extend({
   layout,
@@ -20,6 +22,11 @@ export default Component.extend({
 
   showPasswordForm: false,
 
+  isPending: or(
+    'triggerResetPasswordEmailTask.isRunning',
+    'resetPasswordTask.isRunning'
+  ),
+
   init() {
     this._super(...arguments);
     set(this, 'selectedUsername', this.username);
@@ -29,6 +36,46 @@ export default Component.extend({
       set(this, 'showPasswordForm', true);
     }
   },
+
+  triggerResetPasswordEmailTask: task(function*(username) {
+    let { cognito } = this;
+
+    set(this, 'error', null);
+
+    try {
+      yield cognito.triggerResetPasswordMail({ username });
+    } catch (error) {
+      set(this, 'error', error);
+      return;
+    }
+
+    set(this, 'selectedUsername', username);
+    set(this, 'showPasswordForm', true);
+  }),
+
+  resetPasswordTask: task(function*({ username, password, verificationCode }) {
+    let { cognito } = this;
+
+    set(this, 'error', null);
+
+    if (!verificationCode || !password || !username) {
+      return;
+    }
+
+    try {
+      yield cognito.updateResetPassword({
+        username,
+        code: verificationCode,
+        newPassword: password
+      });
+      yield cognito.authenticate({ username, password });
+    } catch (error) {
+      set(this, 'error', error);
+      return;
+    }
+
+    this.router.transitionTo(this.cognito.afterLoginRoute);
+  }),
 
   actions: {
     updateUsername(username) {
@@ -48,49 +95,8 @@ export default Component.extend({
       set(this, 'showPasswordForm', true);
     },
 
-    async triggerResetPasswordEmail(username) {
-      let { cognito } = this;
-
-      set(this, 'error', null);
-
-      try {
-        await cognito.triggerResetPasswordMail({ username });
-      } catch (error) {
-        set(this, 'error', error);
-        return;
-      }
-
-      set(this, 'selectedUsername', username);
-      set(this, 'showPasswordForm', true);
-    },
-
     resendVerificationCode() {
       set(this, 'showPasswordForm', false);
-    },
-
-    async resetPassword({ username, password, verificationCode }) {
-      let { cognito } = this;
-
-      if (!verificationCode || !password || !username) {
-        set(this, 'error', 'Please fill in a code and a new password.');
-        return;
-      }
-
-      set(this, 'error', null);
-
-      try {
-        await cognito.updateResetPassword({
-          username,
-          code: verificationCode,
-          newPassword: password
-        });
-        await cognito.authenticate({ username, password });
-      } catch (error) {
-        set(this, 'error', error);
-        return;
-      }
-
-      this.router.transitionTo(this.cognito.afterLoginRoute);
     }
   }
 });

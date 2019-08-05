@@ -4,9 +4,10 @@
     username=(readonly this.selectedUsername)
     password=(readonly this.password)
     error=this.error
+    isPending=this.isPending
 
-    resetPassword=(action "resetPassword")
-    triggerResetPasswordEmail=(action "triggerResetPasswordEmail")
+    resetPassword=(perform this.resetPasswordTask)
+    triggerResetPasswordEmail=(perform this.triggerResetPasswordEmailTask)
     updateUsername=(action "updateUsername")
     updatePassword=(action "updatePassword")
     updateVerificationCode=(action "updateVerificationCode")
@@ -15,7 +16,7 @@
       this.showPasswordForm
       (component
         "cognito-reset-password-form/update-password"
-        resetPassword=(action "resetPassword")
+        resetPassword=(perform this.resetPasswordTask)
         resendVerificationCode=(action "resendVerificationCode")
         error=this.error
 
@@ -28,7 +29,7 @@
       this.showPasswordForm
       (component
         "cognito-reset-password-form/select-username"
-        triggerResetPasswordEmail=(action "triggerResetPasswordEmail")
+        triggerResetPasswordEmail=(perform this.triggerResetPasswordEmailTask)
         skipTriggerResetPasswordEmail=(action "skipTriggerResetPasswordEmail")
         error=this.error
 

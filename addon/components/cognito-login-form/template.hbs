@@ -1,4 +1,4 @@
-<form {{action "submitForm" on="submit" preventDefault=true}}>
+<form {{action (perform this.submitFormTask) on="submit" preventDefault=true}}>
 
   {{yield
     (hash
@@ -7,6 +7,7 @@
       username=(readonly this.username)
       password=(readonly this.password)
       newPassword=(readonly this.newPassword)
+      isPending=this.submitFormTask.isRunning
 
       updateUsername=(action "updateUsername")
       updatePassword=(action "updatePassword")
