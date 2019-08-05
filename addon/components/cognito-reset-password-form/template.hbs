@@ -2,15 +2,14 @@
   (hash
     verificationCode=(readonly this.selectedVerificationCode)
     username=(readonly this.selectedUsername)
-    verificationCode=(readonly this.selectedVerificationCode)
     password=(readonly this.password)
     error=this.error
 
-    resetPassword=(action 'resetPassword')
-    triggerResetPasswordEmail=(action 'triggerResetPasswordEmail')
-    updateUsername=(action 'updateUsername')
-    updatePassword=(action 'updatePassword')
-    updateVerificationCode=(action 'updateVerificationCode')
+    resetPassword=(action "resetPassword")
+    triggerResetPasswordEmail=(action "triggerResetPasswordEmail")
+    updateUsername=(action "updateUsername")
+    updatePassword=(action "updatePassword")
+    updateVerificationCode=(action "updateVerificationCode")
 
     UpdatePasswordForm=(if
       this.showPasswordForm
