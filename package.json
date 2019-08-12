@@ -19,7 +19,8 @@
     "lint:js": "eslint .",
     "start": "ember serve",
     "test": "ember test",
-    "test:all": "ember try:each"
+    "test:all": "ember try:each",
+    "release": "release-it"
   },
   "dependencies": {
     "amazon-cognito-identity-js": "^3.0.15",
@@ -59,7 +60,8 @@
     "lint-staged": "^9.2.1",
     "loader.js": "^4.7.0",
     "prettier": "^1.18.2",
-    "qunit-dom": "^0.9.0"
+    "qunit-dom": "^0.9.0",
+    "release-it": "~12.3.5"
   },
   "engines": {
     "node": "8.* || >= 10.*"
