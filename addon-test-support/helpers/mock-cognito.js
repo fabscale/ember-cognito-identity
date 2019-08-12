@@ -15,10 +15,12 @@ export function mockCognito(
     }
   };
   let cognitoUserSession = {};
+  /* eslint-disable camelcase */
   let userAttributes = {
     email: username,
     email_verified: 'true'
   };
+  /* eslint-enable camelcase */
 
   let cognitoData = {
     cognitoUser,

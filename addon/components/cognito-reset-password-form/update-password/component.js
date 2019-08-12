@@ -22,9 +22,11 @@ export default Component.extend({
     updateVerificationCode(verificationCode) {
       set(this, 'currentVerificationCode', verificationCode);
     },
+
     updatePassword(password) {
       set(this, 'password', password);
     },
+
     onSubmit() {
       let {
         username,

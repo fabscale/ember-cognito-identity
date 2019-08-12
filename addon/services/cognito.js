@@ -186,6 +186,7 @@ export default Service.extend({
           this.onUnauthenticated();
           resolve();
         },
+
         onFailure(err) {
           reject(dispatchError(err));
         }
@@ -204,6 +205,7 @@ export default Service.extend({
         onSuccess() {
           resolve();
         },
+
         onFailure(err) {
           reject(dispatchError(err));
         }
@@ -227,6 +229,7 @@ export default Service.extend({
         onSuccess() {
           resolve();
         },
+
         onFailure(err) {
           // This can also happen, e.g. if the password is shorter than 6 characters
           if (err.code === 'InvalidParameterException') {
@@ -268,6 +271,7 @@ export default Service.extend({
             onSuccess() {
               resolve();
             },
+
             onFailure(err) {
               reject(dispatchError(err));
             }

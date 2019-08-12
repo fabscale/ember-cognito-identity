@@ -81,9 +81,11 @@ export default Component.extend({
     updateUsername(username) {
       set(this, 'selectedUsername', username);
     },
+
     updateVerificationCode(verificationCode) {
       set(this, 'selectedVerificationCode', verificationCode);
     },
+
     updatePassword(password) {
       set(this, 'password', password);
     },

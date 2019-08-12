@@ -1,28 +1,50 @@
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: 'module'
+    sourceType: 'module',
+    ecmaFeatures: {
+      legacyDecorators: true
+    }
   },
-  plugins: ['ember'],
+
+  plugins: ['ember', 'ember-es6-class', 'ember-suave'],
+
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
+    'plugin:ember-suave/recommended',
     'plugin:prettier/recommended'
   ],
+
   env: {
     browser: true
   },
+
   rules: {
-    'prefer-destructuring': [
+    'ember/no-deeply-nested-dependent-keys-with-each': 2,
+    'ember/no-ember-super-in-es-classes': 2,
+    'ember-es6-class/no-object-extend': 0,
+    'no-console': 2,
+    'ember/no-invalid-debug-function-arguments': 2,
+    'ember/require-return-from-computed': 2,
+    'ember/no-new-mixins': 2,
+    'ember/no-jquery': 2,
+    'ember/route-path-style': 2,
+    'ember-suave/lines-between-object-properties': [
       'error',
-      {
-        array: false,
-        object: true
-      }
+      'always',
+      { exceptAfterSingleLine: true }
     ],
-    'ember/no-deeply-nested-dependent-keys-with-each': 2
+
+    'lines-between-class-members': [
+      'error',
+      'always',
+      { exceptAfterSingleLine: true }
+    ]
   },
+
   overrides: [
     // node files
     {
@@ -48,7 +70,15 @@ module.exports = {
       env: {
         browser: false,
         node: true
-      }
+      },
+      plugins: ['node'],
+      rules: Object.assign(
+        {},
+        require('eslint-plugin-node').configs.recommended.rules,
+        {
+          'ember-suave/lines-between-object-properties': 0
+        }
+      )
     },
     {
       files: ['tests/**/*.js'],

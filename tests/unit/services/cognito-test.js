@@ -17,6 +17,7 @@ module('Unit | Service | cognito', function(hooks) {
         if (error instanceof CognitoError) {
           return;
         }
+
         throw error;
       });
 
@@ -63,6 +64,7 @@ module('Unit | Service | cognito', function(hooks) {
             { Name: 'email', Value: 'johnwick@thecontinental.assassins' },
             { Name: 'name', Value: 'John W.' }
           ],
+
           Username: 'TEST-USER-ID'
         };
       };
@@ -72,12 +74,14 @@ module('Unit | Service | cognito', function(hooks) {
         age: 52
       });
 
+      /* eslint-disable camelcase */
       assert.deepEqual(response, {
         email: 'johnwick@thecontinental.assassins',
         email_verified: 'true',
         name: 'John W.',
         sub: 'TEST-USER-ID'
       });
+      /* eslint-enable camelcase */
       assert.deepEqual(service.cognitoData.userAttributes, response);
     });
 
@@ -119,6 +123,7 @@ module('Unit | Service | cognito', function(hooks) {
         if (error instanceof CognitoError) {
           return;
         }
+
         throw error;
       });
 

@@ -86,6 +86,7 @@ module('Acceptance | reset-password', function(hooks) {
             USERNAME: 'johnwick@fabscale.com',
             SRP_A: 'TEST-SRP-A'
           },
+
           ClientMetadata: {}
         },
         'correct body is sent'
@@ -135,6 +136,7 @@ module('Acceptance | reset-password', function(hooks) {
           RefreshToken: createJWTToken(),
           TokenType: 'Bearer'
         },
+
         ChallengeParameters: {}
       };
     };
@@ -158,6 +160,7 @@ module('Acceptance | reset-password', function(hooks) {
           { Name: 'email_verified', Value: 'true' },
           { Name: 'email', Value: 'johnwick@fabscale.com' }
         ],
+
         Username: 'TEST-USER-ID'
       };
     };
@@ -256,6 +259,7 @@ module('Acceptance | reset-password', function(hooks) {
           RefreshToken: createJWTToken(),
           TokenType: 'Bearer'
         },
+
         ChallengeParameters: {}
       };
     };
@@ -279,6 +283,7 @@ module('Acceptance | reset-password', function(hooks) {
           { Name: 'email_verified', Value: 'true' },
           { Name: 'email', Value: 'johnwick@fabscale.com' }
         ],
+
         Username: 'TEST-USER-ID'
       };
     };
@@ -374,6 +379,7 @@ module('Acceptance | reset-password', function(hooks) {
           RefreshToken: createJWTToken(),
           TokenType: 'Bearer'
         },
+
         ChallengeParameters: {}
       };
     };
@@ -387,6 +393,7 @@ module('Acceptance | reset-password', function(hooks) {
           { Name: 'email_verified', Value: 'true' },
           { Name: 'email', Value: 'johnwick@fabscale.com' }
         ],
+
         Username: 'TEST-USER-ID'
       };
     };
@@ -484,6 +491,7 @@ module('Acceptance | reset-password', function(hooks) {
             RefreshToken: createJWTToken(),
             TokenType: 'Bearer'
           },
+
           ChallengeParameters: {}
         };
       };
@@ -495,6 +503,7 @@ module('Acceptance | reset-password', function(hooks) {
             { Name: 'email_verified', Value: 'true' },
             { Name: 'email', Value: 'johnwick@fabscale.com' }
           ],
+
           Username: 'TEST-USER-ID'
         };
       };
@@ -609,6 +618,7 @@ module('Acceptance | reset-password', function(hooks) {
         if (error instanceof CognitoError) {
           return;
         }
+
         throw error;
       });
     });

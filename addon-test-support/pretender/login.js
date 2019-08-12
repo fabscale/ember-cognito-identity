@@ -32,6 +32,7 @@ export function setupPretenderSuccessfulLogin(
         RefreshToken: createJWTToken(),
         TokenType: 'Bearer'
       },
+
       ChallengeParameters: {}
     };
   };
@@ -43,6 +44,7 @@ export function setupPretenderSuccessfulLogin(
         { Name: 'email_verified', Value: 'true' },
         { Name: 'email', Value: username }
       ],
+
       Username: userId
     };
   };
@@ -95,6 +97,7 @@ export function setupPretenderNeedsInitialPassword(
           userAttributes:
             '{"email_verified":"true","email":"johnwick@thecontinental.assassins"}'
         },
+
         Session: 'TEST-SESSION-ID'
       };
     },
@@ -105,6 +108,7 @@ export function setupPretenderNeedsInitialPassword(
           requiredAttributes: '[]',
           userAttributes: `{"email_verified":"true","email":"${username}"}'`
         },
+
         Session: 'TEST-SESSION-ID'
       };
     },
@@ -117,6 +121,7 @@ export function setupPretenderNeedsInitialPassword(
           RefreshToken: accessToken,
           TokenType: 'Bearer'
         },
+
         ChallengeParameters: {}
       };
     },
@@ -129,6 +134,7 @@ export function setupPretenderNeedsInitialPassword(
           RefreshToken: createJWTToken(),
           TokenType: 'Bearer'
         },
+
         ChallengeParameters: {}
       };
     }
@@ -148,6 +154,7 @@ export function setupPretenderNeedsInitialPassword(
         { Name: 'email_verified', Value: 'true' },
         { Name: 'email', Value: username }
       ],
+
       Username: userId
     };
   };

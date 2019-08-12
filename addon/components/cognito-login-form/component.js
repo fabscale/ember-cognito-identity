@@ -61,9 +61,11 @@ export default Component.extend({
     updateUsername(username) {
       set(this, 'username', username);
     },
+
     updatePassword(password) {
       set(this, 'password', password);
     },
+
     updateNewPassword(newPassword) {
       set(this, 'newPassword', newPassword);
     }

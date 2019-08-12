@@ -16,7 +16,7 @@ export function createJWTToken(payload) {
   let encodedHeader = base64url(header);
   let encodedData = base64url(data);
 
-  return encodedHeader + '.' + encodedData;
+  return `${encodedHeader}.${encodedData}`;
 }
 
 function base64url(source) {

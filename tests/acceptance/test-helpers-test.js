@@ -48,6 +48,7 @@ module('Acceptance | test helpers', function(hooks) {
         if (error instanceof CognitoError) {
           return;
         }
+
         throw error;
       });
     });

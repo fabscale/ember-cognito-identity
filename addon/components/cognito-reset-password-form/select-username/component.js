@@ -20,6 +20,7 @@ export default Component.extend({
     updateUsername(username) {
       set(this, 'currentUsername', username);
     },
+
     onSubmit() {
       this.triggerResetPasswordEmail(this.currentUsername);
     }

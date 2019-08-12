@@ -39,6 +39,7 @@ module('Acceptance | remember-authentication', function(hooks) {
           { Name: 'email_verified', Value: 'true' },
           { Name: 'email', Value: 'francesco@fabscale.com' }
         ],
+
         Username: '5e456280-cdb6-40f7-a259-565e4f01debf'
       };
     };
@@ -119,6 +120,7 @@ module('Acceptance | remember-authentication', function(hooks) {
           { Name: 'email_verified', Value: 'true' },
           { Name: 'email', Value: 'francesco@fabscale.com' }
         ],
+
         Username: '5e456280-cdb6-40f7-a259-565e4f01debf'
       };
     };
@@ -137,6 +139,7 @@ module('Acceptance | remember-authentication', function(hooks) {
           AuthParameters: {
             REFRESH_TOKEN: refreshToken
           },
+
           ClientId: 'TEST-CLIENT-ID'
         },
         'correct body is sent'
@@ -150,6 +153,7 @@ module('Acceptance | remember-authentication', function(hooks) {
           RefreshToken: createJWTToken(),
           TokenType: 'Bearer'
         },
+
         ChallengeParameters: {}
       };
     };
@@ -195,6 +199,7 @@ module('Acceptance | remember-authentication', function(hooks) {
         if (error instanceof CognitoError) {
           return;
         }
+
         throw error;
       });
     });
@@ -273,6 +278,7 @@ module('Acceptance | remember-authentication', function(hooks) {
             AuthParameters: {
               REFRESH_TOKEN: refreshToken
             },
+
             ClientId: 'TEST-CLIENT-ID'
           },
           'correct body is sent'

@@ -1,4 +1,4 @@
-import CognitoTextInput from './../cognito-text-input/component';
+import CognitoTextInput from 'ember-cognito-identity/components/cognito-text-input/component';
 import layout from './template';
 import { set, computed } from '@ember/object';
 import { schedule } from '@ember/runloop';
