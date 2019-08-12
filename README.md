@@ -43,8 +43,8 @@ This is how this could look in the application route:
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  cognito: service(),
+export default class ApplicationRoute extends Route {
+  @service cognito;
 
   async beforeModel() {
     try {
@@ -53,7 +53,7 @@ export default Route.extend({
       // go to login...
     }
   }
-});
+};
 ```
 
 ## Cognito service
@@ -72,12 +72,12 @@ If the user is not logged in, this will be `null`.
 
 This is an object that looks like this:
 
-```js
+```json
 {
-  cognitoUser: CognitoUserInstance,
-  cognitoUserSession: CognitoUserSessionInstance,
-  jwtToken: 'xxxxx',
-  userAttributes: { Email: '...' }
+  "cognitoUser": CognitoUserInstance,
+  "cognitoUserSession": CognitoUserSessionInstance,
+  "jwtToken": "xxxxx",
+  "userAttributes": { "Email": "..." }
 }
 ```
 
@@ -187,8 +187,8 @@ You can also built this in even more customized form:
   {{! Yielded actions: updateUsername, updatePassword, updateNewPassword }}
   {{! Example usage: }}
   <MyInputComponent
-    value={{loginForm.username}}
-    onUpdate={{loginForm.updateUsername}}
+    @value={{loginForm.username}}
+    @onUpdate={{loginForm.updateUsername}}
   />
 </CognitoLoginForm>
 ```
@@ -260,8 +260,8 @@ As with the login form, you can also re-build this with your own primitives if y
   {{! updateUsername, updatePassword, updateVerificationCode }}
   {{! Example usage: }}
   <MyInputComponent
-    value={{resetPasswordForm.username}}
-    onUpdate={{resetPasswordForm.updateUsername}}
+    @value={{resetPasswordForm.username}}
+    @onUpdate={{resetPasswordForm.updateUsername}}
   />
   <button {{action resetPasswordForm.triggerResetPasswordEmail}}>Send</button>
 </CognitoLoginForm>
