@@ -1,15 +1,15 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
+import { action } from '@ember/object';
 
-export default Controller.extend({
-  cognito: service(),
+export default class IndexController extends Controller {
+  @service cognito;
 
-  jwtToken: reads('cognito.cognitoData.jwtToken'),
+  @reads('cognito.cognitoData.jwtToken') jwtToken;
 
-  actions: {
-    logout() {
-      this.cognito.logout();
-    }
+  @action
+  logout() {
+    this.cognito.logout();
   }
-});
+}

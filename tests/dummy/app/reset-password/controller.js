@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  queryParams: ['verificationCode', 'username'],
+export default class ResetPasswordController extends Controller {
+  queryParams = ['verificationCode', 'username'];
 
-  verificationCode: null,
-  username: null
-});
+  verificationCode = null;
+  username = null;
+}

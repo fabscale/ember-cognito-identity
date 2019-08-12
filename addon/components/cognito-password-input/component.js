@@ -1,51 +1,47 @@
 import CognitoTextInput from 'ember-cognito-identity/components/cognito-text-input/component';
 import layout from './template';
-import { set, computed } from '@ember/object';
+import { set, computed, action } from '@ember/object';
 import { schedule } from '@ember/runloop';
 import { guidFor } from '@ember/object/internals';
 
-export default CognitoTextInput.extend({
-  layout,
+export default class CognitoPasswordInput extends CognitoTextInput {
+  layout = layout;
 
   // Additional attributes
-  passwordToggleShowText: null,
-  passwordToggleHideText: null,
-  id: null,
+  passwordToggleShowText = null;
+  passwordToggleHideText = null;
+  id = null;
 
   // Properties
-  displayType: 'password',
-  inputId: computed('id', function() {
+  displayType = 'password';
+
+  @computed('id')
+  get inputId() {
     return this.id || `${guidFor(this)}-input`;
-  }),
-
-  passwordToggleText: computed(
-    'displayType',
-    'passwordToggleShowText',
-    'passwordToggleHideText',
-    function() {
-      let toggleIsShow = this.displayType === 'password';
-
-      if (toggleIsShow) {
-        return this.passwordToggleShowText || 'Show';
-      }
-
-      return this.passwordToggleHideText || 'Hide';
-    }
-  ),
-
-  actions: {
-    toggleDisplayType() {
-      let newDisplayType =
-        this.displayType === 'password' ? 'text' : 'password';
-
-      set(this, 'displayType', newDisplayType);
-
-      schedule('afterRender', () => {
-        let input = document.getElementById(this.inputId);
-        if (input) {
-          input.focus();
-        }
-      });
-    }
   }
-});
+
+  @computed('displayType', 'passwordToggleShowText', 'passwordToggleHideText')
+  get passwordToggleText() {
+    let toggleIsShow = this.displayType === 'password';
+
+    if (toggleIsShow) {
+      return this.passwordToggleShowText || 'Show';
+    }
+
+    return this.passwordToggleHideText || 'Hide';
+  }
+
+  @action
+  toggleDisplayType() {
+    let newDisplayType = this.displayType === 'password' ? 'text' : 'password';
+
+    set(this, 'displayType', newDisplayType);
+
+    schedule('afterRender', () => {
+      let input = document.getElementById(this.inputId);
+      if (input) {
+        input.focus();
+      }
+    });
+  }
+}

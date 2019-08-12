@@ -1,25 +1,25 @@
 import Component from '@ember/component';
 import layout from './template';
-import { set } from '@ember/object';
+import { set, action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { NewPasswordRequiredError } from 'ember-cognito-identity/errors/cognito';
-import { task } from 'ember-concurrency';
+import { dropTask } from 'ember-concurrency-decorators';
 
-export default Component.extend({
-  layout,
-  cognito: service(),
-  router: service(),
+export default class CognitoLoginForm extends Component {
+  layout = layout;
+  @service cognito;
+  @service router;
 
   // Properties
-  username: null,
-  password: null,
-  newPassword: null,
+  username = null;
+  password = null;
+  newPassword = null;
 
-  mustEnterNewPassword: false,
+  mustEnterNewPassword = false;
+  error = null;
 
-  error: null,
-
-  submitFormTask: task(function*() {
+  @dropTask()
+  submitFormTask = function*() {
     let {
       cognito,
       username,
@@ -55,19 +55,20 @@ export default Component.extend({
 
       set(this, 'error', error);
     }
-  }).drop(),
+  };
 
-  actions: {
-    updateUsername(username) {
-      set(this, 'username', username);
-    },
-
-    updatePassword(password) {
-      set(this, 'password', password);
-    },
-
-    updateNewPassword(newPassword) {
-      set(this, 'newPassword', newPassword);
-    }
+  @action
+  updateUsername(username) {
+    set(this, 'username', username);
   }
-});
+
+  @action
+  updatePassword(password) {
+    set(this, 'password', password);
+  }
+
+  @action
+  updateNewPassword(newPassword) {
+    set(this, 'newPassword', newPassword);
+  }
+}

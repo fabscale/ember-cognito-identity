@@ -1,39 +1,40 @@
 import Component from '@ember/component';
 import layout from './template';
-import { set } from '@ember/object';
+import { set, action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class CognitoResetPasswordFormUpdatePassword extends Component {
+  layout = layout;
 
   // Attributes
-  username: null,
-  verificationCode: null,
+  username = null;
+  verificationCode = null;
 
   // Properties
-  currentVerificationCode: null,
-  password: null,
+  currentVerificationCode = null;
+  password = null;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     set(this, 'currentVerificationCode', this.verificationCode);
-  },
-
-  actions: {
-    updateVerificationCode(verificationCode) {
-      set(this, 'currentVerificationCode', verificationCode);
-    },
-
-    updatePassword(password) {
-      set(this, 'password', password);
-    },
-
-    onSubmit() {
-      let {
-        username,
-        password,
-        currentVerificationCode: verificationCode
-      } = this;
-      this.resetPassword({ username, password, verificationCode });
-    }
   }
-});
+
+  @action
+  updateVerificationCode(verificationCode) {
+    set(this, 'currentVerificationCode', verificationCode);
+  }
+
+  @action
+  updatePassword(password) {
+    set(this, 'password', password);
+  }
+
+  @action
+  onSubmit() {
+    let {
+      username,
+      password,
+      currentVerificationCode: verificationCode
+    } = this;
+    this.resetPassword({ username, password, verificationCode });
+  }
+}

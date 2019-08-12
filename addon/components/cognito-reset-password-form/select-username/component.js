@@ -1,28 +1,29 @@
 import Component from '@ember/component';
 import layout from './template';
-import { set } from '@ember/object';
+import { set, action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class CognitoResetPasswordFormSelectUsername extends Component {
+  layout = layout;
 
   // Attributes
-  username: null,
+  username = null;
 
   // Properties
-  currentUsername: null,
+  currentUsernam = null;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
+
     set(this, 'currentUsername', this.username);
-  },
-
-  actions: {
-    updateUsername(username) {
-      set(this, 'currentUsername', username);
-    },
-
-    onSubmit() {
-      this.triggerResetPasswordEmail(this.currentUsername);
-    }
   }
-});
+
+  @action
+  updateUsername(username) {
+    set(this, 'currentUsername', username);
+  }
+
+  @action
+  onSubmit() {
+    this.triggerResetPasswordEmail(this.currentUsername);
+  }
+}

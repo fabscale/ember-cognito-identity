@@ -18,23 +18,28 @@ const {
   CognitoUserAttribute
 } = AmazonCognitoIdentity;
 
-export default Service.extend({
-  router: service(),
+export default class CognitoService extends Service {
+  @service router;
 
   // Overwrite if necessary
-  loginRoute: 'login',
-  resetPasswordRoute: 'reset-password',
-  afterLoginRoute: 'index',
+  loginRoute = 'login';
+  resetPasswordRoute = 'reset-password';
+  afterLoginRoute = 'index';
 
   // Overwrite for testing
-  _cognitoStorage: undefined,
+  _cognitoStorage = undefined;
 
-  config: computed(function() {
+  cognitoData = null;
+  @bool('cognitoData') isAuthenticated;
+
+  @computed
+  get config() {
     let config = getOwner(this).resolveRegistration('config:environment');
     return config.cognito;
-  }),
+  }
 
-  userPool: computed('config.{userPoolId,clientId}', function() {
+  @computed('config.{userPoolId,clientId}')
+  get userPool() {
     assert(
       'A `cognito` configuration object needs to be defined in config/environment.js',
       this.config
@@ -57,20 +62,16 @@ export default Service.extend({
     };
 
     return new CognitoUserPool(poolData);
-  }),
-
-  cognitoData: null,
-
-  isAuthenticated: bool('cognitoData'),
+  }
 
   // Hooks begin
   onAuthenticated() {
     this.router.transitionTo(this.afterLoginRoute);
-  },
+  }
 
   onUnauthenticated() {
     this.router.transitionTo(this.loginRoute);
-  },
+  }
   // Hooks end
 
   // This should be called in application route, before everything else
@@ -115,7 +116,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   async authenticate({ username, password }) {
     assert('cognitoData is already setup', !this.cognitoUserSession);
@@ -125,7 +126,7 @@ export default Service.extend({
     await this.onAuthenticated(this.cognitoData);
 
     return this.cognitoData;
-  },
+  }
 
   /*
     Might reject with:
@@ -168,7 +169,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   logout() {
     if (this.cognitoData) {
@@ -177,7 +178,7 @@ export default Service.extend({
     }
 
     this.onUnauthenticated();
-  },
+  }
 
   invalidateAccessTokens() {
     let promise = new Promise((resolve, reject) => {
@@ -195,7 +196,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   triggerResetPasswordMail({ username }) {
     let cognitoUser = this._createCognitoUser({ username });
@@ -214,7 +215,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   /*
     Might reject with:
@@ -244,7 +245,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   /*
     Might reject with:
@@ -283,7 +284,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   updatePassword({ oldPassword, newPassword }) {
     assert(
@@ -305,7 +306,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   updateAttributes(attributes) {
     assert(
@@ -339,7 +340,7 @@ export default Service.extend({
 
     waitForPromise(promise);
     return promise;
-  },
+  }
 
   _createCognitoUser({ username }) {
     let { userPool, _cognitoStorage: storage } = this;
@@ -351,7 +352,7 @@ export default Service.extend({
     };
 
     return new CognitoUser(userData);
-  },
+  }
 
   _getUserAttributes(cognitoUser) {
     let promise = new Promise((resolve, reject) => {
@@ -373,4 +374,4 @@ export default Service.extend({
     waitForPromise(promise);
     return promise;
   }
-});
+}

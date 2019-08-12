@@ -1,25 +1,25 @@
 import Component from '@ember/component';
 import layout from './template';
 import { assert } from '@ember/debug';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
-  tagName: '',
+export default class CognitoTextInput extends Component {
+  layout = layout;
+  tagName = '';
 
   // Attributes
-  value: null,
-  onChange: null,
+  value = null;
+  onChange = null;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     assert(`onChange must be set`, this.onChange);
-  },
-
-  actions: {
-    onChange(event) {
-      let { value } = event.srcElement;
-      this.onChange(value);
-    }
   }
-});
+
+  @action
+  onTextChange(event) {
+    let { value } = event.srcElement;
+    this.onChange(value);
+  }
+}

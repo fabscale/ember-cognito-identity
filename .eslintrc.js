@@ -25,7 +25,7 @@ module.exports = {
   rules: {
     'ember/no-deeply-nested-dependent-keys-with-each': 2,
     'ember/no-ember-super-in-es-classes': 2,
-    'ember-es6-class/no-object-extend': 0,
+    'ember-es6-class/no-object-extend': 2,
     'no-console': 2,
     'ember/no-invalid-debug-function-arguments': 2,
     'ember/require-return-from-computed': 2,
