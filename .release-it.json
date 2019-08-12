@@ -4,21 +4,8 @@
   },
   "plugins": {
     "@release-it/conventional-changelog": {
-      "preset": "conventionalcommits",
-      "infile": "CHANGELOG.md",
-      "options": {
-        "header": "Changelog",
-        "types": [
-          {"type": "feat", "section": "Features"},
-          {"type": "fix", "section": "Bug Fixes"},
-          {"type": "chore", "section":  "Internal"},
-          {"type": "docs", "section": "Docs"},
-          {"type": "style", "section": "Internal"},
-          {"type": "refactor", "section": "Internal"},
-          {"type": "perf", "section": "Internal"},
-          {"type": "test", "section": "Internal"}
-        ]
-      }
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
     }
   }
 }
