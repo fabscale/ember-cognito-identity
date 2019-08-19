@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import layout from './template';
 import { set, action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { NewPasswordRequiredError } from 'ember-cognito-identity/errors/cognito';
+import { NewPasswordRequiredError } from '@fabscale/ember-cognito-identity/errors/cognito';
 import { dropTask } from 'ember-concurrency-decorators';
 
 export default class CognitoLoginForm extends Component {

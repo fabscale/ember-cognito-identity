@@ -6,7 +6,7 @@ import { Promise } from 'rsvp';
 import {
   dispatchError,
   NewPasswordRequiredError
-} from 'ember-cognito-identity/errors/cognito';
+} from '@fabscale/ember-cognito-identity/errors/cognito';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { waitForPromise } from 'ember-test-waiters';

@@ -9,9 +9,9 @@ import {
 } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { assign } from '@ember/polyfills';
-import { createJWTToken } from 'ember-cognito-identity/test-support/helpers/create-jwt-token';
-import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
-import { CognitoError } from 'ember-cognito-identity/errors/cognito';
+import { createJWTToken } from '@fabscale/ember-cognito-identity/test-support/helpers/create-jwt-token';
+import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
+import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
 
 module('Acceptance | login', function(hooks) {
   setupApplicationTest(hooks);
