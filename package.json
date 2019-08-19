@@ -1,13 +1,13 @@
 {
   "name": "@fabscale/ember-cognito-identity",
   "version": "0.2.2",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Interact with AWS Cognito from your Ember app.",
   "keywords": [
     "ember-addon"
   ],
   "repository": "git://github.com/fabscale/ember-cognito-identity.git",
-  "license": "MIT",
-  "author": "",
+  "license": "",
+  "author": "Francesco Novy <francesco@fabscale.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
