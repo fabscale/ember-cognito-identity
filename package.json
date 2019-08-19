@@ -6,7 +6,6 @@
     "ember-addon"
   ],
   "repository": "git://github.com/fabscale/ember-cognito-identity.git",
-  "license": "",
   "author": "Francesco Novy <francesco@fabscale.com>",
   "directories": {
     "doc": "doc",
