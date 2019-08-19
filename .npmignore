@@ -30,6 +30,10 @@
 /yarn.lock
 /yarn-error.log
 .gitkeep
+.dependabot
+/coverage
+/.idea
+.release-it.json
 
 # ember-try
 /.node_modules.ember-try/
