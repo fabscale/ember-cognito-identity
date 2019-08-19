@@ -1,12 +1,12 @@
 {
-  "name": "ember-cognito-identity",
+  "name": "@fabscale/ember-cognito-identity",
   "version": "0.2.0",
   "private": true,
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon"
   ],
-  "repository": "",
+  "repository": "git://github.com/fabscale/ember-cognito-identity.git",
   "license": "MIT",
   "author": "",
   "directories": {
@@ -76,5 +76,8 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
