@@ -7,7 +7,7 @@ Requires Ember 3.11+, as it uses the new element modifiers.
 ## Installation
 
 ```
-ember install ember-cognito-identity
+ember install @fabscale/ember-cognito-identity
 ```
 
 This expects an .env file (via [ember-cli-dotenv](https://github.com/fivetanley/ember-cli-dotenv) or similar), with the env. variables:
