@@ -46,6 +46,11 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
+
+    ENV.cognito = {
+      userPoolId: 'DUMMY-USER-POOL-ID',
+      clientId: 'DUMMY-CLIENT-ID'
+    };
   }
 
   if (environment === 'production') {
