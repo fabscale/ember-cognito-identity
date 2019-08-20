@@ -1,0 +1,25 @@
+name: Ember CI
+
+on: [push]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+    - name: Install dependencies
+      run: yarn install
+    - name: Setup dummy .env file
+      run: touch .env
+    - name: Run tests
+      run: yarn test:all
+    - name: Lint
+      run: |
+        yarn lint:js
+        yarn lint:hbs
