@@ -4,8 +4,10 @@ import { set } from '@ember/object';
 export function setupCognitoMocks(hooks) {
   hooks.beforeEach(function() {
     let cognito = this.owner.lookup('service:cognito');
-    cognito.config.clientId = 'TEST-CLIENT-ID';
-    cognito.config.userPoolId = 'eu-west-1_testuserpool';
+
+    set(cognito, 'config.clientId', 'TEST-CLIENT-ID');
+    set(cognito, 'config.userPoolId', 'eu-west-1_testuserpool');
+
     this.cognito = cognito;
     this.cognitoStorage = {
       _data: {},
