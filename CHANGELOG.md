@@ -1,3 +1,10 @@
+## [0.2.4](https://github.com/fabscale/ember-cognito-identity/compare/0.2.3...0.2.4) (2019-08-22)
+
+
+### Bug Fixes
+
+* Use set for setup-cognito-mocks test helper ([83ed015](https://github.com/fabscale/ember-cognito-identity/commit/83ed015))
+
 ## [0.2.3](https://github.com/fabscale/ember-cognito-identity/compare/0.2.2...0.2.3) (2019-08-19)
 
 ## [0.2.2](https://github.com/fabscale/ember-cognito-identity/compare/0.2.1...0.2.2) (2019-08-19)
