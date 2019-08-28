@@ -76,6 +76,10 @@ export default class CognitoService extends Service {
 
   // This should be called in application route, before everything else
   restoreAndLoad() {
+    if (this.cognitoData) {
+      return Promise.resolve(this.cognitoData);
+    }
+
     let { userPool } = this;
 
     let cognitoData = {};

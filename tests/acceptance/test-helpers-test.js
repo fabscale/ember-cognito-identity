@@ -36,6 +36,9 @@ module('Acceptance | test helpers', function(hooks) {
         'TEST-ACCESS-TOKEN',
         'correct dummy access token is generated'
       );
+
+      // Ensure restoreAndLoad can be called without side effects
+      await cognito.restoreAndLoad();
     });
   });
 
