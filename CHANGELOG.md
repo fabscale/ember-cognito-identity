@@ -1,3 +1,10 @@
+## [0.2.5](https://github.com/fabscale/ember-cognito-identity/compare/0.2.4...0.2.5) (2019-08-28)
+
+
+### Bug Fixes
+
+* Ensure restoreAndLoad does nothing if session is already loaded ([0af1fac](https://github.com/fabscale/ember-cognito-identity/commit/0af1fac))
+
 ## [0.2.4](https://github.com/fabscale/ember-cognito-identity/compare/0.2.3...0.2.4) (2019-08-22)
 
 
