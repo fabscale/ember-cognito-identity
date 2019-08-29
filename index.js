@@ -10,7 +10,19 @@ module.exports = {
     return true;
   },
 
+  options: {
+    autoImport: {
+      exclude: []
+    }
+  },
+
   included() {
+    // If tests are not running, make sure pretender is not included
+    let app = this._findHost();
+    if (!app.tests) {
+      this.options.autoImport.exclude.push('pretender');
+    }
+
     this._super.included.apply(this, arguments);
 
     this.import('vendor/amazon-cognito-identity-js/amazon-cognito-identity.js');
