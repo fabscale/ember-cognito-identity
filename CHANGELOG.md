@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/fabscale/ember-cognito-identity/compare/0.2.5...0.3.0) (2019-08-29)
+
+
+### Features
+
+* Ensure pretender is not included in production builds ([6841f58](https://github.com/fabscale/ember-cognito-identity/commit/6841f58))
+
 ## [0.2.5](https://github.com/fabscale/ember-cognito-identity/compare/0.2.4...0.2.5) (2019-08-28)
 
 
