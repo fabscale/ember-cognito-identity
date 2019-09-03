@@ -32,7 +32,11 @@ export default class CognitoLoginForm extends Component {
 
     if (mustEnterNewPassword) {
       try {
-        yield cognito.setNewPassword({ username, password, newPassword });
+        let newAttributes = this._getNewPasswordAttributes({ username });
+        yield cognito.setNewPassword(
+          { username, password, newPassword },
+          newAttributes
+        );
       } catch (error) {
         set(this, 'error', error);
         return;
@@ -56,6 +60,11 @@ export default class CognitoLoginForm extends Component {
       set(this, 'error', error);
     }
   };
+
+  // This can be overwritten
+  _getNewPasswordAttributes() {
+    return undefined;
+  }
 
   @action
   updateUsername(username) {

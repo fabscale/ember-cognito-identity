@@ -300,8 +300,7 @@ module('Acceptance | login', function(hooks) {
             ChallengeName: 'NEW_PASSWORD_REQUIRED',
             ChallengeParameters: {
               requiredAttributes: '[]',
-              userAttributes:
-                '{"email_verified":"true","email":"johnwick@fabscale.com"}'
+              userAttributes: '{}'
             },
 
             Session: 'TEST-SESSION-ID'
@@ -334,8 +333,7 @@ module('Acceptance | login', function(hooks) {
             ChallengeName: 'NEW_PASSWORD_REQUIRED',
             ChallengeParameters: {
               requiredAttributes: '[]',
-              userAttributes:
-                '{"email_verified":"true","email":"johnwick@fabscale.com"}'
+              userAttributes: '{}'
             },
 
             Session: 'TEST-SESSION-ID'
@@ -352,7 +350,6 @@ module('Acceptance | login', function(hooks) {
               ChallengeName: 'NEW_PASSWORD_REQUIRED',
               ClientId: 'TEST-CLIENT-ID',
               ChallengeResponses: {
-                'userAttributes.email': 'johnwick@fabscale.com',
                 NEW_PASSWORD: 'test1234-NEW',
                 USERNAME: 'TEST-USER-ID'
               },

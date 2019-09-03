@@ -255,14 +255,10 @@ export default class CognitoService extends Service {
     Might reject with:
     * InvalidPasswordError (e.g. password too short)
    */
-  setNewPassword({ username, password, newPassword }) {
+  setNewPassword({ username, password, newPassword }, newAttributes = {}) {
     let cognitoUser = this._createCognitoUser({ username });
 
     let promise = new Promise((resolve, reject) => {
-      let data = {
-        email: username
-      };
-
       this._authenticate({ username, password, cognitoUser }).then(
         () => {
           assert(
@@ -272,7 +268,7 @@ export default class CognitoService extends Service {
           resolve();
         },
         () => {
-          cognitoUser.completeNewPasswordChallenge(newPassword, data, {
+          cognitoUser.completeNewPasswordChallenge(newPassword, newAttributes, {
             onSuccess() {
               resolve();
             },
