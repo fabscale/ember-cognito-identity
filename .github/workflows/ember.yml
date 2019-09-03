@@ -9,10 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js 10.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 10.x
+    - name: Install Volta
+      run: curl https://get.volta.sh | bash
     - name: Install dependencies
       run: yarn install
     - name: Setup dummy .env file
