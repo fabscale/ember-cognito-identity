@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/fabscale/ember-cognito-identity/compare/0.3.0...0.4.0) (2019-09-13)
+
+
+### Features
+
+* Allow to customize new attributes for setNewPassword ([81eac69](https://github.com/fabscale/ember-cognito-identity/commit/81eac69))
+
 # [0.3.0](https://github.com/fabscale/ember-cognito-identity/compare/0.2.5...0.3.0) (2019-08-29)
 
 
