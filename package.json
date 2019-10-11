@@ -22,7 +22,7 @@
     "release": "release-it"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^3.0.15",
+    "amazon-cognito-identity-js": "^3.1.2",
     "broccoli-funnel": "^2.0.2",
     "broccoli-merge-trees": "^3.0.2",
     "ember-auto-import": "^1.5.2",
