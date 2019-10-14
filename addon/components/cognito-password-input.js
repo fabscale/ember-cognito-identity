@@ -1,12 +1,9 @@
-import CognitoTextInput from '@fabscale/ember-cognito-identity/components/cognito-text-input/component';
-import layout from './template';
+import CognitoTextInput from '@fabscale/ember-cognito-identity/components/cognito-text-input';
 import { set, computed, action } from '@ember/object';
 import { schedule } from '@ember/runloop';
 import { guidFor } from '@ember/object/internals';
 
 export default class CognitoPasswordInput extends CognitoTextInput {
-  layout = layout;
-
   // Additional attributes
   passwordToggleShowText = null;
   passwordToggleHideText = null;

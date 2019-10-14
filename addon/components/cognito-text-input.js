@@ -1,10 +1,8 @@
 import Component from '@ember/component';
-import layout from './template';
 import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 
 export default class CognitoTextInput extends Component {
-  layout = layout;
   tagName = '';
 
   // Attributes

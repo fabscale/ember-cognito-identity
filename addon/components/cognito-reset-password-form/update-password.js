@@ -1,10 +1,7 @@
 import Component from '@ember/component';
-import layout from './template';
 import { set, action } from '@ember/object';
 
 export default class CognitoResetPasswordFormUpdatePassword extends Component {
-  layout = layout;
-
   // Attributes
   username = null;
   verificationCode = null;
