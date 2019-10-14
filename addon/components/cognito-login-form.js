@@ -1,20 +1,20 @@
-import Component from '@ember/component';
-import { set, action } from '@ember/object';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { NewPasswordRequiredError } from '@fabscale/ember-cognito-identity/errors/cognito';
 import { dropTask } from 'ember-concurrency-decorators';
+import { tracked } from '@glimmer/tracking';
 
 export default class CognitoLoginForm extends Component {
   @service cognito;
   @service router;
 
   // Properties
-  username = null;
-  password = null;
-  newPassword = null;
-
-  mustEnterNewPassword = false;
-  error = null;
+  @tracked username;
+  @tracked password;
+  @tracked newPassword;
+  @tracked mustEnterNewPassword;
+  @tracked error;
 
   @dropTask()
   submitFormTask = function*() {
@@ -26,7 +26,7 @@ export default class CognitoLoginForm extends Component {
       mustEnterNewPassword
     } = this;
 
-    set(this, 'error', null);
+    this.error = null;
 
     if (mustEnterNewPassword) {
       try {
@@ -36,7 +36,7 @@ export default class CognitoLoginForm extends Component {
           newAttributes
         );
       } catch (error) {
-        set(this, 'error', error);
+        this.error = error;
         return;
       }
 
@@ -51,11 +51,11 @@ export default class CognitoLoginForm extends Component {
       yield cognito.authenticate({ username, password });
     } catch (error) {
       if (error instanceof NewPasswordRequiredError) {
-        set(this, 'mustEnterNewPassword', true);
+        this.mustEnterNewPassword = true;
         return;
       }
 
-      set(this, 'error', error);
+      this.error = error;
     }
   };
 
@@ -66,16 +66,16 @@ export default class CognitoLoginForm extends Component {
 
   @action
   updateUsername(username) {
-    set(this, 'username', username);
+    this.username = username;
   }
 
   @action
   updatePassword(password) {
-    set(this, 'password', password);
+    this.password = password;
   }
 
   @action
   updateNewPassword(newPassword) {
-    set(this, 'newPassword', newPassword);
+    this.newPassword = newPassword;
   }
 }

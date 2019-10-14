@@ -1,37 +1,39 @@
-import Component from '@ember/component';
-import { set, action } from '@ember/object';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class CognitoResetPasswordFormUpdatePassword extends Component {
-  // Attributes
-  username = null;
-  verificationCode = null;
+  /*
+   * Attributes:
+   *  - username
+   *  - verificationCode
+   *  - resetPassword
+   */
 
   // Properties
-  currentVerificationCode = null;
-  password = null;
+  @tracked currentVerificationCode;
+  @tracked password;
 
-  init() {
-    super.init(...arguments);
-    set(this, 'currentVerificationCode', this.verificationCode);
+  constructor() {
+    super(...arguments);
+    this.currentVerificationCode = this.args.verificationCode;
   }
 
   @action
   updateVerificationCode(verificationCode) {
-    set(this, 'currentVerificationCode', verificationCode);
+    this.currentVerificationCode = verificationCode;
   }
 
   @action
   updatePassword(password) {
-    set(this, 'password', password);
+    this.password = password;
   }
 
   @action
   onSubmit() {
-    let {
-      username,
-      password,
-      currentVerificationCode: verificationCode
-    } = this;
-    this.resetPassword({ username, password, verificationCode });
+    let { password, currentVerificationCode: verificationCode } = this;
+    let { username } = this.args;
+
+    this.args.resetPassword({ username, password, verificationCode });
   }
 }

@@ -2,7 +2,7 @@
 
 Interact with AWS Cognito from your Ember app.
 
-Requires Ember 3.11+, as it uses the new element modifiers.
+Requires Ember 3.13+, as it uses `@tracked` and glimmer components.
 
 ## Installation
 

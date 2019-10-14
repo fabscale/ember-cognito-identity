@@ -5,10 +5,14 @@ import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
 
 export default class CognitoPasswordInput extends CognitoTextInput {
-  // Additional attributes
-  @tracked passwordToggleShowText;
-  @tracked passwordToggleHideText;
-  id = null;
+  /*
+   * Attributes:
+   *  - value
+   *  - onChange
+   *  - passwordToggleShowText
+   *  - passwordToggleHideText
+   *  - id
+   */
 
   // Properties
   @tracked displayType = 'password';
@@ -18,16 +22,16 @@ export default class CognitoPasswordInput extends CognitoTextInput {
     let toggleIsShow = this.displayType === 'password';
 
     if (toggleIsShow) {
-      return this.passwordToggleShowText || 'Show';
+      return this.args.passwordToggleShowText || 'Show';
     }
 
-    return this.passwordToggleHideText || 'Hide';
+    return this.args.passwordToggleHideText || 'Hide';
   }
 
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
 
-    this.inputId = this.id || `${guidFor(this)}-input`;
+    this.inputId = this.args.id || `${guidFor(this)}-input`;
   }
 
   @action

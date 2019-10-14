@@ -1,26 +1,30 @@
-import Component from '@ember/component';
-import { set, action } from '@ember/object';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class CognitoResetPasswordFormSelectUsername extends Component {
-  // Attributes
-  username = null;
+  /*
+   * Attributes:
+   *  - username
+   *  - triggerResetPasswordEmail
+   */
 
   // Properties
-  currentUsernam = null;
+  @tracked currentUsername;
 
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
 
-    set(this, 'currentUsername', this.username);
+    this.currentUsername = this.args.username;
   }
 
   @action
   updateUsername(username) {
-    set(this, 'currentUsername', username);
+    this.currentUsername = username;
   }
 
   @action
   onSubmit() {
-    this.triggerResetPasswordEmail(this.currentUsername);
+    this.args.triggerResetPasswordEmail(this.currentUsername);
   }
 }

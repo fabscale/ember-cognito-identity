@@ -1,23 +1,23 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 
 export default class CognitoTextInput extends Component {
-  tagName = '';
+  /*
+   * Attributes:
+   *  - value
+   *  - onChange
+   */
 
-  // Attributes
-  value = null;
-  onChange = null;
+  constructor() {
+    super(...arguments);
 
-  init() {
-    super.init(...arguments);
-
-    assert(`onChange must be set`, this.onChange);
+    assert(`onChange must be set`, typeof this.args.onChange === 'function');
   }
 
   @action
   onTextChange(event) {
     let { value } = event.srcElement;
-    this.onChange(value);
+    this.args.onChange(value);
   }
 }
