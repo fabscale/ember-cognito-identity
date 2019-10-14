@@ -1,5 +1,3 @@
-import { set } from '@ember/object';
-
 export function mockCognito(
   context,
   {
@@ -29,7 +27,7 @@ export function mockCognito(
     jwtToken: accessToken
   };
 
-  set(cognito, 'cognitoData', cognitoData);
+  cognito.cognitoData = cognitoData;
 }
 
 export default mockCognito;

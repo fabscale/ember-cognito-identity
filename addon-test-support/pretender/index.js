@@ -30,7 +30,7 @@ export function setupCognitoMocks(hooks) {
       }
     };
 
-    set(cognito, '_cognitoStorage', this.cognitoStorage);
+    cognito._cognitoStorage = this.cognitoStorage;
 
     this.awsHooks = {};
 

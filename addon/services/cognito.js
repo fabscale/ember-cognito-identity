@@ -1,6 +1,5 @@
 /* global AmazonCognitoIdentity */
 import Service, { inject as service } from '@ember/service';
-import { computed, set } from '@ember/object';
 import { bool } from '@ember/object/computed';
 import { Promise } from 'rsvp';
 import {
@@ -10,6 +9,7 @@ import {
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { waitForPromise } from 'ember-test-waiters';
+import { tracked } from '@glimmer/tracking';
 
 const {
   CognitoUserPool,
@@ -29,17 +29,20 @@ export default class CognitoService extends Service {
   // Overwrite for testing
   _cognitoStorage = undefined;
 
-  cognitoData = null;
+  @tracked cognitoData = null;
   @bool('cognitoData') isAuthenticated;
 
-  @computed
   get config() {
     let config = getOwner(this).resolveRegistration('config:environment');
     return config.cognito;
   }
 
-  @computed('config.{userPoolId,clientId}')
+  _userPool;
   get userPool() {
+    if (this._userPool) {
+      return this._userPool;
+    }
+
     assert(
       'A `cognito` configuration object needs to be defined in config/environment.js',
       this.config
@@ -61,7 +64,8 @@ export default class CognitoService extends Service {
       Storage: this._cognitoStorage
     };
 
-    return new CognitoUserPool(poolData);
+    this._userPool = new CognitoUserPool(poolData);
+    return this._userPool;
   }
 
   // Hooks begin
@@ -106,7 +110,7 @@ export default class CognitoService extends Service {
               .getAccessToken()
               .getJwtToken();
 
-            set(this, 'cognitoData', cognitoData);
+            this.cognitoData = cognitoData;
 
             resolve(cognitoData);
           },
@@ -178,7 +182,7 @@ export default class CognitoService extends Service {
   logout() {
     if (this.cognitoData) {
       this.cognitoData.cognitoUser.signOut();
-      set(this, 'cognitoData', null);
+      this.cognitoData = null;
     }
 
     this.onUnauthenticated();
@@ -331,7 +335,7 @@ export default class CognitoService extends Service {
 
         this._getUserAttributes(cognitoUser)
           .then((userAttributes) => {
-            set(this.cognitoData, 'userAttributes', userAttributes);
+            this.cognitoData.userAttributes = userAttributes;
             resolve(userAttributes);
           })
           .catch(reject);
