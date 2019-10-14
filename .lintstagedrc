@@ -1,5 +1,0 @@
-{
-  "**/*.js": ["prettier --write", "git add"],
-  "**/*.json": ["prettier --parser json --write", "git add"],
-  "**/*.scss": ["prettier --write", "git add"]
-}
