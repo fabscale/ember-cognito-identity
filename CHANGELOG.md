@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/fabscale/ember-cognito-identity/compare/0.4.1...0.5.0) (2019-10-14)
+
+
+### Features
+
+* Use [@tracked](https://github.com/tracked)() instead of computed() ([b9e646c](https://github.com/fabscale/ember-cognito-identity/commit/b9e646c))
+* Use @glimmer/component instead of @ember/component ([e2aae2a](https://github.com/fabscale/ember-cognito-identity/commit/e2aae2a))
+* Use co-location component setup (requires ember-source>3.13!) ([3b33552](https://github.com/fabscale/ember-cognito-identity/commit/3b33552))
+
 ## [0.4.1](https://github.com/fabscale/ember-cognito-identity/compare/0.4.0...0.4.1) (2019-10-14)
 
 # [0.4.0](https://github.com/fabscale/ember-cognito-identity/compare/0.3.0...0.4.0) (2019-09-13)
