@@ -1,3 +1,15 @@
+# [0.6.0](https://github.com/fabscale/ember-cognito-identity/compare/0.5.0...0.6.0) (2019-10-23)
+
+
+### Bug Fixes
+
+* Remove unneeded file ([92fc81a](https://github.com/fabscale/ember-cognito-identity/commit/92fc81a))
+
+
+### Features
+
+* Import amazon-cognito-identity-js instead of using global ([b305ba6](https://github.com/fabscale/ember-cognito-identity/commit/b305ba6))
+
 # [0.5.0](https://github.com/fabscale/ember-cognito-identity/compare/0.4.1...0.5.0) (2019-10-14)
 
 
