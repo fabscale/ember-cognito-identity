@@ -1,4 +1,3 @@
-/* global AmazonCognitoIdentity */
 import Service, { inject as service } from '@ember/service';
 import { bool } from '@ember/object/computed';
 import { Promise } from 'rsvp';
@@ -10,6 +9,7 @@ import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { waitForPromise } from 'ember-test-waiters';
 import { tracked } from '@glimmer/tracking';
+import AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 const {
   CognitoUserPool,
@@ -27,7 +27,7 @@ export default class CognitoService extends Service {
   afterLoginRoute = 'index';
 
   // Overwrite for testing
-  _cognitoStorage = undefined;
+  _cognitoStorage;
 
   @tracked cognitoData = null;
   @bool('cognitoData') isAuthenticated;

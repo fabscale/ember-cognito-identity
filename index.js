@@ -24,8 +24,6 @@ module.exports = {
     }
 
     this._super.included.apply(this, arguments);
-
-    this.import('vendor/amazon-cognito-identity-js/amazon-cognito-identity.js');
   },
 
   treeForVendor(vendorTree) {
