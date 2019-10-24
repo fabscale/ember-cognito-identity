@@ -2,22 +2,24 @@ import Component from '@glimmer/component';
 import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 
-export default class CognitoTextInput extends Component {
-  /*
-   * Attributes:
-   *  - value
-   *  - onChange
-   */
+interface Args {
+  value?: string;
+  onChange: Function;
+}
 
+export default class CognitoTextInput extends Component<Args> {
   constructor() {
+    // @ts-ignore
     super(...arguments);
 
     assert(`onChange must be set`, typeof this.args.onChange === 'function');
   }
 
   @action
-  onTextChange(event) {
-    let { value } = event.srcElement;
+  onTextChange(event: Event) {
+    // @ts-ignore
+    let element: HTMLInputElement = event.currentTarget;
+    let { value } = element;
     this.args.onChange(value);
   }
 }

@@ -2,30 +2,32 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
-export default class CognitoResetPasswordFormUpdatePassword extends Component {
-  /*
-   * Attributes:
-   *  - username
-   *  - verificationCode
-   *  - resetPassword
-   */
+interface Args {
+  username?: string;
+  verificationCode?: string;
+  resetPassword: Function;
+}
 
+export default class CognitoResetPasswordFormUpdatePassword extends Component<
+  Args
+> {
   // Properties
-  @tracked currentVerificationCode;
-  @tracked password;
+  @tracked currentVerificationCode: string;
+  @tracked password: string;
 
   constructor() {
+    // @ts-ignore
     super(...arguments);
     this.currentVerificationCode = this.args.verificationCode;
   }
 
   @action
-  updateVerificationCode(verificationCode) {
+  updateVerificationCode(verificationCode: string) {
     this.currentVerificationCode = verificationCode;
   }
 
   @action
-  updatePassword(password) {
+  updatePassword(password: string) {
     this.password = password;
   }
 

@@ -1,22 +1,22 @@
-import CognitoTextInput from '@fabscale/ember-cognito-identity/components/cognito-text-input';
+import Component from '@glimmer/component';
+import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 import { schedule } from '@ember/runloop';
 import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
 
-export default class CognitoPasswordInput extends CognitoTextInput {
-  /*
-   * Attributes:
-   *  - value
-   *  - onChange
-   *  - passwordToggleShowText
-   *  - passwordToggleHideText
-   *  - id
-   */
+interface Args {
+  value?: string;
+  id?: string;
+  passwordToggleShowText?: string;
+  passwordToggleHideText?: string;
+  onChange: Function;
+}
 
+export default class CognitoPasswordInput extends Component<Args> {
   // Properties
-  @tracked displayType = 'password';
-  inputId;
+  @tracked displayType: 'password' | 'text' = 'password';
+  inputId: string;
 
   get passwordToggleText() {
     let toggleIsShow = this.displayType === 'password';
@@ -29,9 +29,20 @@ export default class CognitoPasswordInput extends CognitoTextInput {
   }
 
   constructor() {
+    // @ts-ignore
     super(...arguments);
 
+    assert(`onChange must be set`, typeof this.args.onChange === 'function');
+
     this.inputId = this.args.id || `${guidFor(this)}-input`;
+  }
+
+  @action
+  onTextChange(event: Event) {
+    // @ts-ignore
+    let element: HTMLInputElement = event.currentTarget;
+    let { value } = element;
+    this.args.onChange(value);
   }
 
   @action

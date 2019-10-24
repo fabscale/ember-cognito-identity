@@ -1,23 +1,28 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { NewPasswordRequiredError } from '@fabscale/ember-cognito-identity/errors/cognito';
+import {
+  CognitoError,
+  NewPasswordRequiredError
+} from '@fabscale/ember-cognito-identity/errors/cognito';
 import { dropTask } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
+import CognitoService from '@fabscale/ember-cognito-identity/services/cognito';
+import RouterService from '@ember/routing/router-service';
 
 export default class CognitoLoginForm extends Component {
-  @service cognito;
-  @service router;
+  @service cognito: CognitoService;
+  @service router: RouterService;
 
   // Properties
-  @tracked username;
-  @tracked password;
-  @tracked newPassword;
-  @tracked mustEnterNewPassword;
-  @tracked error;
+  @tracked username: string;
+  @tracked password: string;
+  @tracked newPassword: string;
+  @tracked mustEnterNewPassword: boolean = false;
+  @tracked error: CognitoError | null;
 
-  @dropTask()
-  submitFormTask = function*() {
+  @dropTask
+  *submitFormTask() {
     let {
       cognito,
       username,
@@ -57,25 +62,26 @@ export default class CognitoLoginForm extends Component {
 
       this.error = error;
     }
-  };
+  }
 
   // This can be overwritten
-  _getNewPasswordAttributes() {
+  // eslint-disable-next-line no-unused-vars
+  _getNewPasswordAttributes(_options: Object): undefined | Object {
     return undefined;
   }
 
   @action
-  updateUsername(username) {
+  updateUsername(username: string) {
     this.username = username;
   }
 
   @action
-  updatePassword(password) {
+  updatePassword(password: string) {
     this.password = password;
   }
 
   @action
-  updateNewPassword(newPassword) {
+  updateNewPassword(newPassword: string) {
     this.newPassword = newPassword;
   }
 }
