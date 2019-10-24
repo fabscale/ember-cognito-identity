@@ -9,8 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install Volta
-      run: curl https://get.volta.sh | bash
+    - uses: mydea/actions-ember-testing@v1
+      with:
+        node-version: ''
+        yarn-version: ''
     - name: Install dependencies
       run: yarn install
     - name: Setup dummy .env file
