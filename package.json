@@ -19,6 +19,7 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
+    "test-coverage": "COVERAGE=true ember test",
     "release": "release-it"
   },
   "dependencies": {
