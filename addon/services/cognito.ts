@@ -80,7 +80,7 @@ export default class CognitoService extends Service {
   // Hooks begin
 
   // eslint-disable-next-line no-unused-vars
-  onAuthenticated(_cognitoData: CognitoData) {
+  onAuthenticated() {
     this.router.transitionTo(this.afterLoginRoute);
   }
 
@@ -152,7 +152,7 @@ export default class CognitoService extends Service {
 
     await this._authenticate({ username, password });
     await this.restoreAndLoad();
-    await this.onAuthenticated(this.cognitoData);
+    await this.onAuthenticated();
 
     return this.cognitoData;
   }
