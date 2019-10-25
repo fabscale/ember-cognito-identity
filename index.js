@@ -6,9 +6,9 @@ const Funnel = require('broccoli-funnel');
 module.exports = {
   name: require('./package').name,
 
-  isDevelopingAddon() {
+  /* isDevelopingAddon() {
     return true;
-  },
+  }, */
 
   options: {
     autoImport: {
