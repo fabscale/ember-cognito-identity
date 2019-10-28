@@ -1,9 +1,6 @@
 name: ember-cli-code-coverage
 
-on:
-  pull_request:
-    branches-ignore:
-      - 'dependabot/**'
+on: [pull_request]
 
 jobs:
   build:
