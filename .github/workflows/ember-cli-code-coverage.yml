@@ -5,6 +5,7 @@ on: [pull_request]
 jobs:
   build:
 
+    if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'dependabot/')
     runs-on: ubuntu-latest
 
     steps:
