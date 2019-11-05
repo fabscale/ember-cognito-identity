@@ -123,7 +123,9 @@ module('Acceptance | reset-password', function(hooks) {
             PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             TIMESTAMP: 'timestamp',
             PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
-          }
+          },
+
+          ClientMetadata: {}
         },
         'correct body is sent'
       );

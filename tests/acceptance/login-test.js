@@ -76,7 +76,9 @@ module('Acceptance | login', function(hooks) {
             PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             TIMESTAMP: 'timestamp',
             PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
-          }
+          },
+
+          ClientMetadata: {}
         },
         'correct body is sent'
       );
@@ -291,7 +293,9 @@ module('Acceptance | login', function(hooks) {
                 PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
                 TIMESTAMP: 'timestamp',
                 PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
-              }
+              },
+
+              ClientMetadata: {}
             },
             'correct body is sent'
           );
@@ -324,7 +328,9 @@ module('Acceptance | login', function(hooks) {
                 PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
                 TIMESTAMP: 'timestamp',
                 PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
-              }
+              },
+
+              ClientMetadata: {}
             },
             'correct body is sent'
           );
@@ -389,7 +395,9 @@ module('Acceptance | login', function(hooks) {
                 PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
                 TIMESTAMP: 'timestamp',
                 PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
-              }
+              },
+
+              ClientMetadata: {}
             },
             'correct body is sent'
           );
@@ -486,7 +494,7 @@ module('Acceptance | login', function(hooks) {
       ]);
     });
 
-    test('it handles the user tries to set an invalid initial password', async function(assert) {
+    test('it handles the user trying to set an invalid initial password', async function(assert) {
       let { cognito } = this;
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = (
