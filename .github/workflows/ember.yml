@@ -18,8 +18,30 @@ jobs:
     - name: Setup dummy .env file
       run: touch .env
     - name: Run tests
-      run: yarn test:all
+      run: yarn test
     - name: Lint
       run: |
         yarn lint:js
         yarn lint:hbs
+
+  test-matrix:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Keep this in sync with config/ember-try.js
+        ember: [ember-release, ember-beta, ember-canary]
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: mydea/actions-ember-testing@v1
+        with:
+          node-version: ''
+          yarn-version: ''
+      - name: Install dependencies
+        run: yarn install
+      - name: Setup dummy .env file
+        run: touch .env
+      - name: Run tests
+        run: yarn test:one ${{ matrix.ember }}
