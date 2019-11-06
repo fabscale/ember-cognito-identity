@@ -80,7 +80,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "volta": {
-    "node": "10.16.3",
+    "node": "12.13.0",
     "yarn": "1.19.0"
   }
 }
