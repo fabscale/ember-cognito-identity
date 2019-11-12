@@ -1,3 +1,1 @@
-export {
-  default
-} from '@fabscale/ember-cognito-identity/components/cognito-text-input';
+export { default } from '@fabscale/ember-cognito-identity/components/cognito-text-input';

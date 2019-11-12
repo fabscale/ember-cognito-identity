@@ -1,3 +1,1 @@
-export {
-  default
-} from '@fabscale/ember-cognito-identity/components/cognito-reset-password-form/select-username';
+export { default } from '@fabscale/ember-cognito-identity/components/cognito-reset-password-form/select-username';
