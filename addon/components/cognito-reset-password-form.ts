@@ -4,28 +4,31 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency-decorators';
 import { or } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
+import CognitoService from '@fabscale/ember-cognito-identity/services/cognito';
+import RouterService from '@ember/routing/router-service';
+import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
 
-export default class CognitoResetPasswordForm extends Component {
-  @service cognito;
-  @service router;
+interface Args {
+  username?: 'string';
+  verificationCode?: 'string';
+}
 
-  /*
-   * Attributes:
-   *  - username
-   *  - verificationCode
-   */
+export default class CognitoResetPasswordForm extends Component<Args> {
+  @service cognito: CognitoService;
+  @service router: RouterService;
 
   // Properties
-  @tracked password;
-  @tracked selectedUsername;
-  @tracked selectedVerificationCode;
-  @tracked error;
-  @tracked showPasswordForm = false;
+  @tracked password: string;
+  @tracked selectedUsername: string;
+  @tracked selectedVerificationCode: string;
+  @tracked error: CognitoError | null;
+  @tracked showPasswordForm: boolean = false;
 
   @or('triggerResetPasswordEmailTask.isRunning', 'resetPasswordTask.isRunning')
-  isPending;
+  isPending: boolean;
 
   constructor() {
+    // @ts-ignore
     super(...arguments);
 
     this.selectedUsername = this.args.username;
@@ -37,7 +40,7 @@ export default class CognitoResetPasswordForm extends Component {
   }
 
   @dropTask
-  triggerResetPasswordEmailTask = function*(username) {
+  *triggerResetPasswordEmailTask(username: string) {
     let { cognito } = this;
 
     this.error = null;
@@ -51,10 +54,18 @@ export default class CognitoResetPasswordForm extends Component {
 
     this.selectedUsername = username;
     this.showPasswordForm = true;
-  };
+  }
 
   @dropTask
-  resetPasswordTask = function*({ username, password, verificationCode }) {
+  *resetPasswordTask({
+    username,
+    password,
+    verificationCode
+  }: {
+    username: string;
+    password: string;
+    verificationCode: string;
+  }) {
     let { cognito } = this;
 
     this.error = null;
@@ -76,25 +87,25 @@ export default class CognitoResetPasswordForm extends Component {
     }
 
     this.router.transitionTo(this.cognito.afterLoginRoute);
-  };
+  }
 
   @action
-  updateUsername(username) {
+  updateUsername(username: string) {
     this.selectedUsername = username;
   }
 
   @action
-  updateVerificationCode(verificationCode) {
+  updateVerificationCode(verificationCode: string) {
     this.selectedVerificationCode = verificationCode;
   }
 
   @action
-  updatePassword(password) {
+  updatePassword(password: string) {
     this.password = password;
   }
 
   @action
-  skipTriggerResetPasswordEmail(username) {
+  skipTriggerResetPasswordEmail(username: string) {
     this.selectedUsername = username;
     this.error = null;
     this.showPasswordForm = true;

@@ -2,24 +2,26 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
-export default class CognitoResetPasswordFormSelectUsername extends Component {
-  /*
-   * Attributes:
-   *  - username
-   *  - triggerResetPasswordEmail
-   */
+interface Args {
+  username?: string;
+  triggerResetPasswordEmail: Function;
+}
 
+export default class CognitoResetPasswordFormSelectUsername extends Component<
+  Args
+> {
   // Properties
-  @tracked currentUsername;
+  @tracked currentUsername: string;
 
   constructor() {
+    // @ts-ignore
     super(...arguments);
 
     this.currentUsername = this.args.username;
   }
 
   @action
-  updateUsername(username) {
+  updateUsername(username: string) {
     this.currentUsername = username;
   }
 
