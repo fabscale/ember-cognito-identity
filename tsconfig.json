@@ -20,6 +20,7 @@
     "baseUrl": ".",
     "module": "es6",
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "paths": {
       "dummy/tests/*": [
         "tests/*"
@@ -40,8 +41,9 @@
       "@fabscale/ember-cognito-identity/test-support/*": [
         "addon-test-support/*"
       ],
-      "*": [
-        "types/*"
+      "*": ["types/*"],
+      "@glimmer/component": [
+        "node_modules/@glimmer/component/addon"
       ]
     }
   },
