@@ -1,3 +1,19 @@
+# [0.8.0](https://github.com/fabscale/ember-cognito-identity/compare/0.6.0...0.8.0) (2019-12-04)
+
+
+### Bug Fixes
+
+* Remove isDevelopingAddon hook to speed up host app builds ([9245903](https://github.com/fabscale/ember-cognito-identity/commit/9245903a0de36c84e0fbf147d83a7c96e89a6890))
+
+
+### Features
+
+* Add typing for all components ([8918b27](https://github.com/fabscale/ember-cognito-identity/commit/8918b270ebb38158c84a53346697f0843df1b4b9))
+* Add typing for cognito service ([1504d84](https://github.com/fabscale/ember-cognito-identity/commit/1504d84dcd0ffb72be61c487e9147b53a4f1fcba))
+* Add typing for errors/cognito ([701dad3](https://github.com/fabscale/ember-cognito-identity/commit/701dad334e5ee3e364c07ead29a0dc3c08790b26))
+* Add typing for global-polyfill ([04d0b71](https://github.com/fabscale/ember-cognito-identity/commit/04d0b71cea86382f81f62e1237cd9ee22a5e9b94))
+* Do not pass in `cognitoData` to `onAuthenticated` hook ([f79156b](https://github.com/fabscale/ember-cognito-identity/commit/f79156bed4e4657ed0dfafcfdd662c9a6328e574))
+
 # [0.7.0](https://github.com/fabscale/ember-cognito-identity/compare/0.6.0...0.7.0) (2019-11-12)
 
 
