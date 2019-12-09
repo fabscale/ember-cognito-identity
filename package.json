@@ -29,7 +29,7 @@
     "@types/amazon-cognito-auth-js": "^1.2.2",
     "amazon-cognito-identity-js": "^3.2.0",
     "broccoli-funnel": "^3.0.0",
-    "broccoli-merge-trees": "^3.0.2",
+    "broccoli-merge-trees": "^4.0.0",
     "ember-auto-import": "^1.5.3",
     "ember-cli-babel": "^7.13.0",
     "ember-cli-htmlbars": "^4.0.8",
