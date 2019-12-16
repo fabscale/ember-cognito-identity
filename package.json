@@ -74,7 +74,7 @@
     "eslint-plugin-ember-es6-class": "~0.0.1",
     "eslint-plugin-ember-suave": "~2.0.0",
     "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "loader.js": "^4.7.0",
     "prettier": "^1.19.1",
     "qunit-dom": "^0.9.2",
