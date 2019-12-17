@@ -91,7 +91,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "volta": {
-    "node": "12.13.0",
+    "node": "12.13.1",
     "yarn": "1.21.1"
   }
 }
