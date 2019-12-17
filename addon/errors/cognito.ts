@@ -81,6 +81,7 @@ export function dispatchError(error: AmazonCognitoIdentityJsError) {
     NotAuthorizedException: InvalidAuthorizationError,
     CodeMismatchException: VerificationCodeMismatchError,
     InvalidPasswordException: InvalidPasswordError,
+    InvalidParameterException: InvalidPasswordError,
     UserNotFoundException: UserNotFoundError,
     ExpiredCodeException: VerificationCodeMismatchError
   };
