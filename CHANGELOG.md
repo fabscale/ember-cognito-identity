@@ -1,3 +1,15 @@
+# [0.9.0](https://github.com/fabscale/ember-cognito-identity/compare/0.8.0...0.9.0) (2020-01-07)
+
+
+### Bug Fixes
+
+* fix template linting issues ([1e3c9e8](https://github.com/fabscale/ember-cognito-identity/commit/1e3c9e85d9f77f2a93e7cbd9c6091da3f7ef1ee3))
+
+
+### Features
+
+* Throw InvalidPasswordError for InvalidParameterException ([5caea05](https://github.com/fabscale/ember-cognito-identity/commit/5caea05affbd1588e50038c1c33ce485bcc05252))
+
 # [0.8.0](https://github.com/fabscale/ember-cognito-identity/compare/0.6.0...0.8.0) (2019-12-04)
 
 
