@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@master
-      - uses: mydea/actions-ember-testing@v1
+      - uses: actions/checkout@v1
+      - uses: rwjblue/setup-volta@v1
+      - uses: mydea/actions-ember-testing@v2
       - name: Install dependencies
         run: yarn install
       - uses: mydea/ember-cli-code-coverage-action@v1
