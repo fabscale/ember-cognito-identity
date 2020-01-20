@@ -36,7 +36,7 @@
     "ember-cli-typescript": "^3.1.2",
     "ember-concurrency": "^1.1.5",
     "ember-concurrency-decorators": "^1.0.0",
-    "ember-test-waiters": "^1.1.1",
+    "ember-test-waiters": "^1.2.0",
     "pretender": "^3.2.0"
   },
   "devDependencies": {
