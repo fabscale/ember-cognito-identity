@@ -1,6 +1,6 @@
 {
   "name": "@fabscale/ember-cognito-identity",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Interact with AWS Cognito from your Ember app.",
   "keywords": [
     "ember-addon"
