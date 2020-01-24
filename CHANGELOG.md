@@ -1,3 +1,11 @@
+# [0.10.0](https://github.com/fabscale/ember-cognito-identity/compare/0.9.1...0.10.0) (2020-01-24)
+
+
+### Features
+
+* Add refreshAccessToken method to service ([bc46f79](https://github.com/fabscale/ember-cognito-identity/commit/bc46f792ec3ab3948b400935493aac5cc1ed89c2))
+* Auto-refresh access tokens every 45 minutes ([44ef0cd](https://github.com/fabscale/ember-cognito-identity/commit/44ef0cdbc161f678ede95df71ae571bd065cd8b3))
+
 ## [0.9.1](https://github.com/fabscale/ember-cognito-identity/compare/0.9.0...0.9.1) (2020-01-21)
 
 # [0.9.0](https://github.com/fabscale/ember-cognito-identity/compare/0.8.0...0.9.0) (2020-01-07)
