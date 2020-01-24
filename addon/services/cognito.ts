@@ -19,6 +19,8 @@ import {
   CognitoUserSession
 } from 'amazon-cognito-identity-js';
 import RouterService from '@ember/routing/router-service';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { timeout } from 'ember-concurrency';
 
 interface CognitoData {
   cognitoUser: CognitoUser;
@@ -45,6 +47,17 @@ export default class CognitoService extends Service {
     let config = getOwner(this).resolveRegistration('config:environment');
     return config.cognito;
   }
+
+  get isTesting() {
+    let config = getOwner(this).resolveRegistration('config:environment');
+    return config.environment === 'test';
+  }
+
+  get shouldAutoRefresh() {
+    return !this.isTesting;
+  }
+
+  autoRefreshInterval = 1000 * 60 * 45; // Tokens expire after 1h, so we refresh them every 45 minutes, to have a bit of leeway
 
   _userPool: CognitoUserPool | undefined;
   get userPool(): CognitoUserPool {
@@ -95,6 +108,38 @@ export default class CognitoService extends Service {
       return RSVPPromise.resolve(this.cognitoData);
     }
 
+    return this._loadUserDataAndAccessToken();
+  }
+
+  async refreshAccessToken(): Promise<any> {
+    assert(
+      'cognitoData is not setup, user is probably not logged in',
+      !!this.cognitoData
+    );
+
+    // Note: @types/amazon-cognito-auth-js is incorrectly missing this
+    // @ts-ignore next-line
+    let { refreshToken } = this.cognitoData.cognitoUserSession;
+
+    if (!refreshToken || !refreshToken.getToken()) {
+      throw new Error('Cannot retrieve a refresh token');
+    }
+
+    let promise = new Promise((resolve, reject) => {
+      this.cognitoData.cognitoUser.refreshSession(refreshToken, (error) => {
+        if (error) {
+          return reject(dispatchError(error));
+        }
+
+        this._loadUserDataAndAccessToken().then(resolve, reject);
+      });
+    });
+
+    waitForPromise(promise);
+    return promise;
+  }
+
+  async _loadUserDataAndAccessToken(): Promise<any> {
     let { userPool } = this;
 
     let promise = new RSVPPromise((resolve, reject) => {
@@ -125,6 +170,12 @@ export default class CognitoService extends Service {
               };
 
               this.cognitoData = cognitoData;
+
+              if (this.shouldAutoRefresh) {
+                // ember-concurrency is not typed, and there is currently no clear way forward, so just ignore that...
+                // @ts-ignore next-line
+                this._debouncedRefreshAccessToken.perform();
+              }
 
               resolve(cognitoData);
             },
@@ -398,6 +449,13 @@ export default class CognitoService extends Service {
 
     waitForPromise(promise);
     return promise;
+  }
+
+  @restartableTask
+  *_debouncedRefreshAccessToken() {
+    yield timeout(this.autoRefreshInterval);
+
+    yield this.refreshAccessToken();
   }
 
   _createCognitoUser({ username }: { username: string }): CognitoUser {
