@@ -95,6 +95,38 @@ export default class CognitoService extends Service {
       return RSVPPromise.resolve(this.cognitoData);
     }
 
+    return this._loadUserDataAndAccessToken();
+  }
+
+  async refreshAccessToken(): Promise<any> {
+    assert(
+      'cognitoData is not setup, user is probably not logged in',
+      !!this.cognitoData
+    );
+
+    // Note: @types/amazon-cognito-auth-js is incorrectly missing this
+    // @ts-ignore next-line
+    let { refreshToken } = this.cognitoData.cognitoUserSession;
+
+    if (!refreshToken || !refreshToken.getToken()) {
+      throw new Error('Cannot retrieve a refresh token');
+    }
+
+    let promise = new Promise((resolve, reject) => {
+      this.cognitoData.cognitoUser.refreshSession(refreshToken, (error) => {
+        if (error) {
+          return reject(dispatchError(error));
+        }
+
+        this._loadUserDataAndAccessToken().then(resolve, reject);
+      });
+    });
+
+    waitForPromise(promise);
+    return promise;
+  }
+
+  async _loadUserDataAndAccessToken(): Promise<any> {
     let { userPool } = this;
 
     let promise = new RSVPPromise((resolve, reject) => {
