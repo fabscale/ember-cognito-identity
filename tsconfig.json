@@ -19,6 +19,7 @@
     "inlineSources": true,
     "baseUrl": ".",
     "module": "es6",
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "paths": {
