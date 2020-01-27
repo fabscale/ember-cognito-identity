@@ -1,3 +1,10 @@
+## [0.10.1](https://github.com/fabscale/ember-cognito-identity/compare/0.10.0...0.10.1) (2020-01-27)
+
+
+### Bug Fixes
+
+* Fix typescript setup ([1dd191a](https://github.com/fabscale/ember-cognito-identity/commit/1dd191a8034d935e2cf2f84510f5736296c54e26))
+
 # [0.10.0](https://github.com/fabscale/ember-cognito-identity/compare/0.9.1...0.10.0) (2020-01-24)
 
 
