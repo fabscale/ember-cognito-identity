@@ -21,7 +21,9 @@
     "test:all": "ember try:each",
     "test:one": "ember try:one",
     "test-coverage": "COVERAGE=true ember test",
-    "release": "release-it"
+    "release": "release-it",
+    "prepublishOnly": "ember ts:precompile",
+    "postpublish": "ember ts:clean"
   },
   "dependencies": {
     "@glimmer/component": "^1.0.0",
