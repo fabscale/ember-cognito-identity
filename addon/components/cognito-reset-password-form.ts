@@ -27,9 +27,8 @@ export default class CognitoResetPasswordForm extends Component<Args> {
   @or('triggerResetPasswordEmailTask.isRunning', 'resetPasswordTask.isRunning')
   isPending: boolean;
 
-  constructor() {
-    // @ts-ignore
-    super(...arguments);
+  constructor(owner: any, args: Args) {
+    super(owner, args);
 
     this.selectedUsername = this.args.username;
     this.selectedVerificationCode = this.args.verificationCode;

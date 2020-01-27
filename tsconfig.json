@@ -23,29 +23,15 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "paths": {
-      "dummy/tests/*": [
-        "tests/*"
-      ],
-      "dummy/*": [
-        "tests/dummy/app/*",
-        "app/*"
-      ],
-      "@fabscale/ember-cognito-identity": [
-        "addon"
-      ],
-      "@fabscale/ember-cognito-identity/*": [
-        "addon/*"
-      ],
-      "@fabscale/ember-cognito-identity/test-support": [
-        "addon-test-support"
-      ],
+      "dummy/tests/*": ["tests/*"],
+      "dummy/*": ["tests/dummy/app/*", "app/*"],
+      "@fabscale/ember-cognito-identity": ["addon"],
+      "@fabscale/ember-cognito-identity/*": ["addon/*"],
+      "@fabscale/ember-cognito-identity/test-support": ["addon-test-support"],
       "@fabscale/ember-cognito-identity/test-support/*": [
         "addon-test-support/*"
       ],
-      "*": ["types/*"],
-      "@glimmer/component": [
-        "node_modules/@glimmer/component/addon"
-      ]
+      "*": ["types/*"]
     }
   },
   "include": [

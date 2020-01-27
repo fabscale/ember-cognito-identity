@@ -8,9 +8,8 @@ interface Args {
 }
 
 export default class CognitoTextInput extends Component<Args> {
-  constructor() {
-    // @ts-ignore
-    super(...arguments);
+  constructor(owner: any, args: Args) {
+    super(owner, args);
 
     assert(`onChange must be set`, typeof this.args.onChange === 'function');
   }
