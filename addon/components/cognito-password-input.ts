@@ -28,9 +28,8 @@ export default class CognitoPasswordInput extends Component<Args> {
     return this.args.passwordToggleHideText || 'Hide';
   }
 
-  constructor() {
-    // @ts-ignore
-    super(...arguments);
+  constructor(owner: any, args: Args) {
+    super(owner, args);
 
     assert(`onChange must be set`, typeof this.args.onChange === 'function');
 

@@ -13,9 +13,8 @@ export default class CognitoResetPasswordFormSelectUsername extends Component<
   // Properties
   @tracked currentUsername: string;
 
-  constructor() {
-    // @ts-ignore
-    super(...arguments);
+  constructor(owner: any, args: Args) {
+    super(owner, args);
 
     this.currentUsername = this.args.username;
   }
