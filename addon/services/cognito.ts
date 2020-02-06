@@ -263,6 +263,10 @@ export default class CognitoService extends Service {
     if (this.cognitoData) {
       this.cognitoData.cognitoUser.signOut();
       this.cognitoData = null;
+
+      // ember-concurrency is not typed, and there is currently no clear way forward, so just ignore that...
+      // @ts-ignore next-line
+      this._debouncedRefreshAccessToken.cancelAll();
     }
 
     this.onUnauthenticated();
