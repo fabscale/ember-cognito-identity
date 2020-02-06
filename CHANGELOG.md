@@ -1,3 +1,10 @@
+## [0.10.2](https://github.com/fabscale/ember-cognito-identity/compare/0.10.1...0.10.2) (2020-02-06)
+
+
+### Bug Fixes
+
+* Ensure refresh access token task is cancelled when logging out ([0a58266](https://github.com/fabscale/ember-cognito-identity/commit/0a5826699a0dae9da6aeb5c73f7c6d7bb8353eed))
+
 ## [0.10.1](https://github.com/fabscale/ember-cognito-identity/compare/0.10.0...0.10.1) (2020-01-27)
 
 
