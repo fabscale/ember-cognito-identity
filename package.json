@@ -82,7 +82,7 @@
     "prettier": "~1.19.1",
     "qunit-dom": "~1.0.0",
     "release-it": "~12.6.1",
-    "typescript": "~3.7.5"
+    "typescript": "~3.8.2"
   },
   "engines": {
     "node": "10.* || >= 12"
