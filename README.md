@@ -9,7 +9,7 @@ Requires Ember 3.13+, as it uses `@tracked` and glimmer components.
 
 * Ember.js v3.13 or above
 * Ember CLI v2.13 or above
-* Node.js v8 or above
+* Node.js v10 or above
 
 
 ## Installation
