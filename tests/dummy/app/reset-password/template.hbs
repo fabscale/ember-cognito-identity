@@ -32,7 +32,12 @@
     {{selectUsernameForm.ErrorDisplay}}
 
     {{#unless selectUsernameForm.verificationCode}}
-      <button data-test-reset-password-send-verification-code>Send verification code</button>
+      <button
+        data-test-reset-password-send-verification-code
+        type="submit"
+      >
+        Send verification code
+      </button>
     {{/unless}}
 
     <button
@@ -88,6 +93,7 @@
 
     <button
       data-test-reset-password-submit
+      type="submit"
     >
       Update password
     </button>
