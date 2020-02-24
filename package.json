@@ -12,7 +12,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "ember build",
+    "build": "ember build --environment=production",
     "run-prettier": "prettier --write \"**/*.{js,scss}\"",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
@@ -54,7 +54,7 @@
     "@types/rsvp": "~4.0.3",
     "babel-eslint": "~10.0.3",
     "broccoli-asset-rev": "~3.0.0",
-    "ember-cli": "~3.15.2",
+    "ember-cli": "~3.16.0",
     "ember-cli-code-coverage": "1.0.0-beta.9",
     "ember-cli-dependency-checker": "~3.2.0",
     "ember-cli-dotenv": "~3.0.1",
@@ -85,7 +85,7 @@
     "typescript": "~3.7.5"
   },
   "engines": {
-    "node": "8.* || >= 10.*"
+    "node": "10.* || >= 12"
   },
   "ember": {
     "edition": "octane"
