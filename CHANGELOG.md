@@ -1,3 +1,10 @@
+# [0.11.0](https://github.com/fabscale/ember-cognito-identity/compare/0.10.2...0.11.0) (2020-02-25)
+
+
+### Features
+
+* Drop default components ([75c9cef](https://github.com/fabscale/ember-cognito-identity/commit/75c9cef0e950440a440dba49148f1cad6137484e))
+
 ## [0.10.2](https://github.com/fabscale/ember-cognito-identity/compare/0.10.1...0.10.2) (2020-02-06)
 
 
