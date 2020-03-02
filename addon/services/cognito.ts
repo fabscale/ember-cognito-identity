@@ -125,7 +125,7 @@ export default class CognitoService extends Service {
       throw new Error('Cannot retrieve a refresh token');
     }
 
-    let promise = new Promise((resolve, reject) => {
+    let promise = new RSVPPromise((resolve, reject) => {
       this.cognitoData.cognitoUser.refreshSession(refreshToken, (error) => {
         if (error) {
           return reject(dispatchError(error));
