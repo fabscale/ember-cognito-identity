@@ -4,8 +4,8 @@ export function setupPretenderResetPassword(context) {
       CodeDeliveryDetails: {
         AttributeName: 'email',
         DeliveryMedium: 'EMAIL',
-        Destination: 'j***@f***.com'
-      }
+        Destination: 'j***@f***.com',
+      },
     };
   };
 

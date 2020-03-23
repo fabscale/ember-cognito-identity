@@ -3,6 +3,6 @@
 module.exports = {
   extends: 'recommended',
   rules: {
-    'no-curly-component-invocation': true
-  }
+    'no-curly-component-invocation': true,
+  },
 };

@@ -2,7 +2,7 @@ export function mockCognito(
   context,
   {
     accessToken = 'TEST-ACCESS-TOKEN-AUTO',
-    username = 'johnwick@thecontential.assassins'
+    username = 'johnwick@thecontential.assassins',
   } = {}
 ) {
   let cognito = context.owner.lookup('service:cognito');
@@ -10,13 +10,13 @@ export function mockCognito(
   let cognitoUser = {
     signOut: () => {
       // noop
-    }
+    },
   };
   let cognitoUserSession = {};
   /* eslint-disable camelcase */
   let userAttributes = {
     email: username,
-    email_verified: 'true'
+    email_verified: 'true',
   };
   /* eslint-enable camelcase */
 
@@ -24,7 +24,7 @@ export function mockCognito(
     cognitoUser,
     cognitoUserSession,
     userAttributes,
-    jwtToken: accessToken
+    jwtToken: accessToken,
   };
 
   cognito.cognitoData = cognitoData;

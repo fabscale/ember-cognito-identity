@@ -1,4 +1,4 @@
 export {
   default,
-  initialize
+  initialize,
 } from '@fabscale/ember-cognito-identity/instance-initializers/global-polyfill';

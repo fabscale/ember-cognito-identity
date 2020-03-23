@@ -2,13 +2,13 @@ import { assign } from '@ember/polyfills';
 
 export function createJWTToken(payload) {
   let header = {
-    alg: 'RS256'
+    alg: 'RS256',
   };
 
   let data = assign(
     {
       exp: Math.round(new Date() / 1000) + 3600,
-      iat: Math.round(new Date() / 1000)
+      iat: Math.round(new Date() / 1000),
     },
     payload
   );
