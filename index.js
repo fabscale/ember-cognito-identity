@@ -12,8 +12,8 @@ module.exports = {
 
   options: {
     autoImport: {
-      exclude: []
-    }
+      exclude: [],
+    },
   },
 
   included() {
@@ -35,7 +35,7 @@ module.exports = {
     }
 
     let amazonCognitoIdentityJsTree = new Funnel(amazonCognitoIdentityJsPath, {
-      destDir: 'amazon-cognito-identity-js'
+      destDir: 'amazon-cognito-identity-js',
     });
 
     trees.push(amazonCognitoIdentityJsTree);
@@ -49,5 +49,5 @@ module.exports = {
     // The path returned here is e.g. node_modules/amazon-cognito-identity-js/lib
     // We want to move one step out to get the dist folder
     return basePath.replace('/lib', '/dist').replace('\\lib', '\\dist');
-  }
+  },
 };

@@ -6,7 +6,7 @@ import {
   click,
   settled,
   resetOnerror,
-  setupOnerror
+  setupOnerror,
 } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { mockCognito } from '@fabscale/ember-cognito-identity/test-support/helpers/mock-cognito';
@@ -14,16 +14,16 @@ import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support
 import {
   setupPretenderSuccessfulLogin,
   setupPretenderInvalidPassword,
-  setupPretenderNeedsInitialPassword
+  setupPretenderNeedsInitialPassword,
 } from '@fabscale/ember-cognito-identity/test-support/pretender/login';
 import { setupPretenderResetPassword } from '@fabscale/ember-cognito-identity/test-support/pretender/reset-password';
 import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
 
-module('Acceptance | test helpers', function(hooks) {
+module('Acceptance | test helpers', function (hooks) {
   setupApplicationTest(hooks);
 
-  module('mockCognito', function() {
-    test('test helper correctly mocks a cognito session', async function(assert) {
+  module('mockCognito', function () {
+    test('test helper correctly mocks a cognito session', async function (assert) {
       mockCognito(this, { accessToken: 'TEST-ACCESS-TOKEN' });
 
       await visit('/');
@@ -42,10 +42,10 @@ module('Acceptance | test helpers', function(hooks) {
     });
   });
 
-  module('pretender', function(hooks) {
+  module('pretender', function (hooks) {
     setupCognitoMocks(hooks);
 
-    hooks.beforeEach(function() {
+    hooks.beforeEach(function () {
       setupOnerror((error) => {
         // ignore cognito errors, as they are handled in the UI
         if (error instanceof CognitoError) {
@@ -56,11 +56,11 @@ module('Acceptance | test helpers', function(hooks) {
       });
     });
 
-    hooks.afterEach(function() {
+    hooks.afterEach(function () {
       resetOnerror();
     });
 
-    test('setupPretenderSuccessfulLogin works', async function(assert) {
+    test('setupPretenderSuccessfulLogin works', async function (assert) {
       setupPretenderSuccessfulLogin(this);
       let { cognito, cognitoAccessToken } = this;
 
@@ -80,7 +80,7 @@ module('Acceptance | test helpers', function(hooks) {
       );
     });
 
-    test('setupPretenderNeedsInitialPassword works', async function(assert) {
+    test('setupPretenderNeedsInitialPassword works', async function (assert) {
       setupPretenderNeedsInitialPassword(this);
       let { cognito } = this;
 
@@ -103,7 +103,7 @@ module('Acceptance | test helpers', function(hooks) {
       );
     });
 
-    test('setupPretenderInvalidPassword works', async function(assert) {
+    test('setupPretenderInvalidPassword works', async function (assert) {
       setupPretenderInvalidPassword(this);
       let { cognito } = this;
 
@@ -121,7 +121,7 @@ module('Acceptance | test helpers', function(hooks) {
         .hasText('The password you provided is incorrect.');
     });
 
-    test('setupPretenderResetPassword works', async function(assert) {
+    test('setupPretenderResetPassword works', async function (assert) {
       setupPretenderResetPassword(this);
       setupPretenderSuccessfulLogin(this);
       let { cognito } = this;

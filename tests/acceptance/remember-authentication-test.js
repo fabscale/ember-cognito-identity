@@ -3,7 +3,7 @@ import {
   visit,
   currentRouteName,
   setupOnerror,
-  resetOnerror
+  resetOnerror,
 } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { assign } from '@ember/polyfills';
@@ -11,11 +11,11 @@ import { createJWTToken } from '@fabscale/ember-cognito-identity/test-support/he
 import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
 import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
 
-module('Acceptance | remember-authentication', function(hooks) {
+module('Acceptance | remember-authentication', function (hooks) {
   setupApplicationTest(hooks);
   setupCognitoMocks(hooks);
 
-  test('it correctly loads a user from the cache', async function(assert) {
+  test('it correctly loads a user from the cache', async function (assert) {
     let { cognito, cognitoStorage } = this;
 
     let accessToken = createJWTToken();
@@ -28,7 +28,7 @@ module('Acceptance | remember-authentication', function(hooks) {
       assert.deepEqual(
         normalizedBody,
         {
-          AccessToken: accessToken
+          AccessToken: accessToken,
         },
         'correct body is sent'
       );
@@ -37,10 +37,10 @@ module('Acceptance | remember-authentication', function(hooks) {
         UserAttributes: [
           { Name: 'sub', Value: '5e456280-cdb6-40f7-a259-565e4f01debf' },
           { Name: 'email_verified', Value: 'true' },
-          { Name: 'email', Value: 'francesco@fabscale.com' }
+          { Name: 'email', Value: 'francesco@fabscale.com' },
         ],
 
-        Username: '5e456280-cdb6-40f7-a259-565e4f01debf'
+        Username: '5e456280-cdb6-40f7-a259-565e4f01debf',
       };
     };
 
@@ -81,7 +81,7 @@ module('Acceptance | remember-authentication', function(hooks) {
     assert.verifySteps(['GetUser is called']);
   });
 
-  test('it correctly redirects to login if no cache is available', async function(assert) {
+  test('it correctly redirects to login if no cache is available', async function (assert) {
     let { cognito } = this;
 
     await visit('/');
@@ -90,15 +90,15 @@ module('Acceptance | remember-authentication', function(hooks) {
     assert.notOk(cognito.isAuthenticated, 'user is not authenticated');
   });
 
-  test('it handles an expired access token by using the refresh token', async function(assert) {
+  test('it handles an expired access token by using the refresh token', async function (assert) {
     let { cognito, cognitoStorage } = this;
 
     let accessToken = createJWTToken({
-      exp: Math.round(new Date() / 1000) - 1000
+      exp: Math.round(new Date() / 1000) - 1000,
     });
     let refreshToken = createJWTToken();
     let newAccessToken = createJWTToken({
-      exp: Math.round(new Date() / 1000) + 1000
+      exp: Math.round(new Date() / 1000) + 1000,
     });
 
     this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = (body) => {
@@ -109,7 +109,7 @@ module('Acceptance | remember-authentication', function(hooks) {
       assert.deepEqual(
         normalizedBody,
         {
-          AccessToken: newAccessToken
+          AccessToken: newAccessToken,
         },
         'correct body is sent'
       );
@@ -118,10 +118,10 @@ module('Acceptance | remember-authentication', function(hooks) {
         UserAttributes: [
           { Name: 'sub', Value: '5e456280-cdb6-40f7-a259-565e4f01debf' },
           { Name: 'email_verified', Value: 'true' },
-          { Name: 'email', Value: 'francesco@fabscale.com' }
+          { Name: 'email', Value: 'francesco@fabscale.com' },
         ],
 
-        Username: '5e456280-cdb6-40f7-a259-565e4f01debf'
+        Username: '5e456280-cdb6-40f7-a259-565e4f01debf',
       };
     };
 
@@ -137,10 +137,10 @@ module('Acceptance | remember-authentication', function(hooks) {
         {
           AuthFlow: 'REFRESH_TOKEN_AUTH',
           AuthParameters: {
-            REFRESH_TOKEN: refreshToken
+            REFRESH_TOKEN: refreshToken,
           },
 
-          ClientId: 'TEST-CLIENT-ID'
+          ClientId: 'TEST-CLIENT-ID',
         },
         'correct body is sent'
       );
@@ -151,10 +151,10 @@ module('Acceptance | remember-authentication', function(hooks) {
           ExpiresIn: 3600,
           IdToken: createJWTToken(),
           RefreshToken: createJWTToken(),
-          TokenType: 'Bearer'
+          TokenType: 'Bearer',
         },
 
-        ChallengeParameters: {}
+        ChallengeParameters: {},
       };
     };
 
@@ -192,8 +192,8 @@ module('Acceptance | remember-authentication', function(hooks) {
     assert.verifySteps(['InitiateAuth is called', 'GetUser is called']);
   });
 
-  module('errors', function(hooks) {
-    hooks.beforeEach(function() {
+  module('errors', function (hooks) {
+    hooks.beforeEach(function () {
       setupOnerror((error) => {
         // ignore cognito errors, as they are handled in the UI
         if (error instanceof CognitoError) {
@@ -204,11 +204,11 @@ module('Acceptance | remember-authentication', function(hooks) {
       });
     });
 
-    hooks.afterEach(function() {
+    hooks.afterEach(function () {
       resetOnerror();
     });
 
-    test('it handles an API error when trying to fetch a user from the cache', async function(assert) {
+    test('it handles an API error when trying to fetch a user from the cache', async function (assert) {
       let { cognito, cognitoStorage } = this;
 
       let accessToken = createJWTToken();
@@ -219,7 +219,7 @@ module('Acceptance | remember-authentication', function(hooks) {
         return [
           400,
           {},
-          { __type: 'UserNotFoundException', message: 'User does not exist.' }
+          { __type: 'UserNotFoundException', message: 'User does not exist.' },
         ];
       };
 
@@ -256,11 +256,11 @@ module('Acceptance | remember-authentication', function(hooks) {
       assert.verifySteps(['GetUser is called']);
     });
 
-    test('it handles an API error when trying to refresh token', async function(assert) {
+    test('it handles an API error when trying to refresh token', async function (assert) {
       let { cognito, cognitoStorage } = this;
 
       let accessToken = createJWTToken({
-        exp: Math.round(new Date() / 1000) - 1000
+        exp: Math.round(new Date() / 1000) - 1000,
       });
       let refreshToken = createJWTToken();
 
@@ -276,10 +276,10 @@ module('Acceptance | remember-authentication', function(hooks) {
           {
             AuthFlow: 'REFRESH_TOKEN_AUTH',
             AuthParameters: {
-              REFRESH_TOKEN: refreshToken
+              REFRESH_TOKEN: refreshToken,
             },
 
-            ClientId: 'TEST-CLIENT-ID'
+            ClientId: 'TEST-CLIENT-ID',
           },
           'correct body is sent'
         );
@@ -287,7 +287,7 @@ module('Acceptance | remember-authentication', function(hooks) {
         return [
           400,
           {},
-          { __type: 'UserNotFoundException', message: 'User does not exist.' }
+          { __type: 'UserNotFoundException', message: 'User does not exist.' },
         ];
       };
 

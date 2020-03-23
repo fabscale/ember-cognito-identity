@@ -6,7 +6,7 @@ import {
   settled,
   resetOnerror,
   setupOnerror,
-  currentRouteName
+  currentRouteName,
 } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { assign } from '@ember/polyfills';
@@ -14,11 +14,11 @@ import { createJWTToken } from '@fabscale/ember-cognito-identity/test-support/he
 import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
 import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
 
-module('Acceptance | reset-password', function(hooks) {
+module('Acceptance | reset-password', function (hooks) {
   setupApplicationTest(hooks);
   setupCognitoMocks(hooks);
 
-  test('it allows to generate a code & reset the password', async function(assert) {
+  test('it allows to generate a code & reset the password', async function (assert) {
     let { cognito } = this;
 
     let accessToken = createJWTToken();
@@ -34,7 +34,7 @@ module('Acceptance | reset-password', function(hooks) {
         normalizedBody,
         {
           ClientId: 'TEST-CLIENT-ID',
-          Username: 'johnwick@fabscale.com'
+          Username: 'johnwick@fabscale.com',
         },
         'correct body is sent'
       );
@@ -43,8 +43,8 @@ module('Acceptance | reset-password', function(hooks) {
         CodeDeliveryDetails: {
           AttributeName: 'email',
           DeliveryMedium: 'EMAIL',
-          Destination: 'j***@f***.com'
-        }
+          Destination: 'j***@f***.com',
+        },
       };
     };
 
@@ -61,7 +61,7 @@ module('Acceptance | reset-password', function(hooks) {
           ClientId: 'TEST-CLIENT-ID',
           Username: 'johnwick@fabscale.com',
           ConfirmationCode: '123456',
-          Password: 'test1234'
+          Password: 'test1234',
         },
         'correct body is sent'
       );
@@ -84,10 +84,10 @@ module('Acceptance | reset-password', function(hooks) {
           ClientId: 'TEST-CLIENT-ID',
           AuthParameters: {
             USERNAME: 'johnwick@fabscale.com',
-            SRP_A: 'TEST-SRP-A'
+            SRP_A: 'TEST-SRP-A',
           },
 
-          ClientMetadata: {}
+          ClientMetadata: {},
         },
         'correct body is sent'
       );
@@ -98,8 +98,8 @@ module('Acceptance | reset-password', function(hooks) {
           SALT: 'TEST-SALT',
           SECRET_BLOCK: 'TEST-SECRET-BLOCK',
           USERNAME: 'TEST-USER-ID',
-          USER_ID_FOR_SRP: 'TEST-USER-ID'
-        }
+          USER_ID_FOR_SRP: 'TEST-USER-ID',
+        },
       };
     };
 
@@ -122,10 +122,10 @@ module('Acceptance | reset-password', function(hooks) {
             USERNAME: 'TEST-USER-ID',
             PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             TIMESTAMP: 'timestamp',
-            PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
+            PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
           },
 
-          ClientMetadata: {}
+          ClientMetadata: {},
         },
         'correct body is sent'
       );
@@ -136,10 +136,10 @@ module('Acceptance | reset-password', function(hooks) {
           ExpiresIn: 3600,
           IdToken: createJWTToken(),
           RefreshToken: createJWTToken(),
-          TokenType: 'Bearer'
+          TokenType: 'Bearer',
         },
 
-        ChallengeParameters: {}
+        ChallengeParameters: {},
       };
     };
 
@@ -151,7 +151,7 @@ module('Acceptance | reset-password', function(hooks) {
       assert.deepEqual(
         normalizedBody,
         {
-          AccessToken: accessToken
+          AccessToken: accessToken,
         },
         'correct body is sent'
       );
@@ -160,10 +160,10 @@ module('Acceptance | reset-password', function(hooks) {
         UserAttributes: [
           { Name: 'sub', Value: 'TEST-USER-ID' },
           { Name: 'email_verified', Value: 'true' },
-          { Name: 'email', Value: 'johnwick@fabscale.com' }
+          { Name: 'email', Value: 'johnwick@fabscale.com' },
         ],
 
-        Username: 'TEST-USER-ID'
+        Username: 'TEST-USER-ID',
       };
     };
 
@@ -204,11 +204,11 @@ module('Acceptance | reset-password', function(hooks) {
       'ConfirmForgotPassword is called',
       'InitiateAuth is called',
       'RespondToAuthChallenge is called',
-      'GetUser is called'
+      'GetUser is called',
     ]);
   });
 
-  test('it allows to reset the password with an existing code', async function(assert) {
+  test('it allows to reset the password with an existing code', async function (assert) {
     let { cognito } = this;
 
     let accessToken = createJWTToken();
@@ -226,7 +226,7 @@ module('Acceptance | reset-password', function(hooks) {
           ClientId: 'TEST-CLIENT-ID',
           Username: 'johnwick@fabscale.com',
           ConfirmationCode: '123456',
-          Password: 'test1234'
+          Password: 'test1234',
         },
         'correct body is sent'
       );
@@ -243,8 +243,8 @@ module('Acceptance | reset-password', function(hooks) {
           SALT: 'TEST-SALT',
           SECRET_BLOCK: 'TEST-SECRET-BLOCK',
           USERNAME: 'TEST-USER-ID',
-          USER_ID_FOR_SRP: 'TEST-USER-ID'
-        }
+          USER_ID_FOR_SRP: 'TEST-USER-ID',
+        },
       };
     };
 
@@ -259,10 +259,10 @@ module('Acceptance | reset-password', function(hooks) {
           ExpiresIn: 3600,
           IdToken: createJWTToken(),
           RefreshToken: createJWTToken(),
-          TokenType: 'Bearer'
+          TokenType: 'Bearer',
         },
 
-        ChallengeParameters: {}
+        ChallengeParameters: {},
       };
     };
 
@@ -274,7 +274,7 @@ module('Acceptance | reset-password', function(hooks) {
       assert.deepEqual(
         normalizedBody,
         {
-          AccessToken: accessToken
+          AccessToken: accessToken,
         },
         'correct body is sent'
       );
@@ -283,10 +283,10 @@ module('Acceptance | reset-password', function(hooks) {
         UserAttributes: [
           { Name: 'sub', Value: 'TEST-USER-ID' },
           { Name: 'email_verified', Value: 'true' },
-          { Name: 'email', Value: 'johnwick@fabscale.com' }
+          { Name: 'email', Value: 'johnwick@fabscale.com' },
         ],
 
-        Username: 'TEST-USER-ID'
+        Username: 'TEST-USER-ID',
       };
     };
 
@@ -325,11 +325,11 @@ module('Acceptance | reset-password', function(hooks) {
       'ConfirmForgotPassword is called',
       'InitiateAuth is called',
       'RespondToAuthChallenge is called',
-      'GetUser is called'
+      'GetUser is called',
     ]);
   });
 
-  test('it allows to resend a code & reset the password', async function(assert) {
+  test('it allows to resend a code & reset the password', async function (assert) {
     let { cognito } = this;
 
     let accessToken = createJWTToken();
@@ -341,8 +341,8 @@ module('Acceptance | reset-password', function(hooks) {
         CodeDeliveryDetails: {
           AttributeName: 'email',
           DeliveryMedium: 'EMAIL',
-          Destination: 'j***@f***.com'
-        }
+          Destination: 'j***@f***.com',
+        },
       };
     };
 
@@ -363,8 +363,8 @@ module('Acceptance | reset-password', function(hooks) {
           SALT: 'TEST-SALT',
           SECRET_BLOCK: 'TEST-SECRET-BLOCK',
           USERNAME: 'TEST-USER-ID',
-          USER_ID_FOR_SRP: 'TEST-USER-ID'
-        }
+          USER_ID_FOR_SRP: 'TEST-USER-ID',
+        },
       };
     };
 
@@ -379,10 +379,10 @@ module('Acceptance | reset-password', function(hooks) {
           ExpiresIn: 3600,
           IdToken: createJWTToken(),
           RefreshToken: createJWTToken(),
-          TokenType: 'Bearer'
+          TokenType: 'Bearer',
         },
 
-        ChallengeParameters: {}
+        ChallengeParameters: {},
       };
     };
 
@@ -393,10 +393,10 @@ module('Acceptance | reset-password', function(hooks) {
         UserAttributes: [
           { Name: 'sub', Value: 'TEST-USER-ID' },
           { Name: 'email_verified', Value: 'true' },
-          { Name: 'email', Value: 'johnwick@fabscale.com' }
+          { Name: 'email', Value: 'johnwick@fabscale.com' },
         ],
 
-        Username: 'TEST-USER-ID'
+        Username: 'TEST-USER-ID',
       };
     };
 
@@ -444,12 +444,12 @@ module('Acceptance | reset-password', function(hooks) {
       'ConfirmForgotPassword is called',
       'InitiateAuth is called',
       'RespondToAuthChallenge is called',
-      'GetUser is called'
+      'GetUser is called',
     ]);
   });
 
-  module('query params', function(hooks) {
-    hooks.beforeEach(function() {
+  module('query params', function (hooks) {
+    hooks.beforeEach(function () {
       let accessToken = createJWTToken();
 
       this.awsHooks[
@@ -459,8 +459,8 @@ module('Acceptance | reset-password', function(hooks) {
           CodeDeliveryDetails: {
             AttributeName: 'email',
             DeliveryMedium: 'EMAIL',
-            Destination: 'j***@f***.com'
-          }
+            Destination: 'j***@f***.com',
+          },
         };
       };
 
@@ -477,8 +477,8 @@ module('Acceptance | reset-password', function(hooks) {
             SALT: 'TEST-SALT',
             SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             USERNAME: 'TEST-USER-ID',
-            USER_ID_FOR_SRP: 'TEST-USER-ID'
-          }
+            USER_ID_FOR_SRP: 'TEST-USER-ID',
+          },
         };
       };
 
@@ -491,10 +491,10 @@ module('Acceptance | reset-password', function(hooks) {
             ExpiresIn: 3600,
             IdToken: createJWTToken(),
             RefreshToken: createJWTToken(),
-            TokenType: 'Bearer'
+            TokenType: 'Bearer',
           },
 
-          ChallengeParameters: {}
+          ChallengeParameters: {},
         };
       };
 
@@ -503,17 +503,17 @@ module('Acceptance | reset-password', function(hooks) {
           UserAttributes: [
             { Name: 'sub', Value: 'TEST-USER-ID' },
             { Name: 'email_verified', Value: 'true' },
-            { Name: 'email', Value: 'johnwick@fabscale.com' }
+            { Name: 'email', Value: 'johnwick@fabscale.com' },
           ],
 
-          Username: 'TEST-USER-ID'
+          Username: 'TEST-USER-ID',
         };
       };
 
       this.accessToken = accessToken;
     });
 
-    test('it allows to set a username via the URL', async function(assert) {
+    test('it allows to set a username via the URL', async function (assert) {
       let { cognito, accessToken } = this;
 
       await visit('/reset-password?username=johnwick@fabscale.com');
@@ -542,7 +542,7 @@ module('Acceptance | reset-password', function(hooks) {
       );
     });
 
-    test('it allows to set username & verificationCode via the URL', async function(assert) {
+    test('it allows to set username & verificationCode via the URL', async function (assert) {
       let { cognito, accessToken } = this;
 
       await visit(
@@ -575,7 +575,7 @@ module('Acceptance | reset-password', function(hooks) {
       );
     });
 
-    test('it allows to set verificationCode via the URL', async function(assert) {
+    test('it allows to set verificationCode via the URL', async function (assert) {
       let { cognito, accessToken } = this;
 
       await visit('/reset-password?verificationCode=123456');
@@ -613,8 +613,8 @@ module('Acceptance | reset-password', function(hooks) {
     });
   });
 
-  module('errors', function(hooks) {
-    hooks.beforeEach(function() {
+  module('errors', function (hooks) {
+    hooks.beforeEach(function () {
       setupOnerror((error) => {
         // ignore cognito errors, as they are handled in the UI
         if (error instanceof CognitoError) {
@@ -625,11 +625,11 @@ module('Acceptance | reset-password', function(hooks) {
       });
     });
 
-    hooks.afterEach(function() {
+    hooks.afterEach(function () {
       resetOnerror();
     });
 
-    test('it handles errors when trying to generate a code', async function(assert) {
+    test('it handles errors when trying to generate a code', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks[
@@ -642,8 +642,8 @@ module('Acceptance | reset-password', function(hooks) {
           {},
           {
             __type: 'UserNotFoundException',
-            message: 'Username/client id combination not found.'
-          }
+            message: 'Username/client id combination not found.',
+          },
         ];
       };
 
@@ -669,7 +669,7 @@ module('Acceptance | reset-password', function(hooks) {
       assert.verifySteps(['ForgotPassword is called']);
     });
 
-    test('it handles an invalid verification code', async function(assert) {
+    test('it handles an invalid verification code', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks[
@@ -682,8 +682,8 @@ module('Acceptance | reset-password', function(hooks) {
           {},
           {
             __type: 'ExpiredCodeException',
-            message: 'Invalid code provided, please request a code again.'
-          }
+            message: 'Invalid code provided, please request a code again.',
+          },
         ];
       };
 
@@ -711,7 +711,7 @@ module('Acceptance | reset-password', function(hooks) {
       assert.verifySteps(['ConfirmForgotPassword is called']);
     });
 
-    test('it handles an invalid new password', async function(assert) {
+    test('it handles an invalid new password', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks[
@@ -725,8 +725,8 @@ module('Acceptance | reset-password', function(hooks) {
           {
             __type: 'InvalidPasswordException',
             message:
-              'Password does not conform to policy: Password not long enough'
-          }
+              'Password does not conform to policy: Password not long enough',
+          },
         ];
       };
 
@@ -757,7 +757,7 @@ module('Acceptance | reset-password', function(hooks) {
     });
 
     // TODO FN: Maybe this can be handled more gracefully (although it is rather an edge case...)
-    test('it handles an error during authentication (after password reset)', async function(assert) {
+    test('it handles an error during authentication (after password reset)', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks[
@@ -777,8 +777,8 @@ module('Acceptance | reset-password', function(hooks) {
             SALT: 'TEST-SALT',
             SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             USERNAME: 'TEST-USER-ID',
-            USER_ID_FOR_SRP: 'TEST-USER-ID'
-          }
+            USER_ID_FOR_SRP: 'TEST-USER-ID',
+          },
         };
       };
 
@@ -792,8 +792,8 @@ module('Acceptance | reset-password', function(hooks) {
           {},
           {
             __type: 'NotAuthorizedException',
-            message: 'Incorrect username or password.'
-          }
+            message: 'Incorrect username or password.',
+          },
         ];
       };
 
@@ -821,7 +821,7 @@ module('Acceptance | reset-password', function(hooks) {
       assert.verifySteps([
         'ConfirmForgotPassword is called',
         'InitiateAuth is called',
-        'RespondToAuthChallenge is called'
+        'RespondToAuthChallenge is called',
       ]);
     });
   });

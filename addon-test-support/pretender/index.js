@@ -2,7 +2,7 @@ import Pretender from 'pretender';
 import { set } from '@ember/object';
 
 export function setupCognitoMocks(hooks) {
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     let cognito = this.owner.lookup('service:cognito');
 
     set(cognito, 'config.clientId', 'TEST-CLIENT-ID');
@@ -27,7 +27,7 @@ export function setupCognitoMocks(hooks) {
 
       removeItem(key) {
         delete this._data[key];
-      }
+      },
     };
 
     cognito._cognitoStorage = this.cognitoStorage;
@@ -35,19 +35,19 @@ export function setupCognitoMocks(hooks) {
     this.awsHooks = {};
 
     if (!this.cognitoPretenderServer) {
-      this.cognitoPretenderServer = new Pretender(function() {});
+      this.cognitoPretenderServer = new Pretender(function () {});
     }
 
     setupCognitoPrentenderRoute(this, this.cognitoPretenderServer);
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     this.cognitoPretenderServer.shutdown();
   });
 }
 
 export function setupCognitoPrentenderRoute(context, pretenderServer) {
-  pretenderServer.post('https://cognito-idp.eu-west-1.amazonaws.com', function(
+  pretenderServer.post('https://cognito-idp.eu-west-1.amazonaws.com', function (
     request
   ) {
     let { requestHeaders } = request;
@@ -67,7 +67,7 @@ export function setupCognitoPrentenderRoute(context, pretenderServer) {
       return [
         status,
         headers,
-        typeof body === 'object' ? JSON.stringify(body) : body
+        typeof body === 'object' ? JSON.stringify(body) : body,
       ];
     }
 

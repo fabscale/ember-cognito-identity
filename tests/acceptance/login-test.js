@@ -5,7 +5,7 @@ import {
   click,
   settled,
   resetOnerror,
-  setupOnerror
+  setupOnerror,
 } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { assign } from '@ember/polyfills';
@@ -13,11 +13,11 @@ import { createJWTToken } from '@fabscale/ember-cognito-identity/test-support/he
 import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
 import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
 
-module('Acceptance | login', function(hooks) {
+module('Acceptance | login', function (hooks) {
   setupApplicationTest(hooks);
   setupCognitoMocks(hooks);
 
-  test('it works with correct username & password', async function(assert) {
+  test('it works with correct username & password', async function (assert) {
     let { cognito } = this;
 
     this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = (
@@ -35,10 +35,10 @@ module('Acceptance | login', function(hooks) {
           ClientId: 'TEST-CLIENT-ID',
           AuthParameters: {
             USERNAME: 'johnwick@fabscale.com',
-            SRP_A: 'TEST-SRP-A'
+            SRP_A: 'TEST-SRP-A',
           },
 
-          ClientMetadata: {}
+          ClientMetadata: {},
         },
         'correct body is sent'
       );
@@ -49,8 +49,8 @@ module('Acceptance | login', function(hooks) {
           SALT: 'TEST-SALT',
           SECRET_BLOCK: 'TEST-SECRET-BLOCK',
           USERNAME: 'TEST-USER-ID',
-          USER_ID_FOR_SRP: 'TEST-USER-ID'
-        }
+          USER_ID_FOR_SRP: 'TEST-USER-ID',
+        },
       };
     };
 
@@ -75,10 +75,10 @@ module('Acceptance | login', function(hooks) {
             USERNAME: 'TEST-USER-ID',
             PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             TIMESTAMP: 'timestamp',
-            PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
+            PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
           },
 
-          ClientMetadata: {}
+          ClientMetadata: {},
         },
         'correct body is sent'
       );
@@ -89,10 +89,10 @@ module('Acceptance | login', function(hooks) {
           ExpiresIn: 3600,
           IdToken: createJWTToken(),
           RefreshToken: createJWTToken(),
-          TokenType: 'Bearer'
+          TokenType: 'Bearer',
         },
 
-        ChallengeParameters: {}
+        ChallengeParameters: {},
       };
     };
 
@@ -104,7 +104,7 @@ module('Acceptance | login', function(hooks) {
       assert.deepEqual(
         normalizedBody,
         {
-          AccessToken: accessToken
+          AccessToken: accessToken,
         },
         'correct body is sent'
       );
@@ -113,10 +113,10 @@ module('Acceptance | login', function(hooks) {
         UserAttributes: [
           { Name: 'sub', Value: 'TEST-USER-ID' },
           { Name: 'email_verified', Value: 'true' },
-          { Name: 'email', Value: 'johnwick@fabscale.com' }
+          { Name: 'email', Value: 'johnwick@fabscale.com' },
         ],
 
-        Username: 'TEST-USER-ID'
+        Username: 'TEST-USER-ID',
       };
     };
 
@@ -143,12 +143,12 @@ module('Acceptance | login', function(hooks) {
     assert.verifySteps([
       'InitiateAuth is called',
       'RespondToAuthChallenge is called',
-      'GetUser is called'
+      'GetUser is called',
     ]);
   });
 
-  module('errors', function(hooks) {
-    hooks.beforeEach(function() {
+  module('errors', function (hooks) {
+    hooks.beforeEach(function () {
       setupOnerror((error) => {
         // ignore cognito errors, as they are handled in the UI
         if (error instanceof CognitoError) {
@@ -159,11 +159,11 @@ module('Acceptance | login', function(hooks) {
       });
     });
 
-    hooks.afterEach(function() {
+    hooks.afterEach(function () {
       resetOnerror();
     });
 
-    test('it handles an unknown username', async function(assert) {
+    test('it handles an unknown username', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
@@ -172,7 +172,7 @@ module('Acceptance | login', function(hooks) {
         return [
           400,
           {},
-          { __type: 'UserNotFoundException', message: 'User does not exist.' }
+          { __type: 'UserNotFoundException', message: 'User does not exist.' },
         ];
       };
 
@@ -197,7 +197,7 @@ module('Acceptance | login', function(hooks) {
       assert.verifySteps(['InitiateAuth is called']);
     });
 
-    test('it handles an incorrect password', async function(assert) {
+    test('it handles an incorrect password', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
@@ -208,8 +208,8 @@ module('Acceptance | login', function(hooks) {
           {},
           {
             __type: 'NotAuthorizedException',
-            message: 'Incorrect username or password.'
-          }
+            message: 'Incorrect username or password.',
+          },
         ];
       };
 
@@ -234,7 +234,7 @@ module('Acceptance | login', function(hooks) {
       assert.verifySteps(['InitiateAuth is called']);
     });
 
-    test('it handles a user that needs to set an initial password', async function(assert) {
+    test('it handles a user that needs to set an initial password', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = (
@@ -252,10 +252,10 @@ module('Acceptance | login', function(hooks) {
             ClientId: 'TEST-CLIENT-ID',
             AuthParameters: {
               USERNAME: 'johnwick@fabscale.com',
-              SRP_A: 'TEST-SRP-A'
+              SRP_A: 'TEST-SRP-A',
             },
 
-            ClientMetadata: {}
+            ClientMetadata: {},
           },
           'correct body is sent'
         );
@@ -266,8 +266,8 @@ module('Acceptance | login', function(hooks) {
             SALT: 'TEST-SALT',
             SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             USERNAME: 'TEST-USER-ID',
-            USER_ID_FOR_SRP: 'TEST-USER-ID'
-          }
+            USER_ID_FOR_SRP: 'TEST-USER-ID',
+          },
         };
       };
 
@@ -292,10 +292,10 @@ module('Acceptance | login', function(hooks) {
                 USERNAME: 'TEST-USER-ID',
                 PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
                 TIMESTAMP: 'timestamp',
-                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
+                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
               },
 
-              ClientMetadata: {}
+              ClientMetadata: {},
             },
             'correct body is sent'
           );
@@ -304,10 +304,10 @@ module('Acceptance | login', function(hooks) {
             ChallengeName: 'NEW_PASSWORD_REQUIRED',
             ChallengeParameters: {
               requiredAttributes: '[]',
-              userAttributes: '{}'
+              userAttributes: '{}',
             },
 
-            Session: 'TEST-SESSION-ID'
+            Session: 'TEST-SESSION-ID',
           };
         },
         (body) => {
@@ -327,10 +327,10 @@ module('Acceptance | login', function(hooks) {
                 USERNAME: 'TEST-USER-ID',
                 PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
                 TIMESTAMP: 'timestamp',
-                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
+                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
               },
 
-              ClientMetadata: {}
+              ClientMetadata: {},
             },
             'correct body is sent'
           );
@@ -339,10 +339,10 @@ module('Acceptance | login', function(hooks) {
             ChallengeName: 'NEW_PASSWORD_REQUIRED',
             ChallengeParameters: {
               requiredAttributes: '[]',
-              userAttributes: '{}'
+              userAttributes: '{}',
             },
 
-            Session: 'TEST-SESSION-ID'
+            Session: 'TEST-SESSION-ID',
           };
         },
         (body) => {
@@ -357,10 +357,10 @@ module('Acceptance | login', function(hooks) {
               ClientId: 'TEST-CLIENT-ID',
               ChallengeResponses: {
                 NEW_PASSWORD: 'test1234-NEW',
-                USERNAME: 'TEST-USER-ID'
+                USERNAME: 'TEST-USER-ID',
               },
 
-              Session: 'TEST-SESSION-ID'
+              Session: 'TEST-SESSION-ID',
             },
             'correct body is sent'
           );
@@ -371,10 +371,10 @@ module('Acceptance | login', function(hooks) {
               ExpiresIn: 3600,
               IdToken: accessToken,
               RefreshToken: accessToken,
-              TokenType: 'Bearer'
+              TokenType: 'Bearer',
             },
 
-            ChallengeParameters: {}
+            ChallengeParameters: {},
           };
         },
         (body) => {
@@ -394,10 +394,10 @@ module('Acceptance | login', function(hooks) {
                 USERNAME: 'TEST-USER-ID',
                 PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
                 TIMESTAMP: 'timestamp',
-                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE'
+                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
               },
 
-              ClientMetadata: {}
+              ClientMetadata: {},
             },
             'correct body is sent'
           );
@@ -408,12 +408,12 @@ module('Acceptance | login', function(hooks) {
               ExpiresIn: 3600,
               IdToken: createJWTToken(),
               RefreshToken: createJWTToken(),
-              TokenType: 'Bearer'
+              TokenType: 'Bearer',
             },
 
-            ChallengeParameters: {}
+            ChallengeParameters: {},
           };
-        }
+        },
       ];
 
       this.awsHooks[
@@ -431,7 +431,7 @@ module('Acceptance | login', function(hooks) {
         assert.deepEqual(
           normalizedBody,
           {
-            AccessToken: accessToken
+            AccessToken: accessToken,
           },
           'correct body is sent'
         );
@@ -440,10 +440,10 @@ module('Acceptance | login', function(hooks) {
           UserAttributes: [
             { Name: 'sub', Value: 'TEST-USER-ID' },
             { Name: 'email_verified', Value: 'true' },
-            { Name: 'email', Value: 'johnwick@fabscale.com' }
+            { Name: 'email', Value: 'johnwick@fabscale.com' },
           ],
 
-          Username: 'TEST-USER-ID'
+          Username: 'TEST-USER-ID',
         };
       };
 
@@ -490,11 +490,11 @@ module('Acceptance | login', function(hooks) {
         'RespondToAuthChallenge (3) is called',
         'InitiateAuth is called',
         'RespondToAuthChallenge (4) is called',
-        'GetUser is called'
+        'GetUser is called',
       ]);
     });
 
-    test('it handles the user trying to set an invalid initial password', async function(assert) {
+    test('it handles the user trying to set an invalid initial password', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = (
@@ -512,10 +512,10 @@ module('Acceptance | login', function(hooks) {
             ClientId: 'TEST-CLIENT-ID',
             AuthParameters: {
               USERNAME: 'johnwick@fabscale.com',
-              SRP_A: 'TEST-SRP-A'
+              SRP_A: 'TEST-SRP-A',
             },
 
-            ClientMetadata: {}
+            ClientMetadata: {},
           },
           'correct body is sent'
         );
@@ -526,8 +526,8 @@ module('Acceptance | login', function(hooks) {
             SALT: 'TEST-SALT',
             SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             USERNAME: 'TEST-USER-ID',
-            USER_ID_FOR_SRP: 'TEST-USER-ID'
-          }
+            USER_ID_FOR_SRP: 'TEST-USER-ID',
+          },
         };
       };
 
@@ -541,10 +541,10 @@ module('Acceptance | login', function(hooks) {
             ChallengeParameters: {
               requiredAttributes: '[]',
               userAttributes:
-                '{"email_verified":"true","email":"johnwick@fabscale.com"}'
+                '{"email_verified":"true","email":"johnwick@fabscale.com"}',
             },
 
-            Session: 'TEST-SESSION-ID'
+            Session: 'TEST-SESSION-ID',
           };
         },
         () => {
@@ -555,10 +555,10 @@ module('Acceptance | login', function(hooks) {
             ChallengeParameters: {
               requiredAttributes: '[]',
               userAttributes:
-                '{"email_verified":"true","email":"johnwick@fabscale.com"}'
+                '{"email_verified":"true","email":"johnwick@fabscale.com"}',
             },
 
-            Session: 'TEST-SESSION-ID'
+            Session: 'TEST-SESSION-ID',
           };
         },
         () => {
@@ -570,10 +570,10 @@ module('Acceptance | login', function(hooks) {
             {
               __type: 'InvalidPasswordException',
               message:
-                'Password does not conform to policy: Password not long enough'
-            }
+                'Password does not conform to policy: Password not long enough',
+            },
           ];
-        }
+        },
       ];
 
       this.awsHooks[
@@ -623,11 +623,11 @@ module('Acceptance | login', function(hooks) {
         'enter new password',
         'InitiateAuth is called',
         'RespondToAuthChallenge (2) is called',
-        'RespondToAuthChallenge (3) is called'
+        'RespondToAuthChallenge (3) is called',
       ]);
     });
 
-    test('it handles an API error when fetching user attributes', async function(assert) {
+    test('it handles an API error when fetching user attributes', async function (assert) {
       let { cognito } = this;
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
@@ -639,8 +639,8 @@ module('Acceptance | login', function(hooks) {
             SALT: 'TEST-SALT',
             SECRET_BLOCK: 'TEST-SECRET-BLOCK',
             USERNAME: 'TEST-USER-ID',
-            USER_ID_FOR_SRP: 'TEST-USER-ID'
-          }
+            USER_ID_FOR_SRP: 'TEST-USER-ID',
+          },
         };
       };
 
@@ -655,10 +655,10 @@ module('Acceptance | login', function(hooks) {
             ExpiresIn: 3600,
             IdToken: createJWTToken(),
             RefreshToken: createJWTToken(),
-            TokenType: 'Bearer'
+            TokenType: 'Bearer',
           },
 
-          ChallengeParameters: {}
+          ChallengeParameters: {},
         };
       };
 
@@ -668,7 +668,7 @@ module('Acceptance | login', function(hooks) {
         return [
           400,
           {},
-          { __type: 'UserNotFoundException', message: 'User does not exist.' }
+          { __type: 'UserNotFoundException', message: 'User does not exist.' },
         ];
       };
 
@@ -693,7 +693,7 @@ module('Acceptance | login', function(hooks) {
       assert.verifySteps([
         'InitiateAuth is called',
         'RespondToAuthChallenge is called',
-        'GetUser is called'
+        'GetUser is called',
       ]);
     });
   });

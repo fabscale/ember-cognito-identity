@@ -4,7 +4,7 @@ export function setupPretenderSuccessfulLogin(
   context,
   {
     username = 'johnwick@thecontinental.assassins',
-    userId = 'TEST-USER-ID'
+    userId = 'TEST-USER-ID',
   } = {}
 ) {
   context.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
@@ -14,8 +14,8 @@ export function setupPretenderSuccessfulLogin(
         SALT: 'TEST-SALT',
         SECRET_BLOCK: 'TEST-SECRET-BLOCK',
         USERNAME: userId,
-        USER_ID_FOR_SRP: userId
-      }
+        USER_ID_FOR_SRP: userId,
+      },
     };
   };
 
@@ -30,10 +30,10 @@ export function setupPretenderSuccessfulLogin(
         ExpiresIn: 3600,
         IdToken: createJWTToken(),
         RefreshToken: createJWTToken(),
-        TokenType: 'Bearer'
+        TokenType: 'Bearer',
       },
 
-      ChallengeParameters: {}
+      ChallengeParameters: {},
     };
   };
 
@@ -42,10 +42,10 @@ export function setupPretenderSuccessfulLogin(
       UserAttributes: [
         { Name: 'sub', Value: userId },
         { Name: 'email_verified', Value: 'true' },
-        { Name: 'email', Value: username }
+        { Name: 'email', Value: username },
       ],
 
-      Username: userId
+      Username: userId,
     };
   };
 
@@ -59,8 +59,8 @@ export function setupPretenderInvalidPassword(context) {
       {},
       {
         __type: 'NotAuthorizedException',
-        message: 'Incorrect username or password.'
-      }
+        message: 'Incorrect username or password.',
+      },
     ];
   };
 }
@@ -69,7 +69,7 @@ export function setupPretenderNeedsInitialPassword(
   context,
   {
     username = 'johnwick@thecontinental.assassins',
-    userId = 'TEST-USER-ID'
+    userId = 'TEST-USER-ID',
   } = {}
 ) {
   let accessToken = createJWTToken();
@@ -82,8 +82,8 @@ export function setupPretenderNeedsInitialPassword(
         SALT: 'TEST-SALT',
         SECRET_BLOCK: 'TEST-SECRET-BLOCK',
         USERNAME: userId,
-        USER_ID_FOR_SRP: userId
-      }
+        USER_ID_FOR_SRP: userId,
+      },
     };
   };
 
@@ -95,10 +95,10 @@ export function setupPretenderNeedsInitialPassword(
         ChallengeParameters: {
           requiredAttributes: '[]',
           userAttributes:
-            '{"email_verified":"true","email":"johnwick@thecontinental.assassins"}'
+            '{"email_verified":"true","email":"johnwick@thecontinental.assassins"}',
         },
 
-        Session: 'TEST-SESSION-ID'
+        Session: 'TEST-SESSION-ID',
       };
     },
     () => {
@@ -106,10 +106,10 @@ export function setupPretenderNeedsInitialPassword(
         ChallengeName: 'NEW_PASSWORD_REQUIRED',
         ChallengeParameters: {
           requiredAttributes: '[]',
-          userAttributes: `{"email_verified":"true","email":"${username}"}'`
+          userAttributes: `{"email_verified":"true","email":"${username}"}'`,
         },
 
-        Session: 'TEST-SESSION-ID'
+        Session: 'TEST-SESSION-ID',
       };
     },
     () => {
@@ -119,10 +119,10 @@ export function setupPretenderNeedsInitialPassword(
           ExpiresIn: 3600,
           IdToken: accessToken,
           RefreshToken: accessToken,
-          TokenType: 'Bearer'
+          TokenType: 'Bearer',
         },
 
-        ChallengeParameters: {}
+        ChallengeParameters: {},
       };
     },
     () => {
@@ -132,12 +132,12 @@ export function setupPretenderNeedsInitialPassword(
           ExpiresIn: 3600,
           IdToken: createJWTToken(),
           RefreshToken: createJWTToken(),
-          TokenType: 'Bearer'
+          TokenType: 'Bearer',
         },
 
-        ChallengeParameters: {}
+        ChallengeParameters: {},
       };
-    }
+    },
   ];
 
   context.awsHooks[
@@ -152,10 +152,10 @@ export function setupPretenderNeedsInitialPassword(
       UserAttributes: [
         { Name: 'sub', Value: userId },
         { Name: 'email_verified', Value: 'true' },
-        { Name: 'email', Value: username }
+        { Name: 'email', Value: username },
       ],
 
-      Username: userId
+      Username: userId,
     };
   };
 }

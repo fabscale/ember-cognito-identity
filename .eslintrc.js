@@ -5,8 +5,8 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
     ecmaFeatures: {
-      legacyDecorators: true
-    }
+      legacyDecorators: true,
+    },
   },
 
   plugins: ['ember', 'ember-es6-class', 'ember-suave'],
@@ -15,11 +15,11 @@ module.exports = {
     'eslint:recommended',
     'plugin:ember/recommended',
     'plugin:ember-suave/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
 
   env: {
-    browser: true
+    browser: true,
   },
 
   rules: {
@@ -35,14 +35,14 @@ module.exports = {
     'ember-suave/lines-between-object-properties': [
       'error',
       'always',
-      { exceptAfterSingleLine: true }
+      { exceptAfterSingleLine: true },
     ],
 
     'lines-between-class-members': [
       'error',
       'always',
-      { exceptAfterSingleLine: true }
-    ]
+      { exceptAfterSingleLine: true },
+    ],
   },
 
   overrides: [
@@ -57,35 +57,35 @@ module.exports = {
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js'
+        'tests/dummy/config/**/*.js',
       ],
       excludedFiles: [
         'addon/**',
         'addon-test-support/**',
         'app/**',
-        'tests/dummy/app/**'
+        'tests/dummy/app/**',
       ],
       parserOptions: {
-        sourceType: 'script'
+        sourceType: 'script',
       },
       env: {
         browser: false,
-        node: true
+        node: true,
       },
       plugins: ['node'],
       rules: Object.assign(
         {},
         require('eslint-plugin-node').configs.recommended.rules,
         {
-          'ember-suave/lines-between-object-properties': 0
+          'ember-suave/lines-between-object-properties': 0,
         }
-      )
+      ),
     },
     {
       files: ['tests/**/*.js'],
       rules: {
-        'ember/avoid-leaking-state-in-ember-objects': 'off'
-      }
-    }
-  ]
+        'ember/avoid-leaking-state-in-ember-objects': 'off',
+      },
+    },
+  ],
 };

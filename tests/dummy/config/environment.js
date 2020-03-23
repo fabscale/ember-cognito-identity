@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'dummy',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -24,8 +24,8 @@ module.exports = function(environment) {
 
     cognito: {
       userPoolId: process.env.COGNITO_USER_POOL_ID,
-      clientId: process.env.COGNITO_CLIENT_ID
-    }
+      clientId: process.env.COGNITO_CLIENT_ID,
+    },
   };
 
   if (environment === 'development') {
@@ -49,7 +49,7 @@ module.exports = function(environment) {
 
     ENV.cognito = {
       userPoolId: 'DUMMY-USER-POOL-ID',
-      clientId: 'DUMMY-CLIENT-ID'
+      clientId: 'DUMMY-CLIENT-ID',
     };
   }
 
