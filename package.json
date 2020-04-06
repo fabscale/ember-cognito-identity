@@ -29,7 +29,7 @@
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",
     "@types/amazon-cognito-auth-js": "^1.2.2",
-    "amazon-cognito-identity-js": "^3.2.6",
+    "amazon-cognito-identity-js": "^4.2.0",
     "broccoli-funnel": "^3.0.2",
     "broccoli-merge-trees": "^4.1.0",
     "ember-auto-import": "^1.5.3",
