@@ -2,15 +2,11 @@
 
 Interact with AWS Cognito from your Ember app.
 
-Compatibility
-------------------------------------------------------------------------------
+## Compatibility
 
-Requires Ember 3.13+, as it uses `@tracked` and glimmer components.
-
-* Ember.js v3.13 or above
-* Ember CLI v2.13 or above
-* Node.js v10 or above
-
+- Ember.js v3.16 or above
+- Ember CLI v2.13 or above
+- Node.js v10 or above
 
 ## Installation
 
@@ -26,7 +22,6 @@ COGNITO_CLIENT_ID=YY
 ```
 
 And add this to your `config/environment.js`:
-
 
 ```
 cognito: {
@@ -61,7 +56,7 @@ export default class ApplicationRoute extends Route {
       // go to login...
     }
   }
-};
+}
 ```
 
 ## Cognito service
@@ -158,7 +153,7 @@ so calling `settled()` will wait for them to complete.
 ```js
 import { mockCognito } from '@fabscale/ember-cognito-identity/test-support/helpers/mock-cognito';
 
-test('test helper correctly mocks a cognito session', async function(assert) {
+test('test helper correctly mocks a cognito session', async function (assert) {
   mockCognito(this, { accessToken: 'TEST-ACCESS-TOKEN' });
 
   await visit('/');
@@ -190,31 +185,31 @@ import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support
 import {
   setupPretenderSuccessfulLogin,
   setupPretenderInvalidPassword,
-  setupPretenderNeedsInitialPassword
+  setupPretenderNeedsInitialPassword,
 } from '@fabscale/ember-cognito-identity/test-support/pretender/login';
 import { setupPretenderResetPassword } from '@fabscale/ember-cognito-identity/test-support/pretender/reset-password';
 
-module('test cognito processes', function(hooks) {
+module('test cognito processes', function (hooks) {
   setupCognitoMocks(hooks);
 
-  test('test login', async function(assert) {
+  test('test login', async function (assert) {
     setupPretenderSuccessfulLogin(this);
     let { cognitoAccessToken } = this;
 
     // Now fill into login fields and submit the form, at the end the `cognitoAccessToken` will be set
   });
 
-  test('test failed login', async function(assert) {
+  test('test failed login', async function (assert) {
     setupPretenderInvalidPassword(this);
     // ...
   });
 
-  test('test user with required password change', async function(assert) {
+  test('test user with required password change', async function (assert) {
     setupPretenderNeedsInitialPassword(this);
     // ...
   });
 
-  test('resetting password', async function(assert) {
+  test('resetting password', async function (assert) {
     setupPretenderResetPassword(this);
     // ...
   });
@@ -231,8 +226,8 @@ In this case, you can set up the Cognito mocks like this:
 ```js
 import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
 
-module('test cognito processes', function(hooks) {
-  hooks.beforeEach(function() {
+module('test cognito processes', function (hooks) {
+  hooks.beforeEach(function () {
     this.cognitoPretenderServer = this.server;
   });
   setupCognitoMocks(hooks);
