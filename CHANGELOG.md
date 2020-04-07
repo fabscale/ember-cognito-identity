@@ -1,3 +1,18 @@
+# [1.0.0](https://github.com/fabscale/ember-cognito-identity/compare/0.11.0...1.0.0) (2020-04-07)
+
+
+* chore!: Drop support for ember-source@3.13 ([e42fbcc](https://github.com/fabscale/ember-cognito-identity/commit/e42fbccec6b2652e26ed7a6dedefb9f983f864d2))
+
+
+### Bug Fixes
+
+* Ensure to use RSVPPromise everywhere ([0bc6a28](https://github.com/fabscale/ember-cognito-identity/commit/0bc6a28b5c6417b9e27880f78f76c33812babcd0))
+
+
+### BREAKING CHANGES
+
+* Changed support
+
 # [0.11.0](https://github.com/fabscale/ember-cognito-identity/compare/0.10.2...0.11.0) (2020-02-25)
 
 
