@@ -4,33 +4,33 @@ on: [push]
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - uses: volta-cli/action@v1
-    - uses: mydea/actions-ember-testing@v2
-    - name: Install dependencies
-      run: yarn install
-    - name: Setup dummy .env file
-      run: touch .env
-    - name: Run tests
-      run: yarn test
-    - name: Lint
-      run: |
-        yarn lint:js
-        yarn lint:hbs
-        yarn tsc
+      - uses: actions/checkout@v1
+      - uses: volta-cli/action@v1
+      - uses: mydea/actions-ember-testing@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Setup dummy .env file
+        run: touch .env
+      - name: Run tests
+        run: yarn test
+      - name: Lint
+        run: |
+          yarn lint:js
+          yarn lint:hbs
+          yarn tsc
 
   test-matrix:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         # Keep this in sync with config/ember-try.js
-        ember: [ember-3.13, ember-release, ember-beta, ember-canary]
+        # Note: For now, we do not test older versions,
+        # as the addon is private and our app(s) are on latest ember-source
+        ember: [ember-release, ember-beta, ember-canary]
 
     steps:
       - uses: actions/checkout@v1
