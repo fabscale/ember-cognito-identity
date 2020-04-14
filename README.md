@@ -6,7 +6,7 @@ Interact with AWS Cognito from your Ember app.
 
 - Ember.js v3.16 or above
 - Ember CLI v2.13 or above
-- Node.js v10 or above
+- Node.js v12 or above
 
 ## Installation
 

@@ -84,7 +84,7 @@
     "typescript": "~3.7.5"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": ">= 12"
   },
   "ember": {
     "edition": "octane"
@@ -96,7 +96,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "volta": {
-    "node": "12.13.1",
-    "yarn": "1.21.1"
+    "node": "12.16.2",
+    "yarn": "1.22.4"
   }
 }
