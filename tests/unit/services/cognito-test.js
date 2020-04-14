@@ -1,9 +1,9 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
-import { setupPretenderSuccessfulLogin } from '@fabscale/ember-cognito-identity/test-support/pretender/login';
+import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
+import { setupPretenderSuccessfulLogin } from 'ember-cognito-identity/test-support/pretender/login';
 import { resetOnerror, setupOnerror } from '@ember/test-helpers';
-import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
+import { CognitoError } from 'ember-cognito-identity/errors/cognito';
 
 module('Unit | Service | cognito', function (hooks) {
   setupTest(hooks);

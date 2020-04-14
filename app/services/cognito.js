@@ -1,1 +1,1 @@
-export { default } from '@fabscale/ember-cognito-identity/services/cognito';
+export { default } from 'ember-cognito-identity/services/cognito';

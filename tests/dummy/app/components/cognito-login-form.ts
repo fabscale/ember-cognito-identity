@@ -3,11 +3,11 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import {
   CognitoError,
-  NewPasswordRequiredError
-} from '@fabscale/ember-cognito-identity/errors/cognito';
+  NewPasswordRequiredError,
+} from 'ember-cognito-identity/errors/cognito';
 import { dropTask } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
-import CognitoService from '@fabscale/ember-cognito-identity/services/cognito';
+import CognitoService from 'ember-cognito-identity/services/cognito';
 import RouterService from '@ember/routing/router-service';
 
 export default class CognitoLoginForm extends Component {

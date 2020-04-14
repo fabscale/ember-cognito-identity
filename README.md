@@ -11,7 +11,7 @@ Interact with AWS Cognito from your Ember app.
 ## Installation
 
 ```
-ember install @fabscale/ember-cognito-identity
+ember install ember-cognito-identity
 ```
 
 This expects an .env file (via [ember-cli-dotenv](https://github.com/fivetanley/ember-cli-dotenv) or similar), with the env. variables:
@@ -151,7 +151,7 @@ so calling `settled()` will wait for them to complete.
 ### Mocking a logged in state
 
 ```js
-import { mockCognito } from '@fabscale/ember-cognito-identity/test-support/helpers/mock-cognito';
+import { mockCognito } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
 
 test('test helper correctly mocks a cognito session', async function (assert) {
   mockCognito(this, { accessToken: 'TEST-ACCESS-TOKEN' });
@@ -181,13 +181,13 @@ Using this requires some additional setup in your application:
 This will not add anything to your production build.
 
 ```js
-import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
+import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
 import {
   setupPretenderSuccessfulLogin,
   setupPretenderInvalidPassword,
   setupPretenderNeedsInitialPassword,
-} from '@fabscale/ember-cognito-identity/test-support/pretender/login';
-import { setupPretenderResetPassword } from '@fabscale/ember-cognito-identity/test-support/pretender/reset-password';
+} from 'ember-cognito-identity/test-support/pretender/login';
+import { setupPretenderResetPassword } from 'ember-cognito-identity/test-support/pretender/reset-password';
 
 module('test cognito processes', function (hooks) {
   setupCognitoMocks(hooks);
@@ -224,7 +224,7 @@ If you use ember-cli-mirage, that will conflict with the mirage pretender server
 In this case, you can set up the Cognito mocks like this:
 
 ```js
-import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
+import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
 
 module('test cognito processes', function (hooks) {
   hooks.beforeEach(function () {

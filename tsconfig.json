@@ -25,12 +25,10 @@
     "paths": {
       "dummy/tests/*": ["tests/*"],
       "dummy/*": ["tests/dummy/app/*", "app/*"],
-      "@fabscale/ember-cognito-identity": ["addon"],
-      "@fabscale/ember-cognito-identity/*": ["addon/*"],
-      "@fabscale/ember-cognito-identity/test-support": ["addon-test-support"],
-      "@fabscale/ember-cognito-identity/test-support/*": [
-        "addon-test-support/*"
-      ],
+      "ember-cognito-identity": ["addon"],
+      "ember-cognito-identity/*": ["addon/*"],
+      "ember-cognito-identity/test-support": ["addon-test-support"],
+      "ember-cognito-identity/test-support/*": ["addon-test-support/*"],
       "*": ["types/*"]
     }
   },
