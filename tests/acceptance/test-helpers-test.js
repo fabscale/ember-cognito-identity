@@ -9,15 +9,15 @@ import {
   setupOnerror,
 } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import { mockCognito } from '@fabscale/ember-cognito-identity/test-support/helpers/mock-cognito';
-import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
+import { mockCognito } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
+import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
 import {
   setupPretenderSuccessfulLogin,
   setupPretenderInvalidPassword,
   setupPretenderNeedsInitialPassword,
-} from '@fabscale/ember-cognito-identity/test-support/pretender/login';
-import { setupPretenderResetPassword } from '@fabscale/ember-cognito-identity/test-support/pretender/reset-password';
-import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
+} from 'ember-cognito-identity/test-support/pretender/login';
+import { setupPretenderResetPassword } from 'ember-cognito-identity/test-support/pretender/reset-password';
+import { CognitoError } from 'ember-cognito-identity/errors/cognito';
 
 module('Acceptance | test helpers', function (hooks) {
   setupApplicationTest(hooks);

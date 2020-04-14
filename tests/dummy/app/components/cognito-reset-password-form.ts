@@ -4,9 +4,9 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency-decorators';
 import { or } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
-import CognitoService from '@fabscale/ember-cognito-identity/services/cognito';
+import CognitoService from 'ember-cognito-identity/services/cognito';
 import RouterService from '@ember/routing/router-service';
-import { CognitoError } from '@fabscale/ember-cognito-identity/errors/cognito';
+import { CognitoError } from 'ember-cognito-identity/errors/cognito';
 
 interface Args {
   username?: 'string';
@@ -59,7 +59,7 @@ export default class CognitoResetPasswordForm extends Component<Args> {
   *resetPasswordTask({
     username,
     password,
-    verificationCode
+    verificationCode,
   }: {
     username: string;
     password: string;
@@ -77,7 +77,7 @@ export default class CognitoResetPasswordForm extends Component<Args> {
       yield cognito.updateResetPassword({
         username,
         code: verificationCode,
-        newPassword: password
+        newPassword: password,
       });
       yield cognito.authenticate({ username, password });
     } catch (error) {

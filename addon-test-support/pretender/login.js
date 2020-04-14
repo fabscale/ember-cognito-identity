@@ -1,4 +1,4 @@
-import { createJWTToken } from '@fabscale/ember-cognito-identity/test-support/helpers/create-jwt-token';
+import { createJWTToken } from 'ember-cognito-identity/test-support/helpers/create-jwt-token';
 
 export function setupPretenderSuccessfulLogin(
   context,

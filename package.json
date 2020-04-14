@@ -1,5 +1,5 @@
 {
-  "name": "@fabscale/ember-cognito-identity",
+  "name": "ember-cognito-identity",
   "version": "1.0.0",
   "description": "Interact with AWS Cognito from your Ember app.",
   "keywords": [
@@ -84,7 +84,7 @@
     "typescript": "~3.7.5"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": ">= 12"
   },
   "ember": {
     "edition": "octane"
@@ -92,11 +92,8 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "volta": {
-    "node": "12.13.1",
-    "yarn": "1.21.1"
+    "node": "12.16.2",
+    "yarn": "1.22.4"
   }
 }

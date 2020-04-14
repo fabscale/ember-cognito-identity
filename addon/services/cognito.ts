@@ -4,8 +4,8 @@ import { Promise as RSVPPromise } from 'rsvp';
 import {
   AmazonCognitoIdentityJsError,
   dispatchError,
-  NewPasswordRequiredError
-} from '@fabscale/ember-cognito-identity/errors/cognito';
+  NewPasswordRequiredError,
+} from 'ember-cognito-identity/errors/cognito';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { waitForPromise } from 'ember-test-waiters';
@@ -16,7 +16,7 @@ import {
   AuthenticationDetails,
   CognitoUser,
   ICognitoUserAttributeData,
-  CognitoUserSession
+  CognitoUserSession,
 } from 'amazon-cognito-identity-js';
 import RouterService from '@ember/routing/router-service';
 import { restartableTask } from 'ember-concurrency-decorators';
@@ -83,7 +83,7 @@ export default class CognitoService extends Service {
     let poolData = {
       UserPoolId: userPoolId,
       ClientId: clientId,
-      Storage: this._cognitoStorage
+      Storage: this._cognitoStorage,
     };
 
     this._userPool = new CognitoUserPool(poolData);
@@ -166,7 +166,7 @@ export default class CognitoService extends Service {
                 cognitoUser,
                 userAttributes,
                 cognitoUserSession,
-                jwtToken
+                jwtToken,
               };
 
               this.cognitoData = cognitoData;
@@ -194,7 +194,7 @@ export default class CognitoService extends Service {
 
   async authenticate({
     username,
-    password
+    password,
   }: {
     username: string;
     password: string;
@@ -219,7 +219,7 @@ export default class CognitoService extends Service {
   _authenticate({
     username,
     password,
-    cognitoUser
+    cognitoUser,
   }: {
     username: string;
     password: string;
@@ -231,7 +231,7 @@ export default class CognitoService extends Service {
 
     let authenticationData = {
       Username: username,
-      Password: password
+      Password: password,
     };
     let authenticationDetails = new AuthenticationDetails(authenticationData);
 
@@ -251,7 +251,7 @@ export default class CognitoService extends Service {
 
         onFailure(err) {
           reject(dispatchError(err));
-        }
+        },
       });
     });
 
@@ -282,7 +282,7 @@ export default class CognitoService extends Service {
 
         onFailure(err) {
           reject(dispatchError(err));
-        }
+        },
       });
     });
 
@@ -301,7 +301,7 @@ export default class CognitoService extends Service {
 
         onFailure(err) {
           reject(dispatchError(err));
-        }
+        },
       });
     });
 
@@ -317,7 +317,7 @@ export default class CognitoService extends Service {
   updateResetPassword({
     username,
     code,
-    newPassword
+    newPassword,
   }: {
     username: string;
     code: string;
@@ -339,7 +339,7 @@ export default class CognitoService extends Service {
           }
 
           reject(dispatchError(error));
-        }
+        },
       });
     });
 
@@ -355,7 +355,7 @@ export default class CognitoService extends Service {
     {
       username,
       password,
-      newPassword
+      newPassword,
     }: { username: string; password: string; newPassword: string },
     newAttributes = {}
   ): Promise<any> {
@@ -378,7 +378,7 @@ export default class CognitoService extends Service {
 
             onFailure(err) {
               reject(dispatchError(err));
-            }
+            },
           });
         }
       );
@@ -390,7 +390,7 @@ export default class CognitoService extends Service {
 
   updatePassword({
     oldPassword,
-    newPassword
+    newPassword,
   }: {
     oldPassword: string;
     newPassword: string;
@@ -403,7 +403,7 @@ export default class CognitoService extends Service {
     let { cognitoUser } = this.cognitoData;
 
     let promise = new RSVPPromise((resolve, reject) => {
-      cognitoUser.changePassword(oldPassword, newPassword, function(error) {
+      cognitoUser.changePassword(oldPassword, newPassword, function (error) {
         if (error) {
           return reject(dispatchError(error));
         }
@@ -429,7 +429,7 @@ export default class CognitoService extends Service {
     ).map((attributeName) => {
       return {
         Name: attributeName,
-        Value: attributes[attributeName]
+        Value: attributes[attributeName],
       };
     });
 
@@ -468,7 +468,7 @@ export default class CognitoService extends Service {
     let userData = {
       Username: username,
       Pool: userPool,
-      Storage: storage
+      Storage: storage,
     };
 
     return new CognitoUser(userData);

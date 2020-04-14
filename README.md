@@ -2,23 +2,19 @@
 
 Interact with AWS Cognito from your Ember app.
 
+This uses `amazon-cognito-identity-js` under the hood, which is considerably smaller in footprint than the quite enormous AWS Amplify SDK.
+If all you need is a way to work with the JWT tokens priovded by Cognito, then this addon is perfect for you.
+
 ## Compatibility
 
 - Ember.js v3.16 or above
 - Ember CLI v2.13 or above
-- Node.js v10 or above
+- Node.js v12 or above
 
 ## Installation
 
 ```
-ember install @fabscale/ember-cognito-identity
-```
-
-This expects an .env file (via [ember-cli-dotenv](https://github.com/fivetanley/ember-cli-dotenv) or similar), with the env. variables:
-
-```
-COGNITO_USER_POOL_ID=XX
-COGNITO_CLIENT_ID=YY
+ember install ember-cognito-identity
 ```
 
 And add this to your `config/environment.js`:
@@ -30,11 +26,11 @@ cognito: {
 }
 ```
 
+You can configure these e.g. via an .env file, for example via [ember-cli-dotenv](https://github.com/fivetanley/ember-cli-dotenv).
+
 ## Usage
 
 This addon provides a `cognito` service with some methods to be used to work with AWS Cognito.
-In addition, it also provides two contextual & customizable components
-to handle the more complex cases of login & password reset.
 
 Generally, your should call `cognito.restoreAndLoad()` in your application route.
 This will try to fetch an active user session from local storage and refresh the token, if necessary.
@@ -57,6 +53,26 @@ export default class ApplicationRoute extends Route {
     }
   }
 }
+```
+
+After logging in (see below) you can access the JTW token like this:
+
+```js
+let token = this.cognito.cognitoData.jwtToken;
+```
+
+Here is a summary of the most important available methods - all methods return a promise:
+
+```js
+cognito.restoreAndLoad();
+cognito.authenticate({ username, password });
+cognito.logout();
+cognito.invalidateAccessTokens();
+cognito.triggerResetPasswordMail({ username });
+cognito.updateResetPassword({ username, code, newPassword });
+cognito.setNewPassword({ username, password, newPassword });
+cognito.updatePassword({ oldPassword, newPassword });
+cognito.updateAttributes(attributeMap);
 ```
 
 ## Cognito service
@@ -137,6 +153,11 @@ Update the password of the currently logged in user.
 
 Returns a promise.
 
+## Token expiration
+
+This addon will automatically refresh the JWT Token every 45 minutes.
+The tokens have a lifespan of 60 minutes, so this should ensure that the local token never experies in the middle of a session.
+
 ## Example
 
 You can find example components in the dummy app to see how a concrete implementation could look like.
@@ -151,7 +172,7 @@ so calling `settled()` will wait for them to complete.
 ### Mocking a logged in state
 
 ```js
-import { mockCognito } from '@fabscale/ember-cognito-identity/test-support/helpers/mock-cognito';
+import { mockCognito } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
 
 test('test helper correctly mocks a cognito session', async function (assert) {
   mockCognito(this, { accessToken: 'TEST-ACCESS-TOKEN' });
@@ -181,13 +202,13 @@ Using this requires some additional setup in your application:
 This will not add anything to your production build.
 
 ```js
-import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
+import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
 import {
   setupPretenderSuccessfulLogin,
   setupPretenderInvalidPassword,
   setupPretenderNeedsInitialPassword,
-} from '@fabscale/ember-cognito-identity/test-support/pretender/login';
-import { setupPretenderResetPassword } from '@fabscale/ember-cognito-identity/test-support/pretender/reset-password';
+} from 'ember-cognito-identity/test-support/pretender/login';
+import { setupPretenderResetPassword } from 'ember-cognito-identity/test-support/pretender/reset-password';
 
 module('test cognito processes', function (hooks) {
   setupCognitoMocks(hooks);
@@ -224,7 +245,7 @@ If you use ember-cli-mirage, that will conflict with the mirage pretender server
 In this case, you can set up the Cognito mocks like this:
 
 ```js
-import { setupCognitoMocks } from '@fabscale/ember-cognito-identity/test-support/pretender';
+import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
 
 module('test cognito processes', function (hooks) {
   hooks.beforeEach(function () {
