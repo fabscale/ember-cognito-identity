@@ -30,9 +30,7 @@ jobs:
     strategy:
       matrix:
         # Keep this in sync with config/ember-try.js
-        # Note: For now, we do not test older versions,
-        # as the addon is private and our app(s) are on latest ember-source
-        ember: [ember-release, ember-beta, ember-canary]
+        ember: [ember-lts-3.16, ember-release, ember-beta, ember-canary]
 
     steps:
       - uses: actions/checkout@v1
