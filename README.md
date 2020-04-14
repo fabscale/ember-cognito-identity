@@ -2,6 +2,9 @@
 
 Interact with AWS Cognito from your Ember app.
 
+This uses `amazon-cognito-identity-js` under the hood, which is considerably smaller in footprint than the quite enormous AWS Amplify SDK.
+If all you need is a way to work with the JWT tokens priovded by Cognito, then this addon is perfect for you.
+
 ## Compatibility
 
 - Ember.js v3.16 or above
@@ -14,13 +17,6 @@ Interact with AWS Cognito from your Ember app.
 ember install ember-cognito-identity
 ```
 
-This expects an .env file (via [ember-cli-dotenv](https://github.com/fivetanley/ember-cli-dotenv) or similar), with the env. variables:
-
-```
-COGNITO_USER_POOL_ID=XX
-COGNITO_CLIENT_ID=YY
-```
-
 And add this to your `config/environment.js`:
 
 ```
@@ -30,11 +26,11 @@ cognito: {
 }
 ```
 
+You can configure these e.g. via an .env file, for example via [ember-cli-dotenv](https://github.com/fivetanley/ember-cli-dotenv).
+
 ## Usage
 
 This addon provides a `cognito` service with some methods to be used to work with AWS Cognito.
-In addition, it also provides two contextual & customizable components
-to handle the more complex cases of login & password reset.
 
 Generally, your should call `cognito.restoreAndLoad()` in your application route.
 This will try to fetch an active user session from local storage and refresh the token, if necessary.
@@ -57,6 +53,26 @@ export default class ApplicationRoute extends Route {
     }
   }
 }
+```
+
+After logging in (see below) you can access the JTW token like this:
+
+```js
+let token = this.cognito.cognitoData.jwtToken;
+```
+
+Here is a summary of the most important available methods - all methods return a promise:
+
+```js
+cognito.restoreAndLoad();
+cognito.authenticate({ username, password });
+cognito.logout();
+cognito.invalidateAccessTokens();
+cognito.triggerResetPasswordMail({ username });
+cognito.updateResetPassword({ username, code, newPassword });
+cognito.setNewPassword({ username, password, newPassword });
+cognito.updatePassword({ oldPassword, newPassword });
+cognito.updateAttributes(attributeMap);
 ```
 
 ## Cognito service
@@ -136,6 +152,11 @@ Returns a promise.
 Update the password of the currently logged in user.
 
 Returns a promise.
+
+## Token expiration
+
+This addon will automatically refresh the JWT Token every 45 minutes.
+The tokens have a lifespan of 60 minutes, so this should ensure that the local token never experies in the middle of a session.
 
 ## Example
 
