@@ -1,3 +1,5 @@
+# [1.1.0](https://github.com/fabscale/ember-cognito-identity/compare/1.0.0...1.1.0) (2020-04-14)
+
 # [1.0.0](https://github.com/fabscale/ember-cognito-identity/compare/0.11.0...1.0.0) (2020-04-07)
 
 
