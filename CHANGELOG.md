@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/fabscale/ember-cognito-identity/compare/1.1.0...1.2.0) (2020-04-15)
+
+
+### Features
+
+* Handle resetting password for inactive user ([e7f202b](https://github.com/fabscale/ember-cognito-identity/commit/e7f202b642c65a8d04f1ebd63a41de5643b87b79))
+
 # [1.1.0](https://github.com/fabscale/ember-cognito-identity/compare/1.0.0...1.1.0) (2020-04-14)
 
 # [1.0.0](https://github.com/fabscale/ember-cognito-identity/compare/0.11.0...1.0.0) (2020-04-07)
