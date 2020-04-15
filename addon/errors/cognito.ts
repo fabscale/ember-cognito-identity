@@ -68,6 +68,13 @@ export class VerificationCodeMismatchError extends CognitoError {
   }
 }
 
+export class VerificationCodeExpiredError extends CognitoError {
+  constructor(error: AmazonCognitoIdentityJsError) {
+    super(error, 'The verification code is expired, please request a new one.');
+    this.name = 'VerificationCodeExpiredError';
+  }
+}
+
 export class InvalidPasswordError extends CognitoError {
   constructor(error: AmazonCognitoIdentityJsError) {
     super(error);
@@ -83,7 +90,7 @@ export function dispatchError(error: AmazonCognitoIdentityJsError) {
     InvalidPasswordException: InvalidPasswordError,
     InvalidParameterException: InvalidPasswordError,
     UserNotFoundException: UserNotFoundError,
-    ExpiredCodeException: VerificationCodeMismatchError,
+    ExpiredCodeException: VerificationCodeExpiredError,
   };
 
   if (!error || typeof error !== 'object') {
