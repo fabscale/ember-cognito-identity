@@ -10,13 +10,20 @@ export class CognitoError extends Error {
   name: string;
   _error: AmazonCognitoIdentityJsError;
 
-  constructor(error: string | AmazonCognitoIdentityJsError, message?: string) {
+  constructor(
+    error: string | AmazonCognitoIdentityJsError | null,
+    message?: string
+  ) {
     if (typeof error === 'string') {
       message = error;
       error = { message, name: 'CognitoError' };
     }
 
-    let humanMessage = message || error.message;
+    if (!error || typeof error !== 'object') {
+      error = { message: 'An error has occurred.', name: 'CognitoError' };
+    }
+
+    let humanMessage = message || error.message || 'An error has occurred.';
 
     super(humanMessage);
 
@@ -27,6 +34,7 @@ export class CognitoError extends Error {
   }
 }
 
+// Note: This error is never thrown by dispatchError, but only manually in cognito._authenticate()
 export class NewPasswordRequiredError extends CognitoError {
   userAttributes: Object;
   requiredAttributes: Object;
@@ -82,6 +90,16 @@ export class InvalidPasswordError extends CognitoError {
   }
 }
 
+export class PasswordCannotBeResetError extends CognitoError {
+  constructor(error: AmazonCognitoIdentityJsError) {
+    super(
+      error,
+      'The user you are trying to reset the password for is not active.'
+    );
+    this.name = 'PasswordCannotBeResetError';
+  }
+}
+
 export function dispatchError(error: AmazonCognitoIdentityJsError) {
   let errorMap = {
     PasswordResetRequiredException: PasswordResetRequiredError,
@@ -94,7 +112,7 @@ export function dispatchError(error: AmazonCognitoIdentityJsError) {
   };
 
   if (!error || typeof error !== 'object') {
-    return error;
+    return new CognitoError(error);
   }
 
   // @ts-ignore
@@ -106,6 +124,14 @@ export function dispatchError(error: AmazonCognitoIdentityJsError) {
     error.message === 'A client attempted to write unauthorized attribute'
   ) {
     ErrorType = CognitoError;
+  }
+
+  // Special case: When requesting password reset, this can be thrown
+  if (
+    ErrorType === InvalidAuthorizationError &&
+    error.message === 'User password cannot be reset in the current state.'
+  ) {
+    ErrorType = PasswordCannotBeResetError;
   }
 
   return ErrorType ? new ErrorType(error) : new CognitoError(error);
