@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "ember build --environment=production",
-    "run-prettier": "prettier --write \"**/*.{js,scss}\"",
+    "run-prettier": "prettier --write \"**/*.{js,ts,scss}\"",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
     "start": "ember serve",

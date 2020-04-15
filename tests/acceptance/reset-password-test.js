@@ -706,7 +706,7 @@ module('Acceptance | reset-password', function (hooks) {
       assert.notOk(cognito.isAuthenticated, 'user is not authenticated');
       assert
         .dom('[data-test-cognito-error]')
-        .hasText('Invalid verification code provided, please try again.');
+        .hasText('The verification code is expired, please request a new one.');
 
       assert.verifySteps(['ConfirmForgotPassword is called']);
     });

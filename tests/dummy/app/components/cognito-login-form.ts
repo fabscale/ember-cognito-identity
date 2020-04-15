@@ -28,7 +28,7 @@ export default class CognitoLoginForm extends Component {
       username,
       password,
       newPassword,
-      mustEnterNewPassword
+      mustEnterNewPassword,
     } = this;
 
     this.error = null;
