@@ -83,7 +83,7 @@ export function dispatchError(error: AmazonCognitoIdentityJsError) {
     InvalidPasswordException: InvalidPasswordError,
     InvalidParameterException: InvalidPasswordError,
     UserNotFoundException: UserNotFoundError,
-    ExpiredCodeException: VerificationCodeMismatchError
+    ExpiredCodeException: VerificationCodeMismatchError,
   };
 
   if (!error || typeof error !== 'object') {
