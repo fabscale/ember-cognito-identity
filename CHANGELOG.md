@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/fabscale/ember-cognito-identity/compare/1.2.0...1.2.1) (2020-05-12)
+
+
+### Bug Fixes
+
+* Remove duplicate lib inclusion ([f5664b3](https://github.com/fabscale/ember-cognito-identity/commit/f5664b3597e2ca72038e4abf4a51e67e251d14fe))
+
 # [1.2.0](https://github.com/fabscale/ember-cognito-identity/compare/1.1.0...1.2.0) (2020-04-15)
 
 
