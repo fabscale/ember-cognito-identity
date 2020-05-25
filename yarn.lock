@@ -5358,10 +5358,10 @@ ember-cli-dependency-checker@~3.2.0:
     resolve "^1.5.0"
     semver "^5.3.0"
 
-ember-cli-dotenv@~3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-dotenv/-/ember-cli-dotenv-3.0.1.tgz#f079183b40323738a21a9bcc9f06187b8adb0257"
-  integrity sha512-ZXxfevLHQfaNxABShJa3ZhiTIQT/Wz54MiPaBHahJ+9CVSwB9iQOMVNOII9pnQ367TJ5WdLKrS9+FGQu/KQaGA==
+ember-cli-dotenv@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-dotenv/-/ember-cli-dotenv-3.1.0.tgz#fbb44fdc4140acd05c712f3fa32f05192007361f"
+  integrity sha512-OQ0PFQvedzeKepYDMuT8fU6dVEpieWSM3/ARlcuyO0ck+nQJ1i0m89kM1ooWAQpvUYQAJKNun1x8s38EvkEWRA==
   dependencies:
     dotenv "^8.0.0"
     ember-cli-babel "^7.1.2"
