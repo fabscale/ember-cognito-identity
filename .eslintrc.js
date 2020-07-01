@@ -73,18 +73,15 @@ module.exports = {
         node: true,
       },
       plugins: ['node'],
-      rules: Object.assign(
-        {},
-        require('eslint-plugin-node').configs.recommended.rules,
-        {
-          'ember-suave/lines-between-object-properties': 0,
-        }
-      ),
+      extends: ['plugin:node/recommended'],
+      rules: {
+        'ember-suave/lines-between-object-properties': 0,
+      },
     },
     {
       files: ['tests/**/*.js'],
       rules: {
-        'ember/avoid-leaking-state-in-ember-objects': 'off',
+        'ember/avoid-leaking-state-in-ember-objects': 0,
       },
     },
   ],
