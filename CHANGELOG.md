@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/fabscale/ember-cognito-identity/compare/1.3.0...1.4.0) (2020-09-01)
+
+
+### Features
+
+* Allow to specify custom `endpoint` for user pool ([1b0fae3](https://github.com/fabscale/ember-cognito-identity/commit/1b0fae3e7fb1ea07881ad4fb4cf7381dc46211e3))
+
 # [1.3.0](https://github.com/fabscale/ember-cognito-identity/compare/1.2.2...1.3.0) (2020-06-22)
 
 ## [1.2.2](https://github.com/fabscale/ember-cognito-identity/compare/1.2.1...1.2.2) (2020-06-09)
