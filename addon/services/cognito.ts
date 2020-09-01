@@ -69,7 +69,7 @@ export default class CognitoService extends Service {
       'A `cognito` configuration object needs to be defined in config/environment.js',
       this.config
     );
-    let { userPoolId, clientId } = this.config;
+    let { userPoolId, clientId, endpoint } = this.config;
 
     assert(
       '`userPoolId` must be specified in the `cognito` configuration in config/environment.js',
@@ -84,6 +84,7 @@ export default class CognitoService extends Service {
       UserPoolId: userPoolId,
       ClientId: clientId,
       Storage: this._cognitoStorage,
+      endpoint,
     };
 
     this._userPool = new CognitoUserPool(poolData);
