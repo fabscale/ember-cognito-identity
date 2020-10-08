@@ -1,3 +1,5 @@
+import { UserAttributes } from "ember-cognito-identity/services/cognito";
+
 export interface AmazonCognitoIdentityJsError {
   message: string;
   name: string;
@@ -36,10 +38,10 @@ export class CognitoError extends Error {
 
 // Note: This error is never thrown by dispatchError, but only manually in cognito._authenticate()
 export class NewPasswordRequiredError extends CognitoError {
-  userAttributes: Object;
-  requiredAttributes: Object;
+  userAttributes: UserAttributes;
+  requiredAttributes: UserAttributes;
 
-  constructor(userAttributes: Object, requiredAttributes: Object) {
+  constructor(userAttributes: UserAttributes, requiredAttributes: UserAttributes) {
     super('A new password must be set.');
 
     this.name = 'NewPasswordRequiredError';

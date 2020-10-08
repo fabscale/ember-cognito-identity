@@ -12,8 +12,8 @@ export default class CognitoResetPasswordFormUpdatePassword extends Component<
   Args
 > {
   // Properties
-  @tracked currentVerificationCode: string;
-  @tracked password: string;
+  @tracked currentVerificationCode?: string;
+  @tracked password?: string;
 
   constructor(owner: any, args: Args) {
     super(owner, args);
