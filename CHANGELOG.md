@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/fabscale/ember-cognito-identity/compare/1.4.0...1.5.0) (2020-10-08)
+
+
+### Features
+
+* Ensure better type safety ([66b5550](https://github.com/fabscale/ember-cognito-identity/commit/66b5550a408327149756ca602a0b843e114982fb))
+
 # [1.4.0](https://github.com/fabscale/ember-cognito-identity/compare/1.3.0...1.4.0) (2020-09-01)
 
 
