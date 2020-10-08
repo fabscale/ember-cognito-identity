@@ -7,7 +7,9 @@ import {
 } from 'ember-cognito-identity/errors/cognito';
 import { dropTask } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
-import CognitoService from 'ember-cognito-identity/services/cognito';
+import CognitoService, {
+  UserAttributes,
+} from 'ember-cognito-identity/services/cognito';
 import RouterService from '@ember/routing/router-service';
 
 export default class CognitoLoginForm extends Component {
@@ -66,7 +68,9 @@ export default class CognitoLoginForm extends Component {
 
   // This can be overwritten
   // eslint-disable-next-line no-unused-vars
-  _getNewPasswordAttributes(_options: Object): undefined | Object {
+  _getNewPasswordAttributes(
+    _options: UserAttributes
+  ): undefined | UserAttributes {
     return undefined;
   }
 

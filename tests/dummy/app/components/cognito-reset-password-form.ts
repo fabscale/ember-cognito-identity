@@ -18,9 +18,9 @@ export default class CognitoResetPasswordForm extends Component<Args> {
   @service router: RouterService;
 
   // Properties
-  @tracked password: string;
-  @tracked selectedUsername: string;
-  @tracked selectedVerificationCode: string;
+  @tracked password?: string;
+  @tracked selectedUsername?: string;
+  @tracked selectedVerificationCode?: string;
   @tracked error: CognitoError | null;
   @tracked showPasswordForm: boolean = false;
 
