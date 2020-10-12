@@ -1,4 +1,4 @@
-import { UserAttributes } from "ember-cognito-identity/services/cognito";
+import { UserAttributes } from 'ember-cognito-identity/services/cognito';
 
 export interface AmazonCognitoIdentityJsError {
   message: string;
@@ -36,12 +36,19 @@ export class CognitoError extends Error {
   }
 }
 
+export class CognitoNotAuthenticatedError extends Error {
+  message = 'You are not signed in.';
+}
+
 // Note: This error is never thrown by dispatchError, but only manually in cognito._authenticate()
 export class NewPasswordRequiredError extends CognitoError {
   userAttributes: UserAttributes;
   requiredAttributes: UserAttributes;
 
-  constructor(userAttributes: UserAttributes, requiredAttributes: UserAttributes) {
+  constructor(
+    userAttributes: UserAttributes,
+    requiredAttributes: UserAttributes
+  ) {
     super('A new password must be set.');
 
     this.name = 'NewPasswordRequiredError';
