@@ -3,11 +3,30 @@ import { setupTest } from 'ember-qunit';
 import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
 import { setupPretenderSuccessfulLogin } from 'ember-cognito-identity/test-support/pretender/login';
 import { resetOnerror, setupOnerror } from '@ember/test-helpers';
-import { CognitoError } from 'ember-cognito-identity/errors/cognito';
+import {
+  CognitoError,
+  CognitoNotAuthenticatedError,
+} from 'ember-cognito-identity/errors/cognito';
 
 module('Unit | Service | cognito', function (hooks) {
   setupTest(hooks);
   setupCognitoMocks(hooks);
+
+  test('restoreAndLoad rejects with null if not signed in', async function (assert) {
+    let service = this.owner.lookup('service:cognito');
+
+    try {
+      await service.restoreAndLoad();
+    } catch (error) {
+      assert.step('restoreAndLoad rejects');
+      assert.ok(
+        error instanceof CognitoNotAuthenticatedError,
+        'it rejects with an CognitoNotAuthenticatedError'
+      );
+    }
+
+    assert.verifySteps(['restoreAndLoad rejects']);
+  });
 
   module('updateAttributes', function (hooks) {
     hooks.beforeEach(async function () {

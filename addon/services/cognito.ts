@@ -1,8 +1,9 @@
 import Service, { inject as service } from '@ember/service';
 import { bool } from '@ember/object/computed';
-import { Promise as RSVPPromise } from 'rsvp';
+import { Promise as RSVPPromise, reject } from 'rsvp';
 import {
   AmazonCognitoIdentityJsError,
+  CognitoNotAuthenticatedError,
   dispatchError,
   NewPasswordRequiredError,
 } from 'ember-cognito-identity/errors/cognito';
@@ -147,7 +148,7 @@ export default class CognitoService extends Service {
 
     let cognitoUser = userPool.getCurrentUser();
     if (!cognitoUser) {
-      return null;
+      return reject(new CognitoNotAuthenticatedError());
     }
 
     return this._loadCognitoUserSession(cognitoUser);
