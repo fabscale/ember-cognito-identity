@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/fabscale/ember-cognito-identity/compare/1.5.0...1.5.1) (2020-10-12)
+
+
+### Bug Fixes
+
+* Ensure restoreAndLoad rejects if not signed in ([ed0e99c](https://github.com/fabscale/ember-cognito-identity/commit/ed0e99c2f886185f4408ba46c7046691e162f835))
+
 # [1.5.0](https://github.com/fabscale/ember-cognito-identity/compare/1.4.0...1.5.0) (2020-10-08)
 
 
