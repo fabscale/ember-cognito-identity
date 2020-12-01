@@ -9,7 +9,7 @@ import {
 } from 'ember-cognito-identity/errors/cognito';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
-import { waitForPromise } from 'ember-test-waiters';
+import { waitForPromise } from '@ember/test-waiters';
 import { tracked } from '@glimmer/tracking';
 import {
   ICognitoStorage,
