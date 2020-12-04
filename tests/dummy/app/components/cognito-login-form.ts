@@ -63,7 +63,10 @@ export default class CognitoLoginForm extends Component {
       }
 
       this.error = error;
+      return;
     }
+
+    this.router.transitionTo('index');
   }
 
   // This can be overwritten

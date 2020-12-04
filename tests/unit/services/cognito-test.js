@@ -41,7 +41,6 @@ module('Unit | Service | cognito', function (hooks) {
       });
 
       this.service = this.owner.lookup('service:cognito');
-      this.service.onAuthenticated = () => {};
 
       await this.service.authenticate({
         username: 'johnwick@thecontinental.assassins',
@@ -147,7 +146,6 @@ module('Unit | Service | cognito', function (hooks) {
       });
 
       this.service = this.owner.lookup('service:cognito');
-      this.service.onAuthenticated = () => {};
 
       await this.service.authenticate({
         username: 'johnwick@thecontinental.assassins',

@@ -112,15 +112,9 @@ Call this (and wait for it to complete) in your application route!
 Try to login with the given username & password.
 Will reject with an Error, or resolve if successfull.
 
-Triggers `onAuthenticated()` on the cognito-service,
-which by default redirects to `afterLoginRoute` (`index`, by default).
-
 ### logout()
 
 Log out the user from the current device.
-
-Triggers `onUnauthenticated()` on the cognito-service,
-which by default redirects to `loginRoute` (`login`, by default).
 
 ### invalidateAccessTokens()
 
