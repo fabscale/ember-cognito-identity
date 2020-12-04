@@ -85,7 +85,7 @@ export default class CognitoResetPasswordForm extends Component<Args> {
       return;
     }
 
-    this.router.transitionTo(this.cognito.afterLoginRoute);
+    this.router.transitionTo('index');
   }
 
   @action

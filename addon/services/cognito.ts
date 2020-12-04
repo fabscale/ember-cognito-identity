@@ -34,11 +34,6 @@ export type UserAttributes = { [key: string]: any };
 export default class CognitoService extends Service {
   @service router: RouterService;
 
-  // Overwrite if necessary
-  loginRoute: string = 'login';
-  resetPasswordRoute: string = 'reset-password';
-  afterLoginRoute: string = 'index';
-
   // Overwrite for testing
   _cognitoStorage: undefined | ICognitoStorage;
 
@@ -95,18 +90,6 @@ export default class CognitoService extends Service {
     this._userPool = new CognitoUserPool(poolData);
     return this._userPool;
   }
-
-  // Hooks begin
-
-  // eslint-disable-next-line no-unused-vars
-  onAuthenticated() {
-    this.router.transitionTo(this.afterLoginRoute);
-  }
-
-  onUnauthenticated() {
-    this.router.transitionTo(this.loginRoute);
-  }
-  // Hooks end
 
   // This should be called in application route, before everything else
   restoreAndLoad(): Promise<any> {
@@ -218,7 +201,6 @@ export default class CognitoService extends Service {
 
     await this._authenticate({ username, password });
     await this.restoreAndLoad();
-    await this.onAuthenticated();
 
     return this.cognitoData!;
   }
@@ -286,8 +268,6 @@ export default class CognitoService extends Service {
       // @ts-ignore next-line
       this._debouncedRefreshAccessToken.cancelAll();
     }
-
-    this.onUnauthenticated();
   }
 
   invalidateAccessTokens(): Promise<any> {
@@ -298,7 +278,6 @@ export default class CognitoService extends Service {
 
       this.cognitoData.cognitoUser.globalSignOut({
         onSuccess: () => {
-          this.onUnauthenticated();
           resolve();
         },
 

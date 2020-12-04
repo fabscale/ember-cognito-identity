@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 
 export default class IndexController extends Controller {
   @service cognito;
+  @service router;
 
   get jwtToken() {
     return this.cognito.cognitoData.jwtToken;
@@ -12,5 +13,6 @@ export default class IndexController extends Controller {
   @action
   logout() {
     this.cognito.logout();
+    this.router.transitionTo('login');
   }
 }
