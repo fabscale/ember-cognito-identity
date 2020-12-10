@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/fabscale/ember-cognito-identity/compare/1.5.1...1.5.2) (2020-12-10)
+
+
+### Bug Fixes
+
+* Ensure `restoreAndLoad` properly throws CognitoNotAuthenticatedError ([79f0fea](https://github.com/fabscale/ember-cognito-identity/commit/79f0feaa1171d25d18f75dd24713c341975d33b6))
+
 ## [1.5.1](https://github.com/fabscale/ember-cognito-identity/compare/1.5.0...1.5.1) (2020-10-12)
 
 

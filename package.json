@@ -1,6 +1,6 @@
 {
   "name": "ember-cognito-identity",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Interact with AWS Cognito from your Ember app.",
   "keywords": [
     "ember-addon"
