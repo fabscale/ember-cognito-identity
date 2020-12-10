@@ -8,9 +8,7 @@ interface Args {
   resetPassword: Function;
 }
 
-export default class CognitoResetPasswordFormUpdatePassword extends Component<
-  Args
-> {
+export default class CognitoResetPasswordFormUpdatePassword extends Component<Args> {
   // Properties
   @tracked currentVerificationCode?: string;
   @tracked password?: string;

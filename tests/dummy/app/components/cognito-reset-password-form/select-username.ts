@@ -7,9 +7,7 @@ interface Args {
   triggerResetPasswordEmail: Function;
 }
 
-export default class CognitoResetPasswordFormSelectUsername extends Component<
-  Args
-> {
+export default class CognitoResetPasswordFormSelectUsername extends Component<Args> {
   // Properties
   @tracked currentUsername?: string;
 
