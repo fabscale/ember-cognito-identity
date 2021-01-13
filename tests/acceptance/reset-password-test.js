@@ -3,7 +3,6 @@ import {
   visit,
   fillIn,
   click,
-  settled,
   resetOnerror,
   setupOnerror,
   currentRouteName,
@@ -174,7 +173,6 @@ module('Acceptance | reset-password', function (hooks) {
       'johnwick@fabscale.com'
     );
     await click('[data-test-reset-password-send-verification-code]');
-    await settled();
 
     assert.dom('[data-test-reset-password-username]').doesNotExist();
     assert
@@ -414,7 +412,6 @@ module('Acceptance | reset-password', function (hooks) {
       .hasValue('johnwick@fabscale.com');
 
     await click('[data-test-reset-password-send-verification-code]');
-    await settled();
 
     assert.dom('[data-test-reset-password-username]').doesNotExist();
     assert
@@ -654,7 +651,6 @@ module('Acceptance | reset-password', function (hooks) {
         'johnwick@fabscale.com'
       );
       await click('[data-test-reset-password-send-verification-code]');
-      await settled();
 
       assert.equal(
         currentRouteName(),

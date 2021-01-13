@@ -4,7 +4,6 @@ import {
   currentRouteName,
   fillIn,
   click,
-  settled,
   resetOnerror,
   setupOnerror,
 } from '@ember/test-helpers';
@@ -70,8 +69,6 @@ module('Acceptance | test helpers', function (hooks) {
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
 
-      await settled();
-
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.equal(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
@@ -89,11 +86,9 @@ module('Acceptance | test helpers', function (hooks) {
       await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
-      await settled();
 
       await fillIn('[data-test-login-form-new-password]', 'test1234-NEW');
       await click('[data-test-login-form-submit]');
-      await settled();
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.equal(
@@ -113,8 +108,6 @@ module('Acceptance | test helpers', function (hooks) {
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
 
-      await settled();
-
       assert.notOk(cognito.isAuthenticated, 'user is not authenticated');
       assert
         .dom('[data-test-cognito-error]')
@@ -133,7 +126,6 @@ module('Acceptance | test helpers', function (hooks) {
         'johnwick@fabscale.com'
       );
       await click('[data-test-reset-password-send-verification-code]');
-      await settled();
 
       await fillIn('[data-test-reset-password-verification-code]', '123456');
       await fillIn('[data-test-reset-password-new-password]', 'test1234');
