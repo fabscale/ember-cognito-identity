@@ -5864,10 +5864,10 @@ ember-source-channel-url@~3.0.0:
   dependencies:
     node-fetch "^2.6.0"
 
-ember-source@~3.22.0:
-  version "3.22.2"
-  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.22.2.tgz#dce9b9b1c1559aa90488d3a343a2b7628a0f022a"
-  integrity sha512-P8IQkVd4iXDf0y+2PCEnCJDxZTOyiU1vfebzvXbW6NnoDsOoVP0xvGgoHV2bGFoskCMe4ViYNjuHirfjWvr5CA==
+ember-source@~3.24.0:
+  version "3.24.0"
+  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.24.0.tgz#a8eb6b192d2ce7838df6cca4eee828ee2549a518"
+  integrity sha512-tFNwicD33IQ9LRIc0tkS0xqKbz7w0P5x799DH4DjP+VEpHAn77AaBR5Cfs3oEFbVqMFFBl88M8V4zlI4Akwwhw==
   dependencies:
     "@babel/helper-module-imports" "^7.8.3"
     "@babel/plugin-transform-block-scoping" "^7.8.3"
@@ -5880,7 +5880,7 @@ ember-source@~3.22.0:
     broccoli-funnel "^2.0.2"
     broccoli-merge-trees "^4.2.0"
     chalk "^4.0.0"
-    ember-cli-babel "^7.19.0"
+    ember-cli-babel "^7.23.0"
     ember-cli-get-component-path-option "^1.0.0"
     ember-cli-is-package-missing "^1.0.0"
     ember-cli-normalize-entity-name "^1.0.0"
