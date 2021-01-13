@@ -47,32 +47,33 @@ export function setupCognitoMocks(hooks) {
 }
 
 export function setupCognitoPrentenderRoute(context, pretenderServer) {
-  pretenderServer.post('https://cognito-idp.eu-west-1.amazonaws.com', function (
-    request
-  ) {
-    let { requestHeaders } = request;
-    let requestBody = JSON.parse(request.requestBody);
-    let awsTarget =
-      requestHeaders['x-amz-target'] || requestHeaders['X-Amz-Target'];
+  pretenderServer.post(
+    'https://cognito-idp.eu-west-1.amazonaws.com',
+    function (request) {
+      let { requestHeaders } = request;
+      let requestBody = JSON.parse(request.requestBody);
+      let awsTarget =
+        requestHeaders['x-amz-target'] || requestHeaders['X-Amz-Target'];
 
-    let hook = context.awsHooks[awsTarget];
-    if (!hook) {
-      throw new Error(`hook "${awsTarget}" is not defined on this.awsHooks.`);
+      let hook = context.awsHooks[awsTarget];
+      if (!hook) {
+        throw new Error(`hook "${awsTarget}" is not defined on this.awsHooks.`);
+      }
+
+      let response = hook(requestBody);
+      if (Array.isArray(response)) {
+        let [status, headers, body] = response;
+
+        return [
+          status,
+          headers,
+          typeof body === 'object' ? JSON.stringify(body) : body,
+        ];
+      }
+
+      return [200, {}, JSON.stringify(response)];
     }
-
-    let response = hook(requestBody);
-    if (Array.isArray(response)) {
-      let [status, headers, body] = response;
-
-      return [
-        status,
-        headers,
-        typeof body === 'object' ? JSON.stringify(body) : body,
-      ];
-    }
-
-    return [200, {}, JSON.stringify(response)];
-  });
+  );
 }
 
 export default setupCognitoMocks;

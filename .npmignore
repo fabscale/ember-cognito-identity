@@ -11,6 +11,7 @@
 /.ember-cli
 /.env*
 /example.env
+/.eslintcache
 /.eslintignore
 /.eslintrc.js
 /.git/

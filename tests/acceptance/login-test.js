@@ -3,7 +3,6 @@ import {
   visit,
   fillIn,
   click,
-  settled,
   resetOnerror,
   setupOnerror,
 } from '@ember/test-helpers';
@@ -131,8 +130,6 @@ module('Acceptance | login', function (hooks) {
     await fillIn('[data-test-login-form-password]', 'test1234');
     await click('[data-test-login-form-submit]');
 
-    await settled();
-
     assert.ok(cognito.isAuthenticated, 'user is authenticated now');
     assert.equal(
       cognito.cognitoData && cognito.cognitoData.jwtToken,
@@ -187,8 +184,6 @@ module('Acceptance | login', function (hooks) {
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
 
-      await settled();
-
       assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
       assert
         .dom('[data-test-cognito-error]')
@@ -223,8 +218,6 @@ module('Acceptance | login', function (hooks) {
       await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
-
-      await settled();
 
       assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
       assert
@@ -460,7 +453,6 @@ module('Acceptance | login', function (hooks) {
       await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
-      await settled();
 
       assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
 
@@ -471,7 +463,6 @@ module('Acceptance | login', function (hooks) {
 
       await fillIn('[data-test-login-form-new-password]', 'test1234-NEW');
       await click('[data-test-login-form-submit]');
-      await settled();
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.equal(
@@ -596,7 +587,6 @@ module('Acceptance | login', function (hooks) {
       await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
-      await settled();
 
       assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
 
@@ -607,7 +597,6 @@ module('Acceptance | login', function (hooks) {
 
       await fillIn('[data-test-login-form-new-password]', 'test1234-NEW');
       await click('[data-test-login-form-submit]');
-      await settled();
 
       assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
       assert
@@ -682,8 +671,6 @@ module('Acceptance | login', function (hooks) {
       await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
       await fillIn('[data-test-login-form-password]', 'test1234');
       await click('[data-test-login-form-submit]');
-
-      await settled();
 
       assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
       assert
