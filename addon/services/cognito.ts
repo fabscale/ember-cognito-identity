@@ -194,6 +194,9 @@ export default class CognitoService extends Service {
               reject(error);
             }
           );
+        },
+        {
+          clientMetadata: {},
         }
       );
     });
