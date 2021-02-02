@@ -141,6 +141,7 @@ module('Acceptance | remember-authentication', function (hooks) {
           },
 
           ClientId: 'TEST-CLIENT-ID',
+          ClientMetadata: {},
         },
         'correct body is sent'
       );
@@ -280,6 +281,7 @@ module('Acceptance | remember-authentication', function (hooks) {
             },
 
             ClientId: 'TEST-CLIENT-ID',
+            ClientMetadata: {},
           },
           'correct body is sent'
         );
