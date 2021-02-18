@@ -38,8 +38,7 @@ export default class CognitoPasswordInput extends Component<Args> {
 
   @action
   onTextChange(event: Event) {
-    // @ts-ignore
-    let element: HTMLInputElement = event.currentTarget;
+    let element: HTMLInputElement = event.currentTarget as HTMLInputElement;
     let { value } = element;
     this.args.onChange(value);
   }
