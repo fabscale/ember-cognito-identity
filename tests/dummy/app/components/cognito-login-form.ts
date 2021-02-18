@@ -5,7 +5,7 @@ import {
   CognitoError,
   NewPasswordRequiredError,
 } from 'ember-cognito-identity/errors/cognito';
-import { dropTask } from 'ember-concurrency-decorators';
+import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import CognitoService, {
   UserAttributes,
