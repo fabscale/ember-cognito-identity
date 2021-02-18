@@ -1,14 +1,14 @@
 import { assign } from '@ember/polyfills';
 
-export function createJWTToken(payload) {
+export function createJWTToken(payload: any) {
   let header = {
     alg: 'RS256',
   };
 
   let data = assign(
     {
-      exp: Math.round(new Date() / 1000) + 3600,
-      iat: Math.round(new Date() / 1000),
+      exp: Math.round(+new Date() / 1000) + 3600,
+      iat: Math.round(+new Date() / 1000),
     },
     payload
   );
@@ -19,7 +19,7 @@ export function createJWTToken(payload) {
   return `${encodedHeader}.${encodedData}`;
 }
 
-function base64url(source) {
+function base64url(source: any) {
   // Encode in classical base64
   let encodedSource = btoa(JSON.stringify(source));
 

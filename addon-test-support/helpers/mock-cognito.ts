@@ -1,5 +1,5 @@
 export function mockCognito(
-  context,
+  context: any,
   {
     accessToken = 'TEST-ACCESS-TOKEN-AUTO',
     username = 'johnwick@thecontential.assassins',
