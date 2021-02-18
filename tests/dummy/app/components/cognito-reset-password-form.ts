@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { dropTask } from 'ember-concurrency-decorators';
+import { dropTask } from 'ember-concurrency';
 import { or } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import CognitoService from 'ember-cognito-identity/services/cognito';

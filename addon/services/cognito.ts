@@ -19,8 +19,9 @@ import {
   CognitoUserSession,
 } from 'amazon-cognito-identity-js';
 import RouterService from '@ember/routing/router-service';
-import { restartableTask } from 'ember-concurrency-decorators';
+import { restartableTask } from 'ember-concurrency';
 import { timeout } from 'ember-concurrency';
+import { taskFor } from 'ember-concurrency-ts';
 
 interface CognitoData {
   cognitoUser: CognitoUser;
@@ -184,9 +185,7 @@ export default class CognitoService extends Service {
               this.cognitoData = cognitoData;
 
               if (this.shouldAutoRefresh) {
-                // ember-concurrency is not typed, and there is currently no clear way forward, so just ignore that...
-                // @ts-ignore next-line
-                this._debouncedRefreshAccessToken.perform();
+                taskFor(this._debouncedRefreshAccessToken).perform();
               }
 
               resolve(cognitoData);
@@ -282,9 +281,7 @@ export default class CognitoService extends Service {
       this.cognitoData.cognitoUser.signOut();
       this.cognitoData = null;
 
-      // ember-concurrency is not typed, and there is currently no clear way forward, so just ignore that...
-      // @ts-ignore next-line
-      this._debouncedRefreshAccessToken.cancelAll();
+      taskFor(this._debouncedRefreshAccessToken).cancelAll();
     }
 
     this.onUnauthenticated();
