@@ -1,5 +1,4 @@
 import Service, { inject as service } from '@ember/service';
-import { bool } from '@ember/object/computed';
 import { Promise as RSVPPromise } from 'rsvp';
 import {
   AmazonCognitoIdentityJsError,
@@ -44,7 +43,10 @@ export default class CognitoService extends Service {
   _cognitoStorage: undefined | ICognitoStorage;
 
   @tracked cognitoData: null | CognitoData = null;
-  @bool('cognitoData') isAuthenticated: boolean;
+
+  get isAuthenticated() {
+    return Boolean(this.cognitoData);
+  }
 
   get config() {
     let config = getOwner(this).resolveRegistration('config:environment');
