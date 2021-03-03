@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/fabscale/ember-cognito-identity/compare/1.5.4...2.0.0) (2021-03-03)
+
+
+* feat(refactor)!: Drop `onAuthenticated()` and `onUnauthenticated()` hooks ([b50bc6d](https://github.com/fabscale/ember-cognito-identity/commit/b50bc6d3bf769331e7f96034114fd48a3e1da51d))
+* feat(deps)!: Bump ember-concurrency from 1.x to 2.x ([bcf445f](https://github.com/fabscale/ember-cognito-identity/commit/bcf445f1d4fed607930e44457affa7c7e3a06ffc))
+
+
+### BREAKING CHANGES
+
+* Hooks dropped in favor of manually handling this.
+* Major dependency update might be incompatible with other dependencies.
+
 ## [1.5.4](https://github.com/fabscale/ember-cognito-identity/compare/1.5.3...1.5.4) (2021-03-03)
 
 ## [1.5.3](https://github.com/fabscale/ember-cognito-identity/compare/1.5.2...1.5.3) (2021-02-18)
