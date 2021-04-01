@@ -8,9 +8,7 @@ interface Args {
   resetPassword: Function;
 }
 
-export default class CognitoResetPasswordFormUpdatePassword extends Component<
-  Args
-> {
+export default class CognitoResetPasswordFormUpdatePassword extends Component<Args> {
   // Properties
   @tracked currentVerificationCode?: string;
   @tracked password?: string;
@@ -32,7 +30,9 @@ export default class CognitoResetPasswordFormUpdatePassword extends Component<
   }
 
   @action
-  onSubmit() {
+  onSubmit(event: Event) {
+    event.preventDefault();
+
     let { password, currentVerificationCode: verificationCode } = this;
     let { username } = this.args;
 

@@ -1,5 +1,4 @@
-<form {{action (perform this.submitFormTask) on="submit" preventDefault=true}}>
-
+<form {{on 'submit' (perform this.submitFormTask)}}>
   {{yield
     (hash
       mustEnterNewPassword=this.mustEnterNewPassword
@@ -8,38 +7,23 @@
       password=(readonly this.password)
       newPassword=(readonly this.newPassword)
       isPending=this.submitFormTask.isRunning
-
-      updateUsername=(action "updateUsername")
-      updatePassword=(action "updatePassword")
-      updateNewPassword=(action "updateNewPassword")
-
+      updateUsername=this.updateUserName
+      updatePassword=this.updatePassword
+      updateNewPassword=this.updateNewPassword
       UsernameInput=(component
-        "cognito-text-input"
-        value=this.username
-        onChange=(action "updateUsername")
+        'cognito-text-input' value=this.username onChange=this.updateUsername
       )
-
       PasswordInput=(component
-        "cognito-password-input"
+        'cognito-password-input'
         value=this.password
-        onChange=(action "updatePassword")
+        onChange=this.updatePassword
       )
-
       NewPasswordInput=(component
-        "cognito-password-input"
+        'cognito-password-input'
         value=this.newPassword
-        onChange=(action "updateNewPassword")
+        onChange=this.updateNewPassword
       )
-
-      ErrorDisplay=(if
-        this.error
-        (component
-          "cognito-error"
-          error=this.error
-        )
-      )
-
+      ErrorDisplay=(if this.error (component 'cognito-error' error=this.error))
     )
   }}
-
 </form>
