@@ -1,23 +1,15 @@
-<form {{action "onSubmit" on="submit" preventDefault=true}}>
-
+<form {{on 'submit' this.onSubmit}}>
   {{yield
     (hash
-      skipTriggerResetPasswordEmail=(action @skipTriggerResetPasswordEmail this.currentUsername)
-
+      skipTriggerResetPasswordEmail=(fn
+        @skipTriggerResetPasswordEmail this.currentUsername
+      )
       UsernameInput=(component
-        "cognito-text-input"
+        'cognito-text-input'
         value=this.currentUsername
-        onChange=(action "updateUsername")
+        onChange=this.updateUsername
       )
-
-      ErrorDisplay=(if
-        @error
-        (component
-          "cognito-error"
-          error=@error
-        )
-      )
+      ErrorDisplay=(if @error (component 'cognito-error' error=@error))
     )
   }}
-
 </form>

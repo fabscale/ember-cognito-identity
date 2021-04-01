@@ -1,5 +1,5 @@
-Token: {{jwtToken}}
+Token: {{this.jwtToken}}
 
-<button {{action "logout"}} type="button">
+<button type='button' {{on 'click' this.logout}}>
   Logout
 </button>

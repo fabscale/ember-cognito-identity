@@ -24,7 +24,9 @@ export default class CognitoLoginForm extends Component {
   @tracked error: CognitoError | null;
 
   @dropTask
-  *submitFormTask() {
+  *submitFormTask(event: Event) {
+    event.preventDefault();
+
     let {
       cognito,
       username,
@@ -71,9 +73,7 @@ export default class CognitoLoginForm extends Component {
 
   // This can be overwritten
   // eslint-disable-next-line no-unused-vars
-  _getNewPasswordAttributes(
-    _options: UserAttributes
-  ): undefined | UserAttributes {
+  _getNewPasswordAttributes(_: UserAttributes): undefined | UserAttributes {
     return undefined;
   }
 

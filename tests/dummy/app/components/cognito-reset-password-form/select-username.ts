@@ -7,9 +7,7 @@ interface Args {
   triggerResetPasswordEmail: Function;
 }
 
-export default class CognitoResetPasswordFormSelectUsername extends Component<
-  Args
-> {
+export default class CognitoResetPasswordFormSelectUsername extends Component<Args> {
   // Properties
   @tracked currentUsername?: string;
 
@@ -25,7 +23,9 @@ export default class CognitoResetPasswordFormSelectUsername extends Component<
   }
 
   @action
-  onSubmit() {
+  onSubmit(event: Event) {
+    event.preventDefault();
+
     this.args.triggerResetPasswordEmail(this.currentUsername);
   }
 }
