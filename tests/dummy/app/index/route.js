@@ -3,10 +3,11 @@ import { inject as service } from '@ember/service';
 
 export default class IndexRoute extends Route {
   @service cognito;
+  @service router;
 
   beforeModel() {
     if (!this.cognito.isAuthenticated) {
-      this.transitionTo('login');
+      this.router.transitionTo('login');
     }
   }
 }
