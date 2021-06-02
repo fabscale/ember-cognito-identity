@@ -27,13 +27,8 @@ export default class CognitoLoginForm extends Component {
   *submitFormTask(event: Event) {
     event.preventDefault();
 
-    let {
-      cognito,
-      username,
-      password,
-      newPassword,
-      mustEnterNewPassword,
-    } = this;
+    let { cognito, username, password, newPassword, mustEnterNewPassword } =
+      this;
 
     this.error = null;
 

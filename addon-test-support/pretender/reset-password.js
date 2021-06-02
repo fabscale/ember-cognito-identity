@@ -9,9 +9,8 @@ export function setupPretenderResetPassword(context) {
     };
   };
 
-  context.awsHooks[
-    'AWSCognitoIdentityProviderService.ConfirmForgotPassword'
-  ] = () => {
-    return {};
-  };
+  context.awsHooks['AWSCognitoIdentityProviderService.ConfirmForgotPassword'] =
+    () => {
+      return {};
+    };
 }

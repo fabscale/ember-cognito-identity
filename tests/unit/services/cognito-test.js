@@ -55,24 +55,23 @@ module('Unit | Service | cognito', function (hooks) {
     test('it works', async function (assert) {
       let { service } = this;
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.UpdateUserAttributes'
-      ] = (body) => {
-        assert.deepEqual(body, {
-          AccessToken: this.cognitoAccessToken,
-          UserAttributes: [
-            {
-              Name: 'name',
-              Value: 'John W.',
-            },
-            {
-              Name: 'age',
-              Value: 52,
-            },
-          ],
-        });
-        return {};
-      };
+      this.awsHooks['AWSCognitoIdentityProviderService.UpdateUserAttributes'] =
+        (body) => {
+          assert.deepEqual(body, {
+            AccessToken: this.cognitoAccessToken,
+            UserAttributes: [
+              {
+                Name: 'name',
+                Value: 'John W.',
+              },
+              {
+                Name: 'age',
+                Value: 52,
+              },
+            ],
+          });
+          return {};
+        };
 
       this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = () => {
         return {
@@ -106,18 +105,17 @@ module('Unit | Service | cognito', function (hooks) {
     test('it handles a server error when updating the attributes', async function (assert) {
       let { service } = this;
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.UpdateUserAttributes'
-      ] = () => {
-        return [
-          400,
-          {},
-          {
-            __type: 'NotAuthorizedException',
-            message: 'A client attempted to write unauthorized attribute',
-          },
-        ];
-      };
+      this.awsHooks['AWSCognitoIdentityProviderService.UpdateUserAttributes'] =
+        () => {
+          return [
+            400,
+            {},
+            {
+              __type: 'NotAuthorizedException',
+              message: 'A client attempted to write unauthorized attribute',
+            },
+          ];
+        };
 
       try {
         await service.updateAttributes({
@@ -182,18 +180,17 @@ module('Unit | Service | cognito', function (hooks) {
     test('it handles a server error when updating the password', async function (assert) {
       let { service } = this;
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.ChangePassword'
-      ] = () => {
-        return [
-          400,
-          {},
-          {
-            __type: 'NotAuthorizedException',
-            message: 'Incorrect username or password.',
-          },
-        ];
-      };
+      this.awsHooks['AWSCognitoIdentityProviderService.ChangePassword'] =
+        () => {
+          return [
+            400,
+            {},
+            {
+              __type: 'NotAuthorizedException',
+              message: 'Incorrect username or password.',
+            },
+          ];
+        };
 
       try {
         await service.updatePassword({
