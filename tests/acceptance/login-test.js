@@ -55,45 +55,44 @@ module('Acceptance | login', function (hooks) {
 
     let accessToken = createJWTToken();
 
-    this.awsHooks[
-      'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
-    ] = (body) => {
-      assert.step('RespondToAuthChallenge is called');
+    this.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+      (body) => {
+        assert.step('RespondToAuthChallenge is called');
 
-      let normalizedBody = assign({}, body);
-      normalizedBody.ChallengeResponses.PASSWORD_CLAIM_SIGNATURE =
-        'TEST-CLAIM-SIGNATURE';
-      normalizedBody.ChallengeResponses.TIMESTAMP = 'timestamp';
+        let normalizedBody = assign({}, body);
+        normalizedBody.ChallengeResponses.PASSWORD_CLAIM_SIGNATURE =
+          'TEST-CLAIM-SIGNATURE';
+        normalizedBody.ChallengeResponses.TIMESTAMP = 'timestamp';
 
-      assert.deepEqual(
-        normalizedBody,
-        {
-          ChallengeName: 'PASSWORD_VERIFIER',
-          ClientId: 'TEST-CLIENT-ID',
-          ChallengeResponses: {
-            USERNAME: 'TEST-USER-ID',
-            PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
-            TIMESTAMP: 'timestamp',
-            PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
+        assert.deepEqual(
+          normalizedBody,
+          {
+            ChallengeName: 'PASSWORD_VERIFIER',
+            ClientId: 'TEST-CLIENT-ID',
+            ChallengeResponses: {
+              USERNAME: 'TEST-USER-ID',
+              PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+              TIMESTAMP: 'timestamp',
+              PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
+            },
+
+            ClientMetadata: {},
+          },
+          'correct body is sent'
+        );
+
+        return {
+          AuthenticationResult: {
+            AccessToken: accessToken,
+            ExpiresIn: 3600,
+            IdToken: createJWTToken(),
+            RefreshToken: createJWTToken(),
+            TokenType: 'Bearer',
           },
 
-          ClientMetadata: {},
-        },
-        'correct body is sent'
-      );
-
-      return {
-        AuthenticationResult: {
-          AccessToken: accessToken,
-          ExpiresIn: 3600,
-          IdToken: createJWTToken(),
-          RefreshToken: createJWTToken(),
-          TokenType: 'Bearer',
-        },
-
-        ChallengeParameters: {},
+          ChallengeParameters: {},
+        };
       };
-    };
 
     this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = (body) => {
       assert.step('GetUser is called');

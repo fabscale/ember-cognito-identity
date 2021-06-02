@@ -102,45 +102,44 @@ module('Acceptance | reset-password', function (hooks) {
       };
     };
 
-    this.awsHooks[
-      'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
-    ] = (body) => {
-      assert.step('RespondToAuthChallenge is called');
+    this.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+      (body) => {
+        assert.step('RespondToAuthChallenge is called');
 
-      let normalizedBody = assign({}, body);
-      normalizedBody.ChallengeResponses.PASSWORD_CLAIM_SIGNATURE =
-        'TEST-CLAIM-SIGNATURE';
-      normalizedBody.ChallengeResponses.TIMESTAMP = 'timestamp';
+        let normalizedBody = assign({}, body);
+        normalizedBody.ChallengeResponses.PASSWORD_CLAIM_SIGNATURE =
+          'TEST-CLAIM-SIGNATURE';
+        normalizedBody.ChallengeResponses.TIMESTAMP = 'timestamp';
 
-      assert.deepEqual(
-        normalizedBody,
-        {
-          ChallengeName: 'PASSWORD_VERIFIER',
-          ClientId: 'TEST-CLIENT-ID',
-          ChallengeResponses: {
-            USERNAME: 'TEST-USER-ID',
-            PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
-            TIMESTAMP: 'timestamp',
-            PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
+        assert.deepEqual(
+          normalizedBody,
+          {
+            ChallengeName: 'PASSWORD_VERIFIER',
+            ClientId: 'TEST-CLIENT-ID',
+            ChallengeResponses: {
+              USERNAME: 'TEST-USER-ID',
+              PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+              TIMESTAMP: 'timestamp',
+              PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
+            },
+
+            ClientMetadata: {},
+          },
+          'correct body is sent'
+        );
+
+        return {
+          AuthenticationResult: {
+            AccessToken: accessToken,
+            ExpiresIn: 3600,
+            IdToken: createJWTToken(),
+            RefreshToken: createJWTToken(),
+            TokenType: 'Bearer',
           },
 
-          ClientMetadata: {},
-        },
-        'correct body is sent'
-      );
-
-      return {
-        AuthenticationResult: {
-          AccessToken: accessToken,
-          ExpiresIn: 3600,
-          IdToken: createJWTToken(),
-          RefreshToken: createJWTToken(),
-          TokenType: 'Bearer',
-        },
-
-        ChallengeParameters: {},
+          ChallengeParameters: {},
+        };
       };
-    };
 
     this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = (body) => {
       assert.step('GetUser is called');
@@ -246,23 +245,22 @@ module('Acceptance | reset-password', function (hooks) {
       };
     };
 
-    this.awsHooks[
-      'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
-    ] = () => {
-      assert.step('RespondToAuthChallenge is called');
+    this.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+      () => {
+        assert.step('RespondToAuthChallenge is called');
 
-      return {
-        AuthenticationResult: {
-          AccessToken: accessToken,
-          ExpiresIn: 3600,
-          IdToken: createJWTToken(),
-          RefreshToken: createJWTToken(),
-          TokenType: 'Bearer',
-        },
+        return {
+          AuthenticationResult: {
+            AccessToken: accessToken,
+            ExpiresIn: 3600,
+            IdToken: createJWTToken(),
+            RefreshToken: createJWTToken(),
+            TokenType: 'Bearer',
+          },
 
-        ChallengeParameters: {},
+          ChallengeParameters: {},
+        };
       };
-    };
 
     this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = (body) => {
       assert.step('GetUser is called');
@@ -344,13 +342,12 @@ module('Acceptance | reset-password', function (hooks) {
       };
     };
 
-    this.awsHooks[
-      'AWSCognitoIdentityProviderService.ConfirmForgotPassword'
-    ] = () => {
-      assert.step('ConfirmForgotPassword is called');
+    this.awsHooks['AWSCognitoIdentityProviderService.ConfirmForgotPassword'] =
+      () => {
+        assert.step('ConfirmForgotPassword is called');
 
-      return {};
-    };
+        return {};
+      };
 
     this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
       assert.step('InitiateAuth is called');
@@ -366,23 +363,22 @@ module('Acceptance | reset-password', function (hooks) {
       };
     };
 
-    this.awsHooks[
-      'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
-    ] = () => {
-      assert.step('RespondToAuthChallenge is called');
+    this.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+      () => {
+        assert.step('RespondToAuthChallenge is called');
 
-      return {
-        AuthenticationResult: {
-          AccessToken: accessToken,
-          ExpiresIn: 3600,
-          IdToken: createJWTToken(),
-          RefreshToken: createJWTToken(),
-          TokenType: 'Bearer',
-        },
+        return {
+          AuthenticationResult: {
+            AccessToken: accessToken,
+            ExpiresIn: 3600,
+            IdToken: createJWTToken(),
+            RefreshToken: createJWTToken(),
+            TokenType: 'Bearer',
+          },
 
-        ChallengeParameters: {},
+          ChallengeParameters: {},
+        };
       };
-    };
 
     this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = () => {
       assert.step('GetUser is called');
@@ -449,23 +445,21 @@ module('Acceptance | reset-password', function (hooks) {
     hooks.beforeEach(function () {
       let accessToken = createJWTToken();
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.ForgotPassword'
-      ] = () => {
-        return {
-          CodeDeliveryDetails: {
-            AttributeName: 'email',
-            DeliveryMedium: 'EMAIL',
-            Destination: 'j***@f***.com',
-          },
+      this.awsHooks['AWSCognitoIdentityProviderService.ForgotPassword'] =
+        () => {
+          return {
+            CodeDeliveryDetails: {
+              AttributeName: 'email',
+              DeliveryMedium: 'EMAIL',
+              Destination: 'j***@f***.com',
+            },
+          };
         };
-      };
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.ConfirmForgotPassword'
-      ] = () => {
-        return {};
-      };
+      this.awsHooks['AWSCognitoIdentityProviderService.ConfirmForgotPassword'] =
+        () => {
+          return {};
+        };
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
         return {
@@ -629,20 +623,19 @@ module('Acceptance | reset-password', function (hooks) {
     test('it handles errors when trying to generate a code', async function (assert) {
       let { cognito } = this;
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.ForgotPassword'
-      ] = () => {
-        assert.step('ForgotPassword is called');
+      this.awsHooks['AWSCognitoIdentityProviderService.ForgotPassword'] =
+        () => {
+          assert.step('ForgotPassword is called');
 
-        return [
-          400,
-          {},
-          {
-            __type: 'UserNotFoundException',
-            message: 'Username/client id combination not found.',
-          },
-        ];
-      };
+          return [
+            400,
+            {},
+            {
+              __type: 'UserNotFoundException',
+              message: 'Username/client id combination not found.',
+            },
+          ];
+        };
 
       await visit('/reset-password');
 
@@ -668,20 +661,19 @@ module('Acceptance | reset-password', function (hooks) {
     test('it handles an invalid verification code', async function (assert) {
       let { cognito } = this;
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.ConfirmForgotPassword'
-      ] = () => {
-        assert.step('ConfirmForgotPassword is called');
+      this.awsHooks['AWSCognitoIdentityProviderService.ConfirmForgotPassword'] =
+        () => {
+          assert.step('ConfirmForgotPassword is called');
 
-        return [
-          400,
-          {},
-          {
-            __type: 'ExpiredCodeException',
-            message: 'Invalid code provided, please request a code again.',
-          },
-        ];
-      };
+          return [
+            400,
+            {},
+            {
+              __type: 'ExpiredCodeException',
+              message: 'Invalid code provided, please request a code again.',
+            },
+          ];
+        };
 
       await visit('/reset-password');
 
@@ -710,21 +702,20 @@ module('Acceptance | reset-password', function (hooks) {
     test('it handles an invalid new password', async function (assert) {
       let { cognito } = this;
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.ConfirmForgotPassword'
-      ] = () => {
-        assert.step('ConfirmForgotPassword is called');
+      this.awsHooks['AWSCognitoIdentityProviderService.ConfirmForgotPassword'] =
+        () => {
+          assert.step('ConfirmForgotPassword is called');
 
-        return [
-          400,
-          {},
-          {
-            __type: 'InvalidPasswordException',
-            message:
-              'Password does not conform to policy: Password not long enough',
-          },
-        ];
-      };
+          return [
+            400,
+            {},
+            {
+              __type: 'InvalidPasswordException',
+              message:
+                'Password does not conform to policy: Password not long enough',
+            },
+          ];
+        };
 
       await visit('/reset-password');
 
@@ -756,13 +747,12 @@ module('Acceptance | reset-password', function (hooks) {
     test('it handles an error during authentication (after password reset)', async function (assert) {
       let { cognito } = this;
 
-      this.awsHooks[
-        'AWSCognitoIdentityProviderService.ConfirmForgotPassword'
-      ] = () => {
-        assert.step('ConfirmForgotPassword is called');
+      this.awsHooks['AWSCognitoIdentityProviderService.ConfirmForgotPassword'] =
+        () => {
+          assert.step('ConfirmForgotPassword is called');
 
-        return {};
-      };
+          return {};
+        };
 
       this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
         assert.step('InitiateAuth is called');

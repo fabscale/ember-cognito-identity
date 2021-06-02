@@ -21,21 +21,20 @@ export function setupPretenderSuccessfulLogin(
 
   let accessToken = createJWTToken();
 
-  context.awsHooks[
-    'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
-  ] = () => {
-    return {
-      AuthenticationResult: {
-        AccessToken: accessToken,
-        ExpiresIn: 3600,
-        IdToken: createJWTToken(),
-        RefreshToken: createJWTToken(),
-        TokenType: 'Bearer',
-      },
+  context.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+    () => {
+      return {
+        AuthenticationResult: {
+          AccessToken: accessToken,
+          ExpiresIn: 3600,
+          IdToken: createJWTToken(),
+          RefreshToken: createJWTToken(),
+          TokenType: 'Bearer',
+        },
 
-      ChallengeParameters: {},
+        ChallengeParameters: {},
+      };
     };
-  };
 
   context.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = () => {
     return {
@@ -140,12 +139,11 @@ export function setupPretenderNeedsInitialPassword(
     },
   ];
 
-  context.awsHooks[
-    'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
-  ] = (body) => {
-    let nextStep = respondToAuthChallengeList.shift();
-    return nextStep(body);
-  };
+  context.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+    (body) => {
+      let nextStep = respondToAuthChallengeList.shift();
+      return nextStep(body);
+    };
 
   context.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = () => {
     return {
