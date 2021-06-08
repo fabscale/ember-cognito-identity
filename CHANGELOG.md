@@ -1,3 +1,9 @@
+# [2.1.0](https://github.com/fabscale/ember-cognito-identity/compare/2.0.0...2.1.0) (2021-06-08)
+
+
+* Update ember-auto-import to 2.x
+* Update all dependencies to latest
+
 # [2.0.0](https://github.com/fabscale/ember-cognito-identity/compare/1.5.4...2.0.0) (2021-03-03)
 
 
