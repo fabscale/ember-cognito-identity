@@ -3,9 +3,11 @@
     "release": true
   },
   "plugins": {
-    "@release-it/conventional-changelog": {
-      "preset": "angular",
+    "release-it-lerna-changelog": {
       "infile": "CHANGELOG.md"
     }
+  },
+  "git": {
+    "tagName": "v${version}"
   }
 }
