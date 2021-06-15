@@ -35,7 +35,11 @@ export function setupCognitoMocks(hooks) {
     this.awsHooks = {};
 
     if (!this.cognitoPretenderServer) {
-      this.cognitoPretenderServer = new Pretender(function () {});
+      this.cognitoPretenderServer = new Pretender(function () {
+        this.unhandledRequest = function (verb, path, request) {
+          return request.passthrough();
+        };
+      });
     }
 
     setupCognitoPrentenderRoute(this, this.cognitoPretenderServer);
