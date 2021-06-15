@@ -16,6 +16,19 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v2.2.0 (2021-06-15)
+
+#### :rocket: Enhancement
+* [#544](https://github.com/fabscale/ember-cognito-identity/pull/544) Update default Pretender config for tests to pass through everything ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#540](https://github.com/fabscale/ember-cognito-identity/pull/540) chore(deps): bump ember-concurrency from 2.0.3 to 2.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#537](https://github.com/fabscale/ember-cognito-identity/pull/537) chore(deps): bump amazon-cognito-identity-js from 4.6.3 to 5.0.3 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#536](https://github.com/fabscale/ember-cognito-identity/pull/536) chore: Update release-it config to use PRs ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## [1.5.4](https://github.com/fabscale/ember-cognito-identity/compare/1.5.3...1.5.4) (2021-03-03)
 
 ## [1.5.3](https://github.com/fabscale/ember-cognito-identity/compare/1.5.2...1.5.3) (2021-02-18)
