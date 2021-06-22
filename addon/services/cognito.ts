@@ -143,47 +143,55 @@ export default class CognitoService extends Service {
   async _loadCognitoUserSession(
     cognitoUser: CognitoUser
   ): Promise<CognitoData> {
-    let promise: Promise<CognitoData> = new RSVPPromise((resolve, reject) => {
-      cognitoUser.getSession(
-        (
-          error: AmazonCognitoIdentityJsError | null,
-          cognitoUserSession: CognitoUserSession
-        ) => {
-          if (error) {
-            cognitoUser!.signOut();
-            return reject(dispatchError(error));
-          }
+    let cognitoUserSession: CognitoUserSession;
 
-          this._getUserAttributes(cognitoUser!).then(
-            (userAttributes) => {
-              let jwtToken = cognitoUserSession.getAccessToken().getJwtToken();
+    let userAttributes;
+    try {
+      cognitoUserSession = await this._getSession(cognitoUser);
+      userAttributes = await this._getUserAttributes(cognitoUser);
+    } catch (error) {
+      cognitoUser.signOut();
+      throw error;
+    }
 
-              let cognitoData: CognitoData = {
-                cognitoUser,
-                userAttributes,
-                cognitoUserSession,
-                jwtToken,
-              };
+    let jwtToken = cognitoUserSession.getAccessToken().getJwtToken();
 
-              this.cognitoData = cognitoData;
+    let cognitoData: CognitoData = {
+      cognitoUser,
+      userAttributes,
+      cognitoUserSession,
+      jwtToken,
+    };
 
-              if (this.shouldAutoRefresh) {
-                taskFor(this._debouncedRefreshAccessToken).perform();
-              }
+    this.cognitoData = cognitoData;
 
-              resolve(cognitoData);
-            },
-            (error) => {
-              cognitoUser.signOut();
-              reject(error);
+    if (this.shouldAutoRefresh) {
+      taskFor(this._debouncedRefreshAccessToken).perform();
+    }
+
+    return cognitoData;
+  }
+
+  _getSession(cognitoUser: CognitoUser): Promise<CognitoUserSession> {
+    let promise: Promise<CognitoUserSession> = new RSVPPromise(
+      (resolve, reject) => {
+        cognitoUser.getSession(
+          (
+            error: AmazonCognitoIdentityJsError | null,
+            cognitoUserSession: CognitoUserSession
+          ) => {
+            if (error) {
+              return reject(dispatchError(error));
             }
-          );
-        },
-        {
-          clientMetadata: {},
-        }
-      );
-    });
+
+            resolve(cognitoUserSession);
+          },
+          {
+            clientMetadata: {},
+          }
+        );
+      }
+    );
 
     waitForPromise(promise);
     return promise;
@@ -204,6 +212,29 @@ export default class CognitoService extends Service {
     return this.cognitoData!;
   }
 
+  async _authenticate({
+    username,
+    password,
+    cognitoUser,
+  }: {
+    username: string;
+    password: string;
+    cognitoUser?: CognitoUser;
+  }): Promise<CognitoUser> {
+    assert('cognitoData is already setup', !this.cognitoData);
+
+    let actualCognitoUser =
+      typeof cognitoUser === 'undefined'
+        ? this._createCognitoUser({ username })
+        : cognitoUser;
+
+    return this._authenticateAndLoadData({
+      username,
+      password,
+      cognitoUser: actualCognitoUser,
+    });
+  }
+
   /*
     Might reject with:
     * InvalidAuthorizationError (username/password wrong)
@@ -212,30 +243,23 @@ export default class CognitoService extends Service {
 
     Resolves with an object with cognitoUser & accessToken
    */
-  _authenticate({
+  _authenticateAndLoadData({
     username,
     password,
     cognitoUser,
   }: {
     username: string;
     password: string;
-    cognitoUser?: CognitoUser;
-  }): Promise<any> {
-    assert('cognitoData is already setup', !this.cognitoData);
-
-    let actualCognitoUser =
-      typeof cognitoUser === 'undefined'
-        ? this._createCognitoUser({ username })
-        : cognitoUser;
-
+    cognitoUser: CognitoUser;
+  }): Promise<CognitoUser> {
     let authenticationData = {
       Username: username,
       Password: password,
     };
     let authenticationDetails = new AuthenticationDetails(authenticationData);
 
-    let promise = new RSVPPromise((resolve, reject) => {
-      actualCognitoUser.authenticateUser(authenticationDetails, {
+    let promise: Promise<CognitoUser> = new RSVPPromise((resolve, reject) => {
+      cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: () => {
           resolve(cognitoUser);
         },
