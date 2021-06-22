@@ -1,27 +1,27 @@
+import { getOwner } from '@ember/application';
+import { assert } from '@ember/debug';
+import RouterService from '@ember/routing/router-service';
 import Service, { inject as service } from '@ember/service';
-import { Promise as RSVPPromise } from 'rsvp';
+import { waitForPromise } from '@ember/test-waiters';
+import { tracked } from '@glimmer/tracking';
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool,
+  CognitoUserSession,
+  ICognitoStorage,
+  ICognitoUserAttributeData,
+} from 'amazon-cognito-identity-js';
 import {
   AmazonCognitoIdentityJsError,
   CognitoNotAuthenticatedError,
   dispatchError,
   NewPasswordRequiredError,
 } from 'ember-cognito-identity/errors/cognito';
-import { assert } from '@ember/debug';
-import { getOwner } from '@ember/application';
-import { waitForPromise } from '@ember/test-waiters';
-import { tracked } from '@glimmer/tracking';
-import {
-  ICognitoStorage,
-  CognitoUserPool,
-  AuthenticationDetails,
-  CognitoUser,
-  ICognitoUserAttributeData,
-  CognitoUserSession,
-} from 'amazon-cognito-identity-js';
-import RouterService from '@ember/routing/router-service';
-import { restartableTask } from 'ember-concurrency';
-import { timeout } from 'ember-concurrency';
+import { getUserAttributes } from 'ember-cognito-identity/utils/user-data';
+import { restartableTask, timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
+import { Promise as RSVPPromise } from 'rsvp';
 
 interface CognitoData {
   cognitoUser: CognitoUser;
@@ -148,7 +148,7 @@ export default class CognitoService extends Service {
     let userAttributes;
     try {
       cognitoUserSession = await this._getSession(cognitoUser);
-      userAttributes = await this._getUserAttributes(cognitoUser);
+      userAttributes = await getUserAttributes(cognitoUser);
     } catch (error) {
       cognitoUser.signOut();
       throw error;
@@ -463,7 +463,7 @@ export default class CognitoService extends Service {
             return reject(dispatchError(error));
           }
 
-          this._getUserAttributes(cognitoUser)
+          getUserAttributes(cognitoUser)
             .then((userAttributes) => {
               this.cognitoData!.userAttributes = userAttributes;
               resolve(userAttributes);
@@ -494,32 +494,5 @@ export default class CognitoService extends Service {
     };
 
     return new CognitoUser(userData);
-  }
-
-  _getUserAttributes(cognitoUser: CognitoUser): Promise<any> {
-    let promise = new RSVPPromise((resolve, reject) => {
-      cognitoUser.getUserAttributes((error, cognitoUserAttributes) => {
-        if (error) {
-          return reject(dispatchError(error));
-        }
-
-        if (!cognitoUserAttributes) {
-          return resolve({});
-        }
-
-        let userAttributes: { [index: string]: string } = {};
-        cognitoUserAttributes.forEach((cognitoUserAttribute) => {
-          let name = cognitoUserAttribute.getName();
-          let value = cognitoUserAttribute.getValue();
-
-          userAttributes[name] = value;
-        });
-
-        resolve(userAttributes);
-      });
-    });
-
-    waitForPromise(promise);
-    return promise;
   }
 }
