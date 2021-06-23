@@ -91,12 +91,19 @@ If the user is not logged in, this will be `null`.
 
 This is an object that looks like this:
 
-```json
-{
-  "cognitoUser": CognitoUserInstance,
-  "cognitoUserSession": CognitoUserSessionInstance,
-  "jwtToken": "xxxxx",
-  "userAttributes": { "Email": "..." }
+```js
+let cognitoData = {
+  cognitoUser: CognitoUser,
+  cognitoUserSession: CognitoUserSession,
+  jwtToken: "xxxxx",
+  userAttributes: { "Email": "..." },
+  mfa: { 
+    enable: () => {},
+    disable: () => {},
+    isEnabled: () => {},
+    setupDevice: () => {},
+    verifyDevice: (code) => {}
+  }
 }
 ```
 
@@ -151,6 +158,104 @@ Returns a promise.
 
 This addon will automatically refresh the JWT Token every 45 minutes.
 The tokens have a lifespan of 60 minutes, so this should ensure that the local token never experies in the middle of a session.
+
+## Multi-Factor Authentication (MFA)
+
+This addon allows you to work with optional TOTP (Temporary One Time Password) MFA.
+SMS-based MFA is not supported for now (to reduce complexity, and since it is less secure than TOTP).
+
+You will need to enable TOTP-based MFA in your Cognito user pool first.
+
+Using MFA in your app requires changes in two places: The sign in process, and allowing users to opt into MFA.
+
+### Setting up MFA
+
+A user can opt into MFA for their own account. For this, you can use the `mfa` object on the `cognitoData` object:
+
+```js
+let { mfa } = this.cognito.cognitoData;
+
+// Available methods
+await mfa.enable();
+await mfa.disable();
+await mfa.isEnabled();
+await mfa.setupDevice();
+await mfa.verifyDevice(token);
+```
+
+To do so requires the following steps:
+
+```js
+let secret = await mfa.setupDevice();
+```
+
+The secret is the code needed to set up your TOTP app, e.g. Google or Microsoft Authenticator.
+Users can either enter this code manually (which is pretty tedious as it is a very long code), or most apps also allow to scan a QR code.
+
+You can use the included util to generate a fitting URL for your QR code like this:
+
+```js
+import { generateMfaQrCodeUrl } from 'ember-cognito-identity/utils/mfa-qr-code';
+
+let url = generateMfaQrCodeUrl({
+  user: 'my-email@test.com',
+  label: 'My App Name',
+  secret,
+});
+```
+
+And generate a QR code with any QR code library, e.g. using [qrcode](https://github.com/soldair/node-qrcode) & ember-auto-import:
+
+```js
+import QRCode from 'qrcode';
+
+QRCode.toCanvas(canvasElement, url);
+```
+
+After users scan this QR code, they will have your app setup in their Authenticator app.
+Finally, users have to enter a generated code from the Authenticator back into your app:
+
+```js
+// token is the 6-digit code from the Authenticator
+await mfa.verifyDevice(token);
+// if that was successfull, enable MFA for this user
+await mfa.enable();
+```
+
+After it is setup, you can always disable MFA again:
+
+```js
+await mfa.disable();
+```
+
+Note that Cognito does not provide a MFA recovery process. If a user looses access to their MFA device, an administrator will have to reset MFA for them.
+
+### Signing in with MFA
+
+When a user signs in with MFA, `authenticate()` will throw a `MfaCodeRequiredError` error that you have to handle, e.g. like this:
+
+```js
+import { MfaCodeRequiredError } from 'ember-cognito-identity/errors/cognito';
+
+try {
+  cognito.authenticate({ username, password });
+} catch (error) {
+  if (error instanceof MfaCodeRequiredError) {
+    this.mustEnterMfaCode = true;
+    return;
+  }
+
+  throw error;
+}
+```
+
+You'll need to prompt the user to enter the 6-digit code, and then call `mfaCompleteAuthentication`:
+
+```js
+await this.cognito.mfaCompleteAuthentication(mfaCode);
+```
+
+After that, the user will be signed in (or it will throw an error if the MFA code is incorrect).
 
 ## Example
 

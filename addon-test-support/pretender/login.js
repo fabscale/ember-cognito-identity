@@ -157,3 +157,115 @@ export function setupPretenderNeedsInitialPassword(
     };
   };
 }
+
+export function setupPretenderLoginWithMfa(
+  context,
+  {
+    username = 'johnwick@thecontinental.assassins',
+    userId = 'TEST-USER-ID',
+  } = {}
+) {
+  let accessToken = createJWTToken();
+  context.cognitoAccessToken = accessToken;
+
+  context.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
+    return {
+      ChallengeName: 'PASSWORD_VERIFIER',
+      ChallengeParameters: {
+        SALT: 'TEST-SALT',
+        SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+        USERNAME: userId,
+        USER_ID_FOR_SRP: userId,
+      },
+    };
+  };
+
+  // This API request is made 2 times with different responses
+  let respondToAuthChallengeList = [
+    () => {
+      return {
+        ChallengeName: 'SOFTWARE_TOKEN_MFA',
+        ChallengeParameters: { FRIENDLY_DEVICE_NAME: 'MFA Device' },
+        Session: 'TEST-SESSION-ID',
+      };
+    },
+    () => {
+      return {
+        AuthenticationResult: {
+          AccessToken: accessToken,
+          ExpiresIn: 3600,
+          IdToken: accessToken,
+          RefreshToken: accessToken,
+          TokenType: 'Bearer',
+        },
+
+        ChallengeParameters: {},
+      };
+    },
+  ];
+
+  context.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+    (body) => {
+      let nextStep = respondToAuthChallengeList.shift();
+      return nextStep(body);
+    };
+
+  context.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = () => {
+    return {
+      UserAttributes: [
+        { Name: 'sub', Value: userId },
+        { Name: 'email_verified', Value: 'true' },
+        { Name: 'email', Value: username },
+      ],
+
+      Username: userId,
+    };
+  };
+}
+
+export function setupPretenderLoginWithInvalidMfa(
+  context,
+  { userId = 'TEST-USER-ID' } = {}
+) {
+  let accessToken = createJWTToken();
+  context.cognitoAccessToken = accessToken;
+
+  context.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = () => {
+    return {
+      ChallengeName: 'PASSWORD_VERIFIER',
+      ChallengeParameters: {
+        SALT: 'TEST-SALT',
+        SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+        USERNAME: userId,
+        USER_ID_FOR_SRP: userId,
+      },
+    };
+  };
+
+  // This API request is made 2 times with different responses
+  let respondToAuthChallengeList = [
+    () => {
+      return {
+        ChallengeName: 'SOFTWARE_TOKEN_MFA',
+        ChallengeParameters: { FRIENDLY_DEVICE_NAME: 'MFA Device' },
+        Session: 'TEST-SESSION-ID',
+      };
+    },
+    () => {
+      return [
+        400,
+        {},
+        {
+          __type: 'CodeMismatchException',
+          message: 'Invalid code received for user',
+        },
+      ];
+    },
+  ];
+
+  context.awsHooks['AWSCognitoIdentityProviderService.RespondToAuthChallenge'] =
+    (body) => {
+      let nextStep = respondToAuthChallengeList.shift();
+      return nextStep(body);
+    };
+}

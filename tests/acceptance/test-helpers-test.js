@@ -14,6 +14,8 @@ import {
   setupPretenderSuccessfulLogin,
   setupPretenderInvalidPassword,
   setupPretenderNeedsInitialPassword,
+  setupPretenderLoginWithMfa,
+  setupPretenderLoginWithInvalidMfa,
 } from 'ember-cognito-identity/test-support/pretender/login';
 import { setupPretenderResetPassword } from 'ember-cognito-identity/test-support/pretender/reset-password';
 import { CognitoError } from 'ember-cognito-identity/errors/cognito';
@@ -137,6 +139,46 @@ module('Acceptance | test helpers', function (hooks) {
         this.cognitoAccessToken,
         'correct jwtToken is set on service'
       );
+    });
+
+    test('setupPretenderLoginWithMfa works', async function (assert) {
+      setupPretenderLoginWithMfa(this);
+      let { cognito } = this;
+
+      await visit('/login');
+
+      await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
+      await fillIn('[data-test-login-form-password]', 'test1234');
+      await click('[data-test-login-form-submit]');
+
+      await fillIn('[data-test-login-form-mfa-code]', '123456');
+      await click('[data-test-login-form-submit]');
+
+      assert.ok(cognito.isAuthenticated, 'user is authenticated now');
+      assert.equal(
+        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        this.cognitoAccessToken,
+        'correct jwtToken is set on service'
+      );
+    });
+
+    test('setupPretenderLoginWithInvalidMfa works', async function (assert) {
+      setupPretenderLoginWithInvalidMfa(this);
+      let { cognito } = this;
+
+      await visit('/login');
+
+      await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
+      await fillIn('[data-test-login-form-password]', 'test1234');
+      await click('[data-test-login-form-submit]');
+
+      await fillIn('[data-test-login-form-mfa-code]', '123456');
+      await click('[data-test-login-form-submit]');
+
+      assert.notOk(cognito.isAuthenticated, 'user is not authenticated');
+      assert
+        .dom('[data-test-cognito-error]')
+        .hasText('The MFA code is invalid, please try again.');
     });
   });
 });

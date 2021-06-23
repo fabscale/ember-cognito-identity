@@ -3,6 +3,7 @@ import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import {
   dispatchError,
   NewPasswordRequiredError,
+  MfaCodeRequiredError,
 } from 'ember-cognito-identity/errors/cognito';
 import { Promise as RSVPPromise } from 'rsvp';
 
@@ -40,7 +41,9 @@ export function authenticateUser(
         );
       },
 
-      // TODO: MFA ?
+      totpRequired() {
+        reject(new MfaCodeRequiredError(cognitoUser));
+      },
 
       onFailure(err) {
         reject(dispatchError(err));

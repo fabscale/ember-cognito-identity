@@ -2,38 +2,39 @@
   Sign in
 </h1>
 
-<CognitoLoginForm
-  as |loginForm|
->
-
+<CognitoLoginForm as |loginForm|>
   <div>
-    <label for="login-username">
+    <label for='login-username'>
       Username (E-mail)
     </label>
 
     <div>
       <loginForm.UsernameInput
-        id="login-username"
-        type="email"
-        required="true"
-        disabled={{loginForm.mustEnterNewPassword}}
-        class="custom-input-class"
+        id='login-username'
+        type='email'
+        required='true'
+        disabled={{
+          or loginForm.mustEnterNewPassword loginForm.mustEnterMfaCode
+        }}
+        class='custom-input-class'
         data-test-login-form-username
       />
     </div>
   </div>
 
   <div>
-    <label for="login-password">
+    <label for='login-password'>
       Password
     </label>
 
     <div>
       <loginForm.PasswordInput
-        @id="login-password"
-        required="true"
-        disabled={{loginForm.mustEnterNewPassword}}
-        class="custom-input-class"
+        @id='login-password'
+        required='true'
+        disabled={{
+          or loginForm.mustEnterNewPassword loginForm.mustEnterMfaCode
+        }}
+        class='custom-input-class'
         data-test-login-form-password
       />
     </div>
@@ -45,30 +46,45 @@
     </p>
 
     <div>
-      <label for="login-new-password">
+      <label for='login-new-password'>
         New password
       </label>
 
       <loginForm.NewPasswordInput
-        @id="login-new-password"
-        required="true"
-        class="custom-input-class"
+        @id='login-new-password'
+        required='true'
+        class='custom-input-class'
         data-test-login-form-new-password
       />
     </div>
   {{/if}}
 
-  <loginForm.ErrorDisplay/>
+  {{#if loginForm.mustEnterMfaCode}}
+    <p>
+      Please enter your MFA code.
+    </p>
 
-  <button
-    data-test-login-form-submit
-    type="submit"
-  >
+    <div>
+      <label for='mfa-code'>
+        6-digit MFA code
+      </label>
+
+      <loginForm.MfaCodeInput
+        @id='mfa-code'
+        required='true'
+        class='custom-input-class'
+        data-test-login-form-mfa-code
+      />
+    </div>
+  {{/if}}
+
+  <loginForm.ErrorDisplay />
+
+  <button data-test-login-form-submit type='submit'>
     Submit
   </button>
 
-  <LinkTo @route="reset-password">
+  <LinkTo @route='reset-password'>
     Forgot your password?
   </LinkTo>
-
 </CognitoLoginForm>
