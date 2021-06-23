@@ -2,28 +2,29 @@ import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import RouterService from '@ember/routing/router-service';
 import Service, { inject as service } from '@ember/service';
-import { waitForPromise } from '@ember/test-waiters';
 import { tracked } from '@glimmer/tracking';
 import {
-  AuthenticationDetails,
   CognitoUser,
   CognitoUserPool,
   CognitoUserSession,
   ICognitoStorage,
   ICognitoUserAttributeData,
 } from 'amazon-cognito-identity-js';
-import {
-  AmazonCognitoIdentityJsError,
-  CognitoNotAuthenticatedError,
-  dispatchError,
-  NewPasswordRequiredError,
-} from 'ember-cognito-identity/errors/cognito';
-import { getUserAttributes } from 'ember-cognito-identity/utils/user-data';
+import { NewPasswordRequiredError } from 'ember-cognito-identity/errors/cognito';
+import { authenticateUser } from 'ember-cognito-identity/utils/cognito/authenticate-user';
+import { globalSignOut } from 'ember-cognito-identity/utils/cognito/global-sign-out';
+import { refreshAccessToken } from 'ember-cognito-identity/utils/cognito/refresh-access-token';
+import { setNewPassword } from 'ember-cognito-identity/utils/cognito/set-new-password';
+import { triggerResetPasswordMail } from 'ember-cognito-identity/utils/cognito/trigger-reset-password-mail';
+import { updatePassword } from 'ember-cognito-identity/utils/cognito/update-password';
+import { updateResetPassword } from 'ember-cognito-identity/utils/cognito/update-reset-password';
+import { updateUserAttributes } from 'ember-cognito-identity/utils/cognito/update-user-attributes';
+import { getUserAttributes } from 'ember-cognito-identity/utils/get-user-attributes';
+import { loadUserDataAndAccessToken } from 'ember-cognito-identity/utils/load-user-data-and-access-token';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
-import { Promise as RSVPPromise } from 'rsvp';
 
-interface CognitoData {
+export interface CognitoData {
   cognitoUser: CognitoUser;
   userAttributes: UserAttributes;
   cognitoUserSession: CognitoUserSession;
@@ -93,106 +94,30 @@ export default class CognitoService extends Service {
   }
 
   // This should be called in application route, before everything else
-  restoreAndLoad(): Promise<any> {
+  async restoreAndLoad(): Promise<CognitoData> {
     if (this.cognitoData) {
-      return RSVPPromise.resolve(this.cognitoData);
+      return this.cognitoData;
     }
 
-    return this._loadUserDataAndAccessToken();
-  }
-
-  async refreshAccessToken(): Promise<any> {
-    assert(
-      'cognitoData is not setup, user is probably not logged in',
-      !!this.cognitoData
-    );
-
-    // Note: @types/amazon-cognito-auth-js is incorrectly missing this
-    // @ts-ignore next-line
-    let { refreshToken } = this.cognitoData.cognitoUserSession;
-
-    if (!refreshToken || !refreshToken.getToken()) {
-      throw new Error('Cannot retrieve a refresh token');
-    }
-
-    let promise = new RSVPPromise((resolve, reject) => {
-      this.cognitoData!.cognitoUser.refreshSession(refreshToken, (error) => {
-        if (error) {
-          return reject(dispatchError(error));
-        }
-
-        this._loadUserDataAndAccessToken().then(resolve, reject);
-      });
-    });
-
-    return waitForPromise(promise);
-  }
-
-  async _loadUserDataAndAccessToken(): Promise<CognitoData | null> {
-    let { userPool } = this;
-
-    let cognitoUser = userPool.getCurrentUser();
-    if (!cognitoUser) {
-      throw new CognitoNotAuthenticatedError();
-    }
-
-    return this._loadCognitoUserSession(cognitoUser);
-  }
-
-  async _loadCognitoUserSession(
-    cognitoUser: CognitoUser
-  ): Promise<CognitoData> {
-    let cognitoUserSession: CognitoUserSession;
-
-    let userAttributes;
-    try {
-      cognitoUserSession = await this._getSession(cognitoUser);
-      userAttributes = await getUserAttributes(cognitoUser);
-    } catch (error) {
-      cognitoUser.signOut();
-      throw error;
-    }
-
-    let jwtToken = cognitoUserSession.getAccessToken().getJwtToken();
-
-    let cognitoData: CognitoData = {
-      cognitoUser,
-      userAttributes,
-      cognitoUserSession,
-      jwtToken,
-    };
-
-    this.cognitoData = cognitoData;
+    this.cognitoData = await loadUserDataAndAccessToken(this.userPool);
 
     if (this.shouldAutoRefresh) {
       taskFor(this._debouncedRefreshAccessToken).perform();
     }
 
-    return cognitoData;
+    return this.cognitoData;
   }
 
-  _getSession(cognitoUser: CognitoUser): Promise<CognitoUserSession> {
-    let promise: Promise<CognitoUserSession> = new RSVPPromise(
-      (resolve, reject) => {
-        cognitoUser.getSession(
-          (
-            error: AmazonCognitoIdentityJsError | null,
-            cognitoUserSession: CognitoUserSession
-          ) => {
-            if (error) {
-              return reject(dispatchError(error));
-            }
-
-            resolve(cognitoUserSession);
-          },
-          {
-            clientMetadata: {},
-          }
-        );
-      }
+  async refreshAccessToken(): Promise<void> {
+    assert(
+      'cognitoData is not setup, user is probably not logged in',
+      !!this.cognitoData
     );
 
-    return waitForPromise(promise);
+    let { cognitoUser, cognitoUserSession } = this.cognitoData!;
+
+    await refreshAccessToken(cognitoUserSession, cognitoUser);
+    await loadUserDataAndAccessToken(this.userPool);
   }
 
   async authenticate({
@@ -210,75 +135,6 @@ export default class CognitoService extends Service {
     return this.cognitoData!;
   }
 
-  async _authenticate({
-    username,
-    password,
-    cognitoUser,
-  }: {
-    username: string;
-    password: string;
-    cognitoUser?: CognitoUser;
-  }): Promise<CognitoUser> {
-    assert('cognitoData is already setup', !this.cognitoData);
-
-    let actualCognitoUser =
-      typeof cognitoUser === 'undefined'
-        ? this._createCognitoUser({ username })
-        : cognitoUser;
-
-    return this._authenticateAndLoadData({
-      username,
-      password,
-      cognitoUser: actualCognitoUser,
-    });
-  }
-
-  /*
-    Might reject with:
-    * InvalidAuthorizationError (username/password wrong)
-    * NewPasswordRequiredError (new user)
-    * PasswordResetRequiredError (password reset required by admin)
-
-    Resolves with an object with cognitoUser & accessToken
-   */
-  _authenticateAndLoadData({
-    username,
-    password,
-    cognitoUser,
-  }: {
-    username: string;
-    password: string;
-    cognitoUser: CognitoUser;
-  }): Promise<CognitoUser> {
-    let authenticationData = {
-      Username: username,
-      Password: password,
-    };
-    let authenticationDetails = new AuthenticationDetails(authenticationData);
-
-    let promise: Promise<CognitoUser> = new RSVPPromise((resolve, reject) => {
-      cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: () => {
-          resolve(cognitoUser);
-        },
-
-        newPasswordRequired(userAttributes, requiredAttributes) {
-          reject(
-            new NewPasswordRequiredError(userAttributes, requiredAttributes)
-          );
-        },
-
-        // TODO: MFA ?
-
-        onFailure(err) {
-          reject(dispatchError(err));
-        },
-      });
-    });
-
-    return waitForPromise(promise);
-  }
-
   logout(): void {
     if (this.cognitoData) {
       this.cognitoData.cognitoUser.signOut();
@@ -288,42 +144,21 @@ export default class CognitoService extends Service {
     }
   }
 
-  invalidateAccessTokens(): Promise<any> {
-    let promise = new RSVPPromise((resolve, reject) => {
-      if (!this.cognitoData) {
-        return reject();
-      }
+  invalidateAccessTokens(): Promise<void> {
+    assert(
+      'cognitoData is not set, make sure to be authenticated before calling `invalidateAccessTokens()`',
+      !!this.cognitoData
+    );
 
-      this.cognitoData.cognitoUser.globalSignOut({
-        onSuccess: () => {
-          resolve();
-        },
+    let { cognitoUser } = this.cognitoData!;
 
-        onFailure(err) {
-          reject(dispatchError(err));
-        },
-      });
-    });
-
-    return waitForPromise(promise);
+    return globalSignOut(cognitoUser);
   }
 
-  triggerResetPasswordMail({ username }: { username: string }): Promise<any> {
+  triggerResetPasswordMail({ username }: { username: string }): Promise<void> {
     let cognitoUser = this._createCognitoUser({ username });
 
-    let promise = new RSVPPromise((resolve, reject) => {
-      cognitoUser.forgotPassword({
-        onSuccess() {
-          resolve();
-        },
-
-        onFailure(err) {
-          reject(dispatchError(err));
-        },
-      });
-    });
-
-    return waitForPromise(promise);
+    return triggerResetPasswordMail(cognitoUser);
   }
 
   /*
@@ -339,68 +174,42 @@ export default class CognitoService extends Service {
     username: string;
     code: string;
     newPassword: string;
-  }): Promise<any> {
+  }): Promise<void> {
     let cognitoUser = this._createCognitoUser({ username });
 
-    let promise = new RSVPPromise((resolve, reject) => {
-      cognitoUser.confirmPassword(code, newPassword, {
-        onSuccess() {
-          resolve();
-        },
-
-        onFailure(error: AmazonCognitoIdentityJsError) {
-          // This can also happen, e.g. if the password is shorter than 6 characters
-          if (error.code === 'InvalidParameterException') {
-            error.code = 'InvalidPasswordException';
-            error.name = 'InvalidPasswordException';
-          }
-
-          reject(dispatchError(error));
-        },
-      });
-    });
-
-    return waitForPromise(promise);
+    return updateResetPassword(cognitoUser, { code, newPassword });
   }
 
   /*
     Might reject with:
     * InvalidPasswordError (e.g. password too short)
    */
-  setNewPassword(
+  async setNewPassword(
     {
       username,
       password,
       newPassword,
     }: { username: string; password: string; newPassword: string },
     newAttributes = {}
-  ): Promise<any> {
+  ): Promise<void> {
     let cognitoUser = this._createCognitoUser({ username });
 
-    let promise = new RSVPPromise((resolve, reject) => {
-      this._authenticate({ username, password, cognitoUser }).then(
-        () => {
-          assert(
-            'You seem to have called `setNewPassword` without it being required.',
-            false
-          );
-          resolve();
-        },
-        () => {
-          cognitoUser.completeNewPasswordChallenge(newPassword, newAttributes, {
-            onSuccess() {
-              resolve();
-            },
+    try {
+      await this._authenticate({ username, password, cognitoUser });
+    } catch (error) {
+      // This _should_ error, otherwise the user does not need to set a new password
+      if (!(error instanceof NewPasswordRequiredError)) {
+        throw error;
+      }
 
-            onFailure(err) {
-              reject(dispatchError(err));
-            },
-          });
-        }
-      );
-    });
+      await setNewPassword(cognitoUser, { newPassword }, newAttributes);
+      return;
+    }
 
-    return waitForPromise(promise);
+    assert(
+      'You seem to have called `setNewPassword` without it being required.',
+      false
+    );
   }
 
   updatePassword({
@@ -409,7 +218,7 @@ export default class CognitoService extends Service {
   }: {
     oldPassword: string;
     newPassword: string;
-  }): Promise<any> {
+  }): Promise<void> {
     assert(
       'cognitoData is not set, make sure to be authenticated before calling `updatePassword()`',
       !!this.cognitoData
@@ -417,20 +226,12 @@ export default class CognitoService extends Service {
 
     let { cognitoUser } = this.cognitoData!;
 
-    let promise = new RSVPPromise((resolve, reject) => {
-      cognitoUser.changePassword(oldPassword, newPassword, function (error) {
-        if (error) {
-          return reject(dispatchError(error));
-        }
-
-        resolve();
-      });
-    });
-
-    return waitForPromise(promise);
+    return updatePassword(cognitoUser, { oldPassword, newPassword });
   }
 
-  updateAttributes(attributes: { [index: string]: string }): Promise<any> {
+  async updateAttributes(attributes: {
+    [index: string]: string;
+  }): Promise<{ [index: string]: string }> {
     assert(
       'cognitoData is not set, make sure to be authenticated before calling `updateAttributes()`',
       !!this.cognitoData
@@ -447,25 +248,12 @@ export default class CognitoService extends Service {
       };
     });
 
-    let promise = new RSVPPromise((resolve, reject) => {
-      cognitoUser.updateAttributes(
-        attributeList,
-        (error: AmazonCognitoIdentityJsError) => {
-          if (error) {
-            return reject(dispatchError(error));
-          }
+    await updateUserAttributes(cognitoUser, attributeList);
+    let userAttributes = await getUserAttributes(cognitoUser);
 
-          getUserAttributes(cognitoUser)
-            .then((userAttributes) => {
-              this.cognitoData!.userAttributes = userAttributes;
-              resolve(userAttributes);
-            })
-            .catch(reject);
-        }
-      );
-    });
+    this.cognitoData!.userAttributes = userAttributes;
 
-    return waitForPromise(promise);
+    return userAttributes;
   }
 
   @restartableTask
@@ -473,6 +261,25 @@ export default class CognitoService extends Service {
     yield timeout(this.autoRefreshInterval);
 
     yield this.refreshAccessToken();
+  }
+
+  _authenticate({
+    username,
+    password,
+    cognitoUser,
+  }: {
+    username: string;
+    password: string;
+    cognitoUser?: CognitoUser;
+  }): Promise<CognitoUser> {
+    assert('cognitoData is already setup', !this.cognitoData);
+
+    let actualCognitoUser =
+      typeof cognitoUser === 'undefined'
+        ? this._createCognitoUser({ username })
+        : cognitoUser;
+
+    return authenticateUser(actualCognitoUser, { username, password });
   }
 
   _createCognitoUser({ username }: { username: string }): CognitoUser {
