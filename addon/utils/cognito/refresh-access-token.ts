@@ -15,7 +15,7 @@ export async function refreshAccessToken(
     throw new Error('Cannot retrieve a refresh token');
   }
 
-  let promise: Promise<void> = new RSVPPromise((resolve, reject) => {
+  let promise = new RSVPPromise<void>((resolve, reject) => {
     cognitoUser.refreshSession(refreshToken, (error) => {
       if (error) {
         reject(dispatchError(error));

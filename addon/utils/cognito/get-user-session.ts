@@ -9,25 +9,23 @@ import { Promise as RSVPPromise } from 'rsvp';
 export function getUserSession(
   cognitoUser: CognitoUser
 ): Promise<CognitoUserSession> {
-  let promise: Promise<CognitoUserSession> = new RSVPPromise(
-    (resolve, reject) => {
-      cognitoUser.getSession(
-        (
-          error: AmazonCognitoIdentityJsError | null,
-          cognitoUserSession: CognitoUserSession
-        ) => {
-          if (error) {
-            return reject(dispatchError(error));
-          }
-
-          resolve(cognitoUserSession);
-        },
-        {
-          clientMetadata: {},
+  let promise = new RSVPPromise<CognitoUserSession>((resolve, reject) => {
+    cognitoUser.getSession(
+      (
+        error: AmazonCognitoIdentityJsError | null,
+        cognitoUserSession: CognitoUserSession
+      ) => {
+        if (error) {
+          return reject(dispatchError(error));
         }
-      );
-    }
-  );
+
+        resolve(cognitoUserSession);
+      },
+      {
+        clientMetadata: {},
+      }
+    );
+  });
 
   return waitForPromise(promise);
 }

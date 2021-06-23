@@ -8,7 +8,7 @@ export function setNewPassword(
   { newPassword }: { newPassword: string },
   newAttributes = {}
 ): Promise<void> {
-  let promise: Promise<void> = new RSVPPromise((resolve, reject) => {
+  let promise = new RSVPPromise<void>((resolve, reject) => {
     cognitoUser.completeNewPasswordChallenge(newPassword, newAttributes, {
       onSuccess() {
         resolve();

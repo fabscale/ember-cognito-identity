@@ -13,7 +13,7 @@ export function updatePassword(
     newPassword: string;
   }
 ): Promise<void> {
-  let promise: Promise<void> = new RSVPPromise((resolve, reject) => {
+  let promise = new RSVPPromise<void>((resolve, reject) => {
     cognitoUser.changePassword(oldPassword, newPassword, function (error) {
       if (error) {
         reject(dispatchError(error));

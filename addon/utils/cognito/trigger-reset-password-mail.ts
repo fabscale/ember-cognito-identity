@@ -6,7 +6,7 @@ import { Promise as RSVPPromise } from 'rsvp';
 export function triggerResetPasswordMail(
   cognitoUser: CognitoUser
 ): Promise<void> {
-  let promise: Promise<void> = new RSVPPromise((resolve, reject) => {
+  let promise = new RSVPPromise<void>((resolve, reject) => {
     cognitoUser.forgotPassword({
       onSuccess() {
         resolve();
