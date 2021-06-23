@@ -23,6 +23,7 @@ import { getUserAttributes } from 'ember-cognito-identity/utils/get-user-attribu
 import { loadUserDataAndAccessToken } from 'ember-cognito-identity/utils/load-user-data-and-access-token';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
+import { isTesting } from '@embroider/macros';
 
 export interface CognitoData {
   cognitoUser: CognitoUser;
@@ -50,13 +51,8 @@ export default class CognitoService extends Service {
     return config.cognito;
   }
 
-  get isTesting() {
-    let config = getOwner(this).resolveRegistration('config:environment');
-    return config.environment === 'test';
-  }
-
   get shouldAutoRefresh() {
-    return !this.isTesting;
+    return !isTesting();
   }
 
   autoRefreshInterval = 1000 * 60 * 45; // Tokens expire after 1h, so we refresh them every 45 minutes, to have a bit of leeway
