@@ -16,6 +16,17 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v2.3.0 (2021-06-23)
+
+#### :rocket: Enhancement
+* [#546](https://github.com/fabscale/ember-cognito-identity/pull/546) Allow to setup & use MFA authentication ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#545](https://github.com/fabscale/ember-cognito-identity/pull/545) Refactor cognito methods into util functions ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v2.2.0 (2021-06-15)
 
 #### :rocket: Enhancement
