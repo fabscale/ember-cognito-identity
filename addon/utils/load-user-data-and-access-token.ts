@@ -7,6 +7,7 @@ import {
   CognitoData,
   UserAttributes,
 } from 'ember-cognito-identity/services/cognito';
+import { CognitoUserMfa } from './cognito-mfa';
 import { getUserSession } from './cognito/get-user-session';
 import { getUserAttributes } from './get-user-attributes';
 
@@ -35,6 +36,7 @@ export async function loadUserDataAndAccessToken(
     userAttributes,
     cognitoUserSession,
     jwtToken,
+    mfa: new CognitoUserMfa(cognitoUser),
   };
 
   return cognitoData;

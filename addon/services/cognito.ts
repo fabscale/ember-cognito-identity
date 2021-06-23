@@ -2,6 +2,7 @@ import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import RouterService from '@ember/routing/router-service';
 import Service, { inject as service } from '@ember/service';
+import { isTesting } from '@embroider/macros';
 import { tracked } from '@glimmer/tracking';
 import {
   CognitoUser,
@@ -10,7 +11,11 @@ import {
   ICognitoStorage,
   ICognitoUserAttributeData,
 } from 'amazon-cognito-identity-js';
-import { NewPasswordRequiredError } from 'ember-cognito-identity/errors/cognito';
+import {
+  MfaCodeRequiredError,
+  NewPasswordRequiredError,
+} from 'ember-cognito-identity/errors/cognito';
+import { CognitoUserMfa } from 'ember-cognito-identity/utils/cognito-mfa';
 import { authenticateUser } from 'ember-cognito-identity/utils/cognito/authenticate-user';
 import { globalSignOut } from 'ember-cognito-identity/utils/cognito/global-sign-out';
 import { refreshAccessToken } from 'ember-cognito-identity/utils/cognito/refresh-access-token';
@@ -23,13 +28,13 @@ import { getUserAttributes } from 'ember-cognito-identity/utils/get-user-attribu
 import { loadUserDataAndAccessToken } from 'ember-cognito-identity/utils/load-user-data-and-access-token';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
-import { isTesting } from '@embroider/macros';
 
 export interface CognitoData {
   cognitoUser: CognitoUser;
   userAttributes: UserAttributes;
   cognitoUserSession: CognitoUserSession;
   jwtToken: string;
+  mfa: CognitoUserMfa;
 }
 
 export type UserAttributes = { [key: string]: any };
@@ -41,6 +46,10 @@ export default class CognitoService extends Service {
   _cognitoStorage: undefined | ICognitoStorage;
 
   @tracked cognitoData: null | CognitoData = null;
+
+  // When calling `authenticate()` throws a `MfaCodeRequiredError`, we cache the user here
+  // We need it when then calling `mfaCompleteAuthentication()` later, at which point it will be reset
+  _tempMfaCognitoUser?: CognitoUser;
 
   get isAuthenticated() {
     return Boolean(this.cognitoData);
@@ -157,6 +166,20 @@ export default class CognitoService extends Service {
     return triggerResetPasswordMail(cognitoUser);
   }
 
+  async mfaCompleteAuthentication(code: string): Promise<void> {
+    assert(
+      'mfaCompleteAuthentication: You may only call this method after calling `authenticate()` before, leading to a `MfaCodeRequiredError` error.',
+      !!this._tempMfaCognitoUser
+    );
+
+    let cognitoMfa = new CognitoUserMfa(this._tempMfaCognitoUser!);
+    await cognitoMfa.completeAuthentication(code);
+
+    this._tempMfaCognitoUser = undefined;
+
+    await this.restoreAndLoad();
+  }
+
   /*
     Might reject with:
     * InvalidPasswordError (e.g. password too short)
@@ -259,7 +282,7 @@ export default class CognitoService extends Service {
     yield this.refreshAccessToken();
   }
 
-  _authenticate({
+  async _authenticate({
     username,
     password,
     cognitoUser,
@@ -275,7 +298,15 @@ export default class CognitoService extends Service {
         ? this._createCognitoUser({ username })
         : cognitoUser;
 
-    return authenticateUser(actualCognitoUser, { username, password });
+    try {
+      return await authenticateUser(actualCognitoUser, { username, password });
+    } catch (error) {
+      if (error instanceof MfaCodeRequiredError) {
+        this._tempMfaCognitoUser = error.cognitoUser;
+      }
+
+      throw error;
+    }
   }
 
   _createCognitoUser({ username }: { username: string }): CognitoUser {

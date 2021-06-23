@@ -10,6 +10,12 @@ export default class IndexController extends Controller {
     return this.cognito.cognitoData.jwtToken;
   }
 
+  constructor() {
+    super(...arguments);
+
+    window.cognito = this.cognito;
+  }
+
   @action
   logout() {
     this.cognito.logout();

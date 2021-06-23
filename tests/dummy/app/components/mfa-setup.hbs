@@ -1,0 +1,39 @@
+{{#if this.isMfaEnabled}}
+  <div>
+    MFA is enabled!
+    <button data-test-mfa-disable type='button' {{on 'click' this.disableMfa}}>
+      Disable MFA
+    </button>
+  </div>
+{{else if this.secret}}
+  <canvas {{mfa-qr-code this.qrCodeData}}></canvas>
+
+  <div data-test-mfa-setup-secret>
+    {{this.secret}}
+  </div>
+  <CognitoTextInput
+    @value={{this.mfaCode}}
+    @onChange={{this.updateMfaCode}}
+    data-test-mfa-setup-code
+  />
+
+  <div>
+    <button
+      data-test-mfa-enable-confirm
+      type='button'
+      {{on 'click' this.confirmMfa}}
+    >
+      Confirm MFA & finish setup
+    </button>
+  </div>
+
+  {{#if this.error}}
+    <div data-test-cognito-error>
+      {{this.error}}
+    </div>
+  {{/if}}
+{{else}}
+  <button data-test-mfa-enable type='button' {{on 'click' this.setupMfa}}>
+    Setup MFA
+  </button>
+{{/if}}

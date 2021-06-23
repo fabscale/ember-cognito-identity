@@ -3,21 +3,19 @@ import { CognitoUser } from 'amazon-cognito-identity-js';
 import { dispatchError } from 'ember-cognito-identity/errors/cognito';
 import { Promise as RSVPPromise } from 'rsvp';
 
-export function updatePassword(
+export function setUserMfaPreference(
   cognitoUser: CognitoUser,
-  {
-    oldPassword,
-    newPassword,
-  }: {
-    oldPassword: string;
-    newPassword: string;
-  }
+  enable = true
 ): Promise<void> {
   let promise = new RSVPPromise<void>((resolve, reject) => {
-    cognitoUser.changePassword(oldPassword, newPassword, function (error) {
-      if (error) {
-        reject(dispatchError(error));
-        return;
+    let totpMfaSettings = {
+      PreferredMfa: enable,
+      Enabled: enable,
+    };
+
+    cognitoUser.setUserMfaPreference(null, totpMfaSettings, (err) => {
+      if (err) {
+        return reject(dispatchError(err));
       }
 
       resolve();

@@ -1,3 +1,4 @@
+import { CognitoUser } from 'amazon-cognito-identity-js';
 import { UserAttributes } from 'ember-cognito-identity/services/cognito';
 
 export interface AmazonCognitoIdentityJsError {
@@ -57,6 +58,18 @@ export class NewPasswordRequiredError extends CognitoError {
   }
 }
 
+// Note: This error is never thrown by dispatchError, but only manually in cognito._authenticate()
+export class MfaCodeRequiredError extends CognitoError {
+  cognitoUser: CognitoUser;
+
+  constructor(cognitoUser: CognitoUser) {
+    super('You must enter the one-time code to complete signing in.');
+
+    this.name = 'MfaCodeRequiredError';
+    this.cognitoUser = cognitoUser;
+  }
+}
+
 export class InvalidAuthorizationError extends CognitoError {
   constructor(error: AmazonCognitoIdentityJsError) {
     super(error, 'The password you provided is incorrect.');
@@ -109,6 +122,13 @@ export class PasswordCannotBeResetError extends CognitoError {
   }
 }
 
+export class MfaCodeMismatchError extends CognitoError {
+  constructor(error: AmazonCognitoIdentityJsError) {
+    super(error, 'The MFA code is invalid, please try again.');
+    this.name = 'MfaCodeMismatchError';
+  }
+}
+
 export function dispatchError(error: AmazonCognitoIdentityJsError) {
   let errorMap = {
     PasswordResetRequiredException: PasswordResetRequiredError,
@@ -118,6 +138,7 @@ export function dispatchError(error: AmazonCognitoIdentityJsError) {
     InvalidParameterException: InvalidPasswordError,
     UserNotFoundException: UserNotFoundError,
     ExpiredCodeException: VerificationCodeExpiredError,
+    EnableSoftwareTokenMFAException: MfaCodeMismatchError,
   };
 
   if (!error || typeof error !== 'object') {
@@ -141,6 +162,14 @@ export function dispatchError(error: AmazonCognitoIdentityJsError) {
     error.message === 'User password cannot be reset in the current state.'
   ) {
     ErrorType = PasswordCannotBeResetError;
+  }
+
+  // Special case: CodeMismatchException can be for the verification code, or for the MFA code
+  if (
+    ErrorType === VerificationCodeMismatchError &&
+    error.message === 'Invalid code received for user'
+  ) {
+    ErrorType = MfaCodeMismatchError;
   }
 
   return ErrorType ? new ErrorType(error) : new CognitoError(error);

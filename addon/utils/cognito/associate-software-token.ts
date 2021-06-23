@@ -3,17 +3,17 @@ import { CognitoUser } from 'amazon-cognito-identity-js';
 import { dispatchError } from 'ember-cognito-identity/errors/cognito';
 import { Promise as RSVPPromise } from 'rsvp';
 
-export function triggerResetPasswordMail(
+export function associateSoftwareToken(
   cognitoUser: CognitoUser
-): Promise<void> {
-  let promise = new RSVPPromise<void>((resolve, reject) => {
-    cognitoUser.forgotPassword({
-      onSuccess() {
-        resolve();
+): Promise<string> {
+  let promise = new RSVPPromise<string>((resolve, reject) => {
+    cognitoUser.associateSoftwareToken({
+      associateSecretCode(secretCode: string) {
+        resolve(secretCode);
       },
 
-      onFailure(err) {
-        reject(dispatchError(err));
+      onFailure(error) {
+        reject(dispatchError(error));
       },
     });
   });

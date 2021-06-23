@@ -4,7 +4,7 @@ import { dispatchError } from 'ember-cognito-identity/errors/cognito';
 import { Promise as RSVPPromise } from 'rsvp';
 
 export function globalSignOut(cognitoUser: CognitoUser): Promise<void> {
-  let promise: Promise<void> = new RSVPPromise((resolve, reject) => {
+  let promise = new RSVPPromise<void>((resolve, reject) => {
     cognitoUser.globalSignOut({
       onSuccess: () => {
         resolve();

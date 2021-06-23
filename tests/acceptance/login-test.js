@@ -1,16 +1,9 @@
-import { module, test } from 'qunit';
-import {
-  visit,
-  fillIn,
-  click,
-  resetOnerror,
-  setupOnerror,
-} from '@ember/test-helpers';
-import { setupApplicationTest } from 'ember-qunit';
 import { assign } from '@ember/polyfills';
+import { click, fillIn, visit } from '@ember/test-helpers';
 import { createJWTToken } from 'ember-cognito-identity/test-support/helpers/create-jwt-token';
 import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
-import { CognitoError } from 'ember-cognito-identity/errors/cognito';
+import { setupApplicationTest } from 'ember-qunit';
+import { module, test } from 'qunit';
 
 module('Acceptance | login', function (hooks) {
   setupApplicationTest(hooks);
@@ -143,22 +136,7 @@ module('Acceptance | login', function (hooks) {
     ]);
   });
 
-  module('errors', function (hooks) {
-    hooks.beforeEach(function () {
-      setupOnerror((error) => {
-        // ignore cognito errors, as they are handled in the UI
-        if (error instanceof CognitoError) {
-          return;
-        }
-
-        throw error;
-      });
-    });
-
-    hooks.afterEach(function () {
-      resetOnerror();
-    });
-
+  module('errors', function () {
     test('it handles an unknown username', async function (assert) {
       let { cognito } = this;
 
@@ -680,6 +658,359 @@ module('Acceptance | login', function (hooks) {
         'InitiateAuth is called',
         'RespondToAuthChallenge is called',
         'GetUser is called',
+      ]);
+    });
+
+    test('it handles a user that needs an MFA code', async function (assert) {
+      let { cognito } = this;
+
+      this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = (
+        body
+      ) => {
+        assert.step('InitiateAuth is called');
+
+        let normalizedBody = assign({}, body);
+        normalizedBody.AuthParameters.SRP_A = 'TEST-SRP-A';
+
+        assert.deepEqual(
+          normalizedBody,
+          {
+            AuthFlow: 'USER_SRP_AUTH',
+            ClientId: 'TEST-CLIENT-ID',
+            AuthParameters: {
+              USERNAME: 'johnwick@fabscale.com',
+              SRP_A: 'TEST-SRP-A',
+            },
+
+            ClientMetadata: {},
+          },
+          'correct body is sent'
+        );
+
+        return {
+          ChallengeName: 'PASSWORD_VERIFIER',
+          ChallengeParameters: {
+            SALT: 'TEST-SALT',
+            SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+            USERNAME: 'TEST-USER-ID',
+            USER_ID_FOR_SRP: 'TEST-USER-ID',
+          },
+        };
+      };
+
+      let accessToken = createJWTToken();
+
+      // This API request is made 2 times with different responses
+      let respondToAuthChallengeList = [
+        (body) => {
+          assert.step('RespondToAuthChallenge (1) is called');
+
+          let normalizedBody = assign({}, body);
+          normalizedBody.ChallengeResponses.PASSWORD_CLAIM_SIGNATURE =
+            'TEST-CLAIM-SIGNATURE';
+          normalizedBody.ChallengeResponses.TIMESTAMP = 'timestamp';
+
+          assert.deepEqual(
+            normalizedBody,
+            {
+              ChallengeName: 'PASSWORD_VERIFIER',
+              ClientId: 'TEST-CLIENT-ID',
+              ChallengeResponses: {
+                USERNAME: 'TEST-USER-ID',
+                PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+                TIMESTAMP: 'timestamp',
+                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
+              },
+
+              ClientMetadata: {},
+            },
+            'correct body is sent'
+          );
+
+          return {
+            ChallengeName: 'SOFTWARE_TOKEN_MFA',
+            ChallengeParameters: { FRIENDLY_DEVICE_NAME: 'MFA Device' },
+            Session: 'TEST-SESSION-ID',
+          };
+        },
+        (body) => {
+          assert.step('RespondToAuthChallenge (2) is called');
+
+          let normalizedBody = assign({}, body);
+
+          assert.deepEqual(
+            normalizedBody,
+            {
+              ChallengeName: 'SOFTWARE_TOKEN_MFA',
+              ChallengeResponses: {
+                SMS_MFA_CODE: '123456',
+                SOFTWARE_TOKEN_MFA_CODE: '123456',
+                USERNAME: 'TEST-USER-ID',
+              },
+
+              ClientId: 'TEST-CLIENT-ID',
+              Session: 'TEST-SESSION-ID',
+            },
+            'correct body is sent'
+          );
+
+          return {
+            AuthenticationResult: {
+              AccessToken: accessToken,
+              ExpiresIn: 3600,
+              IdToken: accessToken,
+              RefreshToken: accessToken,
+              TokenType: 'Bearer',
+            },
+
+            ChallengeParameters: {},
+          };
+        },
+      ];
+
+      this.awsHooks[
+        'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
+      ] = (body) => {
+        let nextStep = respondToAuthChallengeList.shift();
+        return nextStep(body);
+      };
+
+      this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = (body) => {
+        assert.step('GetUser is called');
+
+        let normalizedBody = assign({}, body);
+
+        assert.deepEqual(
+          normalizedBody,
+          {
+            AccessToken: accessToken,
+          },
+          'correct body is sent'
+        );
+
+        return {
+          UserAttributes: [
+            { Name: 'sub', Value: 'TEST-USER-ID' },
+            { Name: 'email_verified', Value: 'true' },
+            { Name: 'email', Value: 'johnwick@fabscale.com' },
+          ],
+
+          Username: 'TEST-USER-ID',
+        };
+      };
+
+      await visit('/login');
+
+      assert.notOk(
+        cognito.isAuthenticated,
+        'user is not authenticated initially'
+      );
+
+      assert.dom('[data-test-login-form-new-password]').doesNotExist();
+      assert.step('enter username and password');
+
+      await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
+      await fillIn('[data-test-login-form-password]', 'test1234');
+      await click('[data-test-login-form-submit]');
+
+      assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
+
+      assert.step('enter mfa code');
+      assert.dom('[data-test-login-form-mfa-code]').exists();
+      assert.dom('[data-test-login-form-username]').isDisabled();
+      assert.dom('[data-test-login-form-password]').isDisabled();
+
+      await fillIn('[data-test-login-form-mfa-code]', '123456');
+      await click('[data-test-login-form-submit]');
+
+      assert.ok(cognito.isAuthenticated, 'user is authenticated now');
+      assert.equal(
+        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        accessToken,
+        'correct jwtToken is set on service'
+      );
+
+      assert.verifySteps([
+        'enter username and password',
+        'InitiateAuth is called',
+        'RespondToAuthChallenge (1) is called',
+        'enter mfa code',
+        'RespondToAuthChallenge (2) is called',
+        'GetUser is called',
+      ]);
+    });
+
+    test('it handles an incorrect MFA code', async function (assert) {
+      let { cognito } = this;
+
+      this.awsHooks['AWSCognitoIdentityProviderService.InitiateAuth'] = (
+        body
+      ) => {
+        assert.step('InitiateAuth is called');
+
+        let normalizedBody = assign({}, body);
+        normalizedBody.AuthParameters.SRP_A = 'TEST-SRP-A';
+
+        assert.deepEqual(
+          normalizedBody,
+          {
+            AuthFlow: 'USER_SRP_AUTH',
+            ClientId: 'TEST-CLIENT-ID',
+            AuthParameters: {
+              USERNAME: 'johnwick@fabscale.com',
+              SRP_A: 'TEST-SRP-A',
+            },
+
+            ClientMetadata: {},
+          },
+          'correct body is sent'
+        );
+
+        return {
+          ChallengeName: 'PASSWORD_VERIFIER',
+          ChallengeParameters: {
+            SALT: 'TEST-SALT',
+            SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+            USERNAME: 'TEST-USER-ID',
+            USER_ID_FOR_SRP: 'TEST-USER-ID',
+          },
+        };
+      };
+
+      let accessToken = createJWTToken();
+
+      // This API request is made 2 times with different responses
+      let respondToAuthChallengeList = [
+        (body) => {
+          assert.step('RespondToAuthChallenge (1) is called');
+
+          let normalizedBody = assign({}, body);
+          normalizedBody.ChallengeResponses.PASSWORD_CLAIM_SIGNATURE =
+            'TEST-CLAIM-SIGNATURE';
+          normalizedBody.ChallengeResponses.TIMESTAMP = 'timestamp';
+
+          assert.deepEqual(
+            normalizedBody,
+            {
+              ChallengeName: 'PASSWORD_VERIFIER',
+              ClientId: 'TEST-CLIENT-ID',
+              ChallengeResponses: {
+                USERNAME: 'TEST-USER-ID',
+                PASSWORD_CLAIM_SECRET_BLOCK: 'TEST-SECRET-BLOCK',
+                TIMESTAMP: 'timestamp',
+                PASSWORD_CLAIM_SIGNATURE: 'TEST-CLAIM-SIGNATURE',
+              },
+
+              ClientMetadata: {},
+            },
+            'correct body is sent'
+          );
+
+          return {
+            ChallengeName: 'SOFTWARE_TOKEN_MFA',
+            ChallengeParameters: { FRIENDLY_DEVICE_NAME: 'MFA Device' },
+            Session: 'TEST-SESSION-ID',
+          };
+        },
+        (body) => {
+          assert.step('RespondToAuthChallenge (2) is called');
+
+          let normalizedBody = assign({}, body);
+
+          assert.deepEqual(
+            normalizedBody,
+            {
+              ChallengeName: 'SOFTWARE_TOKEN_MFA',
+              ChallengeResponses: {
+                SMS_MFA_CODE: '123456',
+                SOFTWARE_TOKEN_MFA_CODE: '123456',
+                USERNAME: 'TEST-USER-ID',
+              },
+
+              ClientId: 'TEST-CLIENT-ID',
+              Session: 'TEST-SESSION-ID',
+            },
+            'correct body is sent'
+          );
+
+          return [
+            400,
+            {},
+            {
+              __type: 'CodeMismatchException',
+              message: 'Invalid code received for user',
+            },
+          ];
+        },
+      ];
+
+      this.awsHooks[
+        'AWSCognitoIdentityProviderService.RespondToAuthChallenge'
+      ] = (body) => {
+        let nextStep = respondToAuthChallengeList.shift();
+        return nextStep(body);
+      };
+
+      this.awsHooks['AWSCognitoIdentityProviderService.GetUser'] = (body) => {
+        assert.step('GetUser is called');
+
+        let normalizedBody = assign({}, body);
+
+        assert.deepEqual(
+          normalizedBody,
+          {
+            AccessToken: accessToken,
+          },
+          'correct body is sent'
+        );
+
+        return {
+          UserAttributes: [
+            { Name: 'sub', Value: 'TEST-USER-ID' },
+            { Name: 'email_verified', Value: 'true' },
+            { Name: 'email', Value: 'johnwick@fabscale.com' },
+          ],
+
+          Username: 'TEST-USER-ID',
+        };
+      };
+
+      await visit('/login');
+
+      assert.notOk(
+        cognito.isAuthenticated,
+        'user is not authenticated initially'
+      );
+
+      assert.dom('[data-test-login-form-new-password]').doesNotExist();
+      assert.step('enter username and password');
+
+      await fillIn('[data-test-login-form-username]', 'johnwick@fabscale.com');
+      await fillIn('[data-test-login-form-password]', 'test1234');
+      await click('[data-test-login-form-submit]');
+
+      assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
+
+      assert.step('enter mfa code');
+      assert.dom('[data-test-login-form-mfa-code]').exists();
+      assert.dom('[data-test-login-form-username]').isDisabled();
+      assert.dom('[data-test-login-form-password]').isDisabled();
+
+      await fillIn('[data-test-login-form-mfa-code]', '123456');
+      await click('[data-test-login-form-submit]');
+
+      assert.notOk(cognito.isAuthenticated, 'user is still not authenticated');
+      assert.dom('[data-test-cognito-error]').exists({ count: 1 });
+      assert
+        .dom('[data-test-cognito-error]')
+        .hasText('The MFA code is invalid, please try again.');
+
+      assert.verifySteps([
+        'enter username and password',
+        'InitiateAuth is called',
+        'RespondToAuthChallenge (1) is called',
+        'enter mfa code',
+        'RespondToAuthChallenge (2) is called',
       ]);
     });
   });

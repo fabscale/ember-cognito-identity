@@ -3,24 +3,20 @@ import { CognitoUser } from 'amazon-cognito-identity-js';
 import { dispatchError } from 'ember-cognito-identity/errors/cognito';
 import { Promise as RSVPPromise } from 'rsvp';
 
-export function updatePassword(
+export function verifySoftwareToken(
   cognitoUser: CognitoUser,
-  {
-    oldPassword,
-    newPassword,
-  }: {
-    oldPassword: string;
-    newPassword: string;
-  }
+  challengeAnswer: string,
+  deviceName = 'MFA Device'
 ): Promise<void> {
   let promise = new RSVPPromise<void>((resolve, reject) => {
-    cognitoUser.changePassword(oldPassword, newPassword, function (error) {
-      if (error) {
-        reject(dispatchError(error));
-        return;
-      }
+    cognitoUser.verifySoftwareToken(challengeAnswer, deviceName, {
+      onSuccess() {
+        resolve();
+      },
 
-      resolve();
+      onFailure(error) {
+        reject(dispatchError(error));
+      },
     });
   });
 
