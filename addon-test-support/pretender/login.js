@@ -105,7 +105,7 @@ export function setupPretenderNeedsInitialPassword(
         ChallengeName: 'NEW_PASSWORD_REQUIRED',
         ChallengeParameters: {
           requiredAttributes: '[]',
-          userAttributes: `{"email_verified":"true","email":"${username}"}'`,
+          userAttributes: `{"email_verified":"true","email":"${username}"}`,
         },
 
         Session: 'TEST-SESSION-ID',
