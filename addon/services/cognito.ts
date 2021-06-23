@@ -125,8 +125,7 @@ export default class CognitoService extends Service {
       });
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   async _loadUserDataAndAccessToken(): Promise<CognitoData | null> {
@@ -193,8 +192,7 @@ export default class CognitoService extends Service {
       }
     );
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   async authenticate({
@@ -278,8 +276,7 @@ export default class CognitoService extends Service {
       });
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   logout(): void {
@@ -308,8 +305,7 @@ export default class CognitoService extends Service {
       });
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   triggerResetPasswordMail({ username }: { username: string }): Promise<any> {
@@ -327,8 +323,7 @@ export default class CognitoService extends Service {
       });
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   /*
@@ -365,8 +360,7 @@ export default class CognitoService extends Service {
       });
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   /*
@@ -406,8 +400,7 @@ export default class CognitoService extends Service {
       );
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   updatePassword({
@@ -434,8 +427,7 @@ export default class CognitoService extends Service {
       });
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   updateAttributes(attributes: { [index: string]: string }): Promise<any> {
@@ -473,8 +465,7 @@ export default class CognitoService extends Service {
       );
     });
 
-    waitForPromise(promise);
-    return promise;
+    return waitForPromise(promise);
   }
 
   @restartableTask
