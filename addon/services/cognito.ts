@@ -275,6 +275,13 @@ export default class CognitoService extends Service {
     return userAttributes;
   }
 
+  authenticateUser(
+    cognitoUser: CognitoUser,
+    { username, password }: { username: string; password: string }
+  ) {
+    return authenticateUser(cognitoUser, { username, password });
+  }
+
   @restartableTask
   *_debouncedRefreshAccessToken() {
     yield timeout(this.autoRefreshInterval);
@@ -299,7 +306,7 @@ export default class CognitoService extends Service {
         : cognitoUser;
 
     try {
-      return await authenticateUser(actualCognitoUser, { username, password });
+      return await this.authenticateUser(actualCognitoUser, { username, password });
     } catch (error) {
       if (error instanceof MfaCodeRequiredError) {
         this._tempMfaCognitoUser = error.cognitoUser;
