@@ -16,6 +16,17 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v2.4.0 (2021-06-29)
+
+#### :rocket: Enhancement
+* [#548](https://github.com/fabscale/ember-cognito-identity/pull/548) Expose `authenticateUser` method to check password ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#547](https://github.com/fabscale/ember-cognito-identity/pull/547) Export `mockCognitoData` test helper ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v2.3.0 (2021-06-23)
 
 #### :rocket: Enhancement
