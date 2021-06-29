@@ -95,16 +95,16 @@ This is an object that looks like this:
 let cognitoData = {
   cognitoUser: CognitoUser,
   cognitoUserSession: CognitoUserSession,
-  jwtToken: "xxxxx",
-  userAttributes: { "Email": "..." },
-  mfa: { 
+  jwtToken: 'xxxxx',
+  userAttributes: { Email: '...' },
+  mfa: {
     enable: () => {},
     disable: () => {},
     isEnabled: () => {},
     setupDevice: () => {},
-    verifyDevice: (code) => {}
-  }
-}
+    verifyDevice: (code) => {},
+  },
+};
 ```
 
 ### restoreAndLoad()
@@ -285,6 +285,19 @@ test('test helper correctly mocks a cognito session', async function (assert) {
     'TEST-ACCESS-TOKEN',
     'correct dummy access token is generated'
   );
+});
+```
+
+Alternatively, you can also use `mockCognitoData` to build your own state, like this:
+
+```js
+import { mockCognitoData } from 'ember-cognito-identity/test-support/helpers/mock-cognito-data';
+
+test('test helper correctly mocks a cognito session', async function (assert) {
+  let cognito = this.owner.lookup('service:cognito');
+  let cognitoData = mockCognitoData({ accessToken: 'TEST-ACCESS-TOKEN' });\
+  // Maybe edit the data here?
+  cognito.cognitoData = cognitoData;
 });
 ```
 
