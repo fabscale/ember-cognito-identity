@@ -116,5 +116,10 @@ module.exports = {
         '@typescript-eslint/no-empty-function': 0,
       },
     },
+    {
+      // Test files:
+      files: ['tests/**/*-test.{js,ts}'],
+      extends: ['plugin:qunit/recommended'],
+    },
   ],
 };
