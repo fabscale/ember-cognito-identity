@@ -2,7 +2,7 @@ import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import RouterService from '@ember/routing/router-service';
 import Service, { inject as service } from '@ember/service';
-import { isTesting } from '@embroider/macros';
+import { getOwnConfig, isTesting, macroCondition } from '@embroider/macros';
 import { tracked } from '@glimmer/tracking';
 import {
   CognitoUser,
@@ -26,6 +26,8 @@ import { updateResetPassword } from 'ember-cognito-identity/utils/cognito/update
 import { updateUserAttributes } from 'ember-cognito-identity/utils/cognito/update-user-attributes';
 import { getUserAttributes } from 'ember-cognito-identity/utils/get-user-attributes';
 import { loadUserDataAndAccessToken } from 'ember-cognito-identity/utils/load-user-data-and-access-token';
+import { mockCognitoUser } from 'ember-cognito-identity/utils/mock/cognito-user';
+import { mockCognitoUserPool } from 'ember-cognito-identity/utils/mock/cognito-user-pool';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
 
@@ -50,6 +52,9 @@ export default class CognitoService extends Service {
   // When calling `authenticate()` throws a `MfaCodeRequiredError`, we cache the user here
   // We need it when then calling `mfaCompleteAuthentication()` later, at which point it will be reset
   _tempMfaCognitoUser?: CognitoUser;
+
+  // Can be set in tests to generate assert.step() logs
+  _assert?: any;
 
   get isAuthenticated() {
     return Boolean(this.cognitoData);
@@ -92,7 +97,10 @@ export default class CognitoService extends Service {
       endpoint,
     };
 
-    this._userPool = new CognitoUserPool(poolData);
+    this._userPool = macroCondition(getOwnConfig<any>().enableMocks)
+      ? (mockCognitoUserPool() as unknown as CognitoUserPool)
+      : new CognitoUserPool(poolData);
+
     return this._userPool;
   }
 
@@ -334,6 +342,12 @@ export default class CognitoService extends Service {
       Storage: storage,
     };
 
-    return new CognitoUser(userData);
+    return macroCondition(getOwnConfig<any>().enableMocks)
+      ? (mockCognitoUser({
+          username,
+          userPool,
+          assert: this._assert,
+        }) as unknown as CognitoUser)
+      : new CognitoUser(userData);
   }
 }
