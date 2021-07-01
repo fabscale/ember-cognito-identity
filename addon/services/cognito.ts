@@ -60,9 +60,7 @@ export default class CognitoService extends Service {
     return config.cognito;
   }
 
-  get shouldAutoRefresh() {
-    return !isTesting();
-  }
+  shouldAutoRefresh = !isTesting();
 
   autoRefreshInterval = 1000 * 60 * 45; // Tokens expire after 1h, so we refresh them every 45 minutes, to have a bit of leeway
 
@@ -173,8 +171,8 @@ export default class CognitoService extends Service {
     );
 
     let cognitoMfa = new CognitoUserMfa(this._tempMfaCognitoUser!);
-    await cognitoMfa.completeAuthentication(code);
 
+    await cognitoMfa.completeAuthentication(code);
     this._tempMfaCognitoUser = undefined;
 
     await this.restoreAndLoad();
@@ -286,7 +284,15 @@ export default class CognitoService extends Service {
   *_debouncedRefreshAccessToken() {
     yield timeout(this.autoRefreshInterval);
 
-    yield this.refreshAccessToken();
+    try {
+      yield this.refreshAccessToken();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      // We want to continue and try again
+    }
+
+    taskFor(this._debouncedRefreshAccessToken).perform();
   }
 
   async _authenticate({
@@ -306,7 +312,10 @@ export default class CognitoService extends Service {
         : cognitoUser;
 
     try {
-      return await this.authenticateUser(actualCognitoUser, { username, password });
+      return await this.authenticateUser(actualCognitoUser, {
+        username,
+        password,
+      });
     } catch (error) {
       if (error instanceof MfaCodeRequiredError) {
         this._tempMfaCognitoUser = error.cognitoUser;
