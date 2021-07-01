@@ -21,14 +21,14 @@ export default class CognitoLoginForm extends Component {
   @tracked username: string;
   @tracked password: string;
   @tracked newPassword: string;
-  @tracked mustEnterNewPassword: boolean = false;
+  @tracked mustEnterNewPassword = false;
   @tracked error: CognitoError | null;
 
   @tracked mustEnterMfaCode = false;
   @tracked mfaCode?: string;
 
   @dropTask
-  *submitFormTask(event: Event) {
+  *submitFormTask(event: Event): any {
     event.preventDefault();
 
     let {
@@ -98,28 +98,28 @@ export default class CognitoLoginForm extends Component {
   }
 
   // This can be overwritten
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _getNewPasswordAttributes(_: UserAttributes): undefined | UserAttributes {
     return undefined;
   }
 
   @action
-  updateUsername(username: string) {
+  updateUsername(username: string): void {
     this.username = username;
   }
 
   @action
-  updatePassword(password: string) {
+  updatePassword(password: string): void {
     this.password = password;
   }
 
   @action
-  updateNewPassword(newPassword: string) {
+  updateNewPassword(newPassword: string): void {
     this.newPassword = newPassword;
   }
 
   @action
-  updateMfaCode(mfaCode: string) {
+  updateMfaCode(mfaCode: string): void {
     this.mfaCode = mfaCode;
   }
 }

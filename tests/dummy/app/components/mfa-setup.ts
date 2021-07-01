@@ -3,8 +3,11 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import CognitoService from 'ember-cognito-identity/services/cognito';
+import { CognitoUserMfa } from 'ember-cognito-identity/utils/cognito-mfa';
 
-export default class MfaSetup extends Component {
+type Args = any;
+
+export default class MfaSetup extends Component<Args> {
   @service cognito: CognitoService;
 
   @tracked secret?: string;
@@ -12,28 +15,34 @@ export default class MfaSetup extends Component {
   @tracked mfaCode?: string;
   @tracked error?: string;
 
-  get mfa() {
+  get mfa(): CognitoUserMfa {
     return this.cognito.cognitoData!.mfa;
   }
 
-  get qrCodeData() {
+  get qrCodeData():
+    | { secret: string; user: string; label: string }
+    | undefined {
     let { cognitoData } = this.cognito;
     let { secret } = this;
 
+    if (!secret || !cognitoData) {
+      return undefined;
+    }
+
     return {
       secret,
-      user: cognitoData?.cognitoUser.getUsername(),
+      user: cognitoData.cognitoUser.getUsername(),
       label: 'Fabscale',
     };
   }
 
-  constructor(owner: unknown, args: any) {
+  constructor(owner: unknown, args: Args) {
     super(owner, args);
 
     this._checkMfaEnabled();
   }
 
-  async _checkMfaEnabled() {
+  async _checkMfaEnabled(): Promise<void> {
     try {
       this.isMfaEnabled = await this.mfa.isEnabled();
     } catch (error) {
@@ -42,24 +51,24 @@ export default class MfaSetup extends Component {
   }
 
   @action
-  async setupMfa() {
+  async setupMfa(): Promise<void> {
     this.secret = await this.mfa.setupDevice();
   }
 
   @action
-  async disableMfa() {
+  async disableMfa(): Promise<void> {
     await this.mfa.disable();
 
     this._checkMfaEnabled();
   }
 
   @action
-  updateMfaCode(mfaCode: string) {
+  updateMfaCode(mfaCode: string): void {
     this.mfaCode = mfaCode;
   }
 
   @action
-  async confirmMfa() {
+  async confirmMfa(): Promise<void> {
     let { mfaCode } = this;
 
     if (!mfaCode) {

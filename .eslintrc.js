@@ -1,8 +1,34 @@
+const baseRules = {
+  'prefer-const': 0,
+  'ember/no-deeply-nested-dependent-keys-with-each': 2,
+  'ember/no-ember-super-in-es-classes': 2,
+  'ember-es6-class/no-object-extend': 2,
+  'no-console': 2,
+  'ember/no-invalid-debug-function-arguments': 2,
+  'ember/require-return-from-computed': 2,
+  'ember/no-new-mixins': 2,
+  'ember/no-jquery': 2,
+  'ember/route-path-style': 2,
+  'ember/prefer-ember-test-helpers': 2,
+  'ember/no-replace-test-comments': 2,
+  'ember-suave/lines-between-object-properties': [
+    'error',
+    'always',
+    { exceptAfterSingleLine: true },
+  ],
+
+  'lines-between-class-members': [
+    'error',
+    'always',
+    { exceptAfterSingleLine: true },
+  ],
+};
+
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
+  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: 'module',
     ecmaFeatures: {
       legacyDecorators: true,
@@ -22,30 +48,32 @@ module.exports = {
     browser: true,
   },
 
-  rules: {
-    'ember/no-deeply-nested-dependent-keys-with-each': 2,
-    'ember/no-ember-super-in-es-classes': 2,
-    'ember-es6-class/no-object-extend': 2,
-    'no-console': 2,
-    'ember/no-invalid-debug-function-arguments': 2,
-    'ember/require-return-from-computed': 2,
-    'ember/no-new-mixins': 2,
-    'ember/no-jquery': 2,
-    'ember/route-path-style': 2,
-    'ember-suave/lines-between-object-properties': [
-      'error',
-      'always',
-      { exceptAfterSingleLine: true },
-    ],
-
-    'lines-between-class-members': [
-      'error',
-      'always',
-      { exceptAfterSingleLine: true },
-    ],
-  },
+  rules: baseRules,
 
   overrides: [
+    // .ts files
+    {
+      parser: '@typescript-eslint/parser',
+      files: ['**/*.ts'],
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:ember/recommended',
+        'plugin:ember-suave/recommended',
+        'plugin:prettier/recommended',
+      ],
+
+      rules: Object.assign(
+        {
+          // Typescript-specific
+          '@typescript-eslint/no-explicit-any': 0,
+          '@typescript-eslint/ban-ts-comment': 0,
+          '@typescript-eslint/no-non-null-assertion': 0,
+        },
+        baseRules
+      ),
+    },
+
     // node files
     {
       files: [
@@ -54,36 +82,38 @@ module.exports = {
         '.template-lintrc.js',
         'ember-cli-build.js',
         '.ember-cli.js',
-        'index.js',
         'testem.js',
-        'blueprints/*/index.js',
-        'config/**/*.js',
-        'tests/dummy/config/**/*.js',
+        'config/**/*.{js,ts}',
+        'lib/*/index.{js,ts}',
+        '.release/*.js',
+        'tests/dummy/config/*.js',
+        'index.js',
       ],
-      excludedFiles: [
-        'addon/**',
-        'addon-test-support/**',
-        'app/**',
-        'tests/dummy/app/**',
-      ],
-      parser: 'babel-eslint',
+
+      excludedFiles: ['app/**'],
+
       parserOptions: {
         sourceType: 'script',
       },
+
       env: {
         browser: false,
         node: true,
       },
+
       plugins: ['node'],
       extends: ['plugin:node/recommended'],
       rules: {
-        'ember-suave/lines-between-object-properties': 0,
+        // this can be removed once the following is fixed
+        // https://github.com/mysticatea/eslint-plugin-node/issues/77
+        'node/no-unpublished-require': 'off',
       },
     },
     {
-      files: ['tests/**/*.js'],
+      files: ['tests/**/*.{js,ts}'],
       rules: {
         'ember/avoid-leaking-state-in-ember-objects': 0,
+        '@typescript-eslint/no-empty-function': 0,
       },
     },
   ],

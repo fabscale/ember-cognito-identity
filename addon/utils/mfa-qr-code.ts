@@ -6,6 +6,6 @@ export function generateMfaQrCodeUrl({
   secret: string;
   user: string;
   label: string;
-}) {
+}): string {
   return `otpauth://totp/${label}:${user}?secret=${secret}&issuer=${label}`;
 }

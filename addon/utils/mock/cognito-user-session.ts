@@ -30,7 +30,9 @@ class MockCognitoUserSession {
   }
 }
 
-export function mockCognitoUserSession(args?: Args) {
+export function mockCognitoUserSession(
+  args?: Args
+): MockCognitoUserSession | undefined {
   if (macroCondition(getOwnConfig<any>().enableMocks)) {
     return new MockCognitoUserSession(args);
   }

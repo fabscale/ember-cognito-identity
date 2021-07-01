@@ -18,13 +18,13 @@ type TestContext = Context & {
   cognito: CognitoService;
 };
 
+const JWT_TOKEN = getMockConfig().mockJwtToken;
+const USERNAME = getMockConfig().mockUsername;
+const AUTH_CODE = `${getMockConfig().mockCode}`;
+const PASSWORD = getMockConfig().mockPassword;
+
 module('Acceptance | reset-password', function (hooks) {
   setupApplicationTest(hooks);
-
-  let JWT_TOKEN = getMockConfig().mockJwtToken;
-  let USERNAME = getMockConfig().mockUsername;
-  let AUTH_CODE = `${getMockConfig().mockCode}`;
-  let PASSWORD = getMockConfig().mockPassword;
 
   module('signed in', function (hooks) {
     mockCognitoAuthenticated(hooks, { includeAssertSteps: true });

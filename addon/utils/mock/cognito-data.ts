@@ -15,7 +15,7 @@ export function mockCognitoData({
   username?: string;
   mfaEnabled?: boolean;
   assert?: any;
-} = {}) {
+} = {}): CognitoData | undefined {
   if (macroCondition(!getOwnConfig<any>()?.enableMocks)) {
     return undefined;
   }
@@ -30,10 +30,12 @@ export function mockCognitoData({
 
   let mfa = new CognitoUserMfa(cognitoUser as unknown as CognitoUser);
 
+  /* eslint-disable camelcase */
   let userAttributes = {
     email: username,
     email_verified: 'true',
   };
+  /* eslint-enable camelcase */
 
   let cognitoData: unknown = {
     cognitoUser,

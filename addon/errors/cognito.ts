@@ -129,7 +129,7 @@ export class MfaCodeMismatchError extends CognitoError {
   }
 }
 
-export function dispatchError(error: AmazonCognitoIdentityJsError) {
+export function dispatchError(error: AmazonCognitoIdentityJsError): Error {
   let errorMap = {
     PasswordResetRequiredException: PasswordResetRequiredError,
     NotAuthorizedException: InvalidAuthorizationError,

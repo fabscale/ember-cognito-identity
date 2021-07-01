@@ -1,6 +1,6 @@
 import { assign } from '@ember/polyfills';
 
-export function createJWTToken(payload: any) {
+export function createJWTToken(payload: Record<string, any>): string {
   let header = {
     alg: 'RS256',
   };

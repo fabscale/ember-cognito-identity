@@ -17,7 +17,7 @@ export const MOCK_COGNITO_CONFIG = {
   mustEnterMfaCode: false,
 };
 
-export function mockCognitoUser(args: Args) {
+export function mockCognitoUser(args: Args): MockCognitoUser | undefined {
   if (macroCondition(getOwnConfig<any>().enableMocks)) {
     return new MockCognitoUser(args);
   }

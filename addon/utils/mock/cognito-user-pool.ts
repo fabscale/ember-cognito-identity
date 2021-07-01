@@ -20,7 +20,9 @@ class MockCognitoUserPool {
   }
 }
 
-export function mockCognitoUserPool(args?: Args) {
+export function mockCognitoUserPool(
+  args?: Args
+): MockCognitoUserPool | undefined {
   if (macroCondition(getOwnConfig<any>().enableMocks)) {
     return new MockCognitoUserPool(args);
   }

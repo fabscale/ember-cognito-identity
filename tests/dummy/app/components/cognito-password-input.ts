@@ -10,7 +10,7 @@ interface Args {
   id?: string;
   passwordToggleShowText?: string;
   passwordToggleHideText?: string;
-  onChange: Function;
+  onChange: (value: string) => void;
 }
 
 export default class CognitoPasswordInput extends Component<Args> {
@@ -18,7 +18,7 @@ export default class CognitoPasswordInput extends Component<Args> {
   @tracked displayType: 'password' | 'text' = 'password';
   inputId: string;
 
-  get passwordToggleText() {
+  get passwordToggleText(): string {
     let toggleIsShow = this.displayType === 'password';
 
     if (toggleIsShow) {
@@ -28,7 +28,7 @@ export default class CognitoPasswordInput extends Component<Args> {
     return this.args.passwordToggleHideText || 'Hide';
   }
 
-  constructor(owner: any, args: Args) {
+  constructor(owner: unknown, args: Args) {
     super(owner, args);
 
     assert(`onChange must be set`, typeof this.args.onChange === 'function');
@@ -37,14 +37,14 @@ export default class CognitoPasswordInput extends Component<Args> {
   }
 
   @action
-  onTextChange(event: Event) {
+  onTextChange(event: Event): void {
     let element: HTMLInputElement = event.currentTarget as HTMLInputElement;
     let { value } = element;
     this.args.onChange(value);
   }
 
   @action
-  toggleDisplayType() {
+  toggleDisplayType(): void {
     this.displayType = this.displayType === 'password' ? 'text' : 'password';
 
     schedule('afterRender', () => {

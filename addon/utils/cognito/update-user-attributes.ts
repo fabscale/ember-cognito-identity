@@ -12,8 +12,8 @@ import { Promise as RSVPPromise } from 'rsvp';
 export function updateUserAttributes(
   cognitoUser: CognitoUser,
   attributeList: ICognitoUserAttributeData[]
-) {
-  let promise = new RSVPPromise((resolve, reject) => {
+): Promise<void> {
+  let promise = new RSVPPromise<void>((resolve, reject) => {
     cognitoUser.updateAttributes(
       attributeList,
       (error: AmazonCognitoIdentityJsError) => {
