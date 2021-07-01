@@ -26,7 +26,7 @@
     "test:one": "MOCK_COGNITO=true ember try:one",
     "test-coverage": "COVERAGE=true MOCK_COGNITO=true ember test",
     "release": "release-it",
-    "prepublishOnly": "MOCK_COGNITO=true ember ts:precompile",
+    "prepublishOnly": "ember ts:precompile",
     "postpublish": "ember ts:clean"
   },
   "dependencies": {
