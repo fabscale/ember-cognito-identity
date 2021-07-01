@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
@@ -66,6 +66,7 @@ module.exports = {
         'app/**',
         'tests/dummy/app/**',
       ],
+      parser: 'babel-eslint',
       parserOptions: {
         sourceType: 'script',
       },
