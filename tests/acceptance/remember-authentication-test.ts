@@ -75,7 +75,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.step('now run auto-refresh');
       taskFor(cognito._debouncedRefreshAccessToken).perform();
 
-      await timeout(1100);
+      await timeout(1400);
 
       assert.verifySteps([
         'cognitoUser.getUserData({"bypassCache":false})',
@@ -141,7 +141,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.step('now run auto-refresh');
       taskFor(cognito._debouncedRefreshAccessToken).perform();
 
-      await timeout(1100);
+      await timeout(1400);
 
       assert.equal(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
