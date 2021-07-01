@@ -4,7 +4,6 @@ import {
   setupOnerror,
   visit,
 } from '@ember/test-helpers';
-import { getOwnConfig } from '@embroider/macros';
 import {
   AmazonCognitoIdentityJsError,
   CognitoError,
@@ -17,6 +16,7 @@ import { taskFor } from 'ember-concurrency-ts';
 import { setupApplicationTest } from 'ember-qunit';
 import { TestContext as Context } from 'ember-test-helpers';
 import { module, test } from 'qunit';
+import { getMockConfig } from '../helpers/get-mock-config';
 
 type TestContext = Context & {
   cognito: CognitoService;
@@ -51,7 +51,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
-        getOwnConfig<any>().mockJwtToken,
+        getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
 
@@ -68,7 +68,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
-        getOwnConfig<any>().mockJwtToken,
+        getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
 
@@ -134,7 +134,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
-        getOwnConfig<any>().mockJwtToken,
+        getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
 
@@ -147,7 +147,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
-        getOwnConfig<any>().mockJwtToken,
+        getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
 

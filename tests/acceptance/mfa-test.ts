@@ -1,14 +1,14 @@
 import { visit } from '@ember/test-helpers';
 import click from '@ember/test-helpers/dom/click';
 import fillIn from '@ember/test-helpers/dom/fill-in';
-import { setupApplicationTest } from 'ember-qunit';
-import { module, test } from 'qunit';
-import { TestContext as Context } from 'ember-test-helpers';
 import CognitoService from 'ember-cognito-identity/services/cognito';
-import { getOwnConfig } from '@embroider/macros';
 import { mockCognitoAuthenticated } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
+import { setupApplicationTest } from 'ember-qunit';
+import { TestContext as Context } from 'ember-test-helpers';
+import { module, test } from 'qunit';
+import { getMockConfig } from '../helpers/get-mock-config';
 
-const AUTH_CODE = `${getOwnConfig<any>().mockCode}`;
+const AUTH_CODE = `${getMockConfig().mockCode}`;
 
 type TestContext = Context & {
   cognito: CognitoService;

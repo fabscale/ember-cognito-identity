@@ -6,25 +6,25 @@ import {
   setupOnerror,
   visit,
 } from '@ember/test-helpers';
-import { getOwnConfig } from '@embroider/macros';
 import { CognitoError } from 'ember-cognito-identity/errors/cognito';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 import { mockCognitoAuthenticated } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
 import { setupApplicationTest } from 'ember-qunit';
 import { TestContext as Context } from 'ember-test-helpers';
 import { module, test } from 'qunit';
+import { getMockConfig } from '../helpers/get-mock-config';
 
 type TestContext = Context & {
   cognito: CognitoService;
 };
 
-const JWT_TOKEN = getOwnConfig<any>().mockJwtToken;
-const USERNAME = getOwnConfig<any>().mockUsername;
-const AUTH_CODE = `${getOwnConfig<any>().mockCode}`;
-const PASSWORD = getOwnConfig<any>().mockPassword;
-
 module('Acceptance | reset-password', function (hooks) {
   setupApplicationTest(hooks);
+
+  let JWT_TOKEN = getMockConfig().mockJwtToken;
+  let USERNAME = getMockConfig().mockUsername;
+  let AUTH_CODE = `${getMockConfig().mockCode}`;
+  let PASSWORD = getMockConfig().mockPassword;
 
   module('signed in', function (hooks) {
     mockCognitoAuthenticated(hooks, { includeAssertSteps: true });
