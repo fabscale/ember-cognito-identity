@@ -16,6 +16,24 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v3.0.0 (2021-07-01)
+
+#### :rocket: Enhancement
+* [#549](https://github.com/fabscale/ember-cognito-identity/pull/549) Refactor test helpers away from Pretender to mocked classes ([@mydea](https://github.com/mydea))
+
+#### :bug: Bug Fix
+* [#550](https://github.com/fabscale/ember-cognito-identity/pull/550) Ensure token is continuously refreshed, not just once ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#567](https://github.com/fabscale/ember-cognito-identity/pull/567) Update dev dependencies ([@mydea](https://github.com/mydea))
+* [#554](https://github.com/fabscale/ember-cognito-identity/pull/554) chore(deps): bump ember-cli-typescript from 4.1.0 to 4.2.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#564](https://github.com/fabscale/ember-cognito-identity/pull/564) chore(deps): bump @embroider/macros from 0.42.1 to 0.42.3 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#565](https://github.com/fabscale/ember-cognito-identity/pull/565) chore(deps): bump ember-auto-import from 2.0.1 to 2.0.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#551](https://github.com/fabscale/ember-cognito-identity/pull/551) Fix typescript & eslint setup ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v2.4.0 (2021-06-29)
 
 #### :rocket: Enhancement
