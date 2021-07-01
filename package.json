@@ -19,14 +19,14 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "ember serve",
-    "test": "ember test",
-    "test-all": "npm-run-all lint test:*",
-    "test:all": "ember try:each",
-    "test:one": "ember try:one",
-    "test-coverage": "COVERAGE=true ember test",
+    "start": "MOCK_COGNITO=true ember serve",
+    "test": "MOCK_COGNITO=true ember test",
+    "test-all": "MOCK_COGNITO=true npm-run-all lint test:*",
+    "test:all": "MOCK_COGNITO=true ember try:each",
+    "test:one": "MOCK_COGNITO=true ember try:one",
+    "test-coverage": "COVERAGE=true MOCK_COGNITO=true ember test",
     "release": "release-it",
-    "prepublishOnly": "ember ts:precompile",
+    "prepublishOnly": "MOCK_COGNITO=true ember ts:precompile",
     "postpublish": "ember ts:clean"
   },
   "dependencies": {
@@ -41,8 +41,7 @@
     "ember-cli-htmlbars": "^5.7.1",
     "ember-cli-typescript": "^4.0.0",
     "ember-concurrency": "^2.0.1",
-    "ember-concurrency-ts": "^0.3.1",
-    "pretender": "^3.4.0"
+    "ember-concurrency-ts": "^0.3.1"
   },
   "devDependencies": {
     "@ember/edition-utils": "~1.2.0",

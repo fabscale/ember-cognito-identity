@@ -34,7 +34,11 @@ export default class MfaSetup extends Component {
   }
 
   async _checkMfaEnabled() {
-    this.isMfaEnabled = await this.mfa.isEnabled();
+    try {
+      this.isMfaEnabled = await this.mfa.isEnabled();
+    } catch (error) {
+      // ignore
+    }
   }
 
   @action

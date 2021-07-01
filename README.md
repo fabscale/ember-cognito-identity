@@ -66,6 +66,7 @@ Here is a summary of the most important available methods - all methods return a
 ```js
 cognito.restoreAndLoad();
 cognito.authenticate({ username, password });
+cognito.authenticateUser({ username, password });
 cognito.logout();
 cognito.invalidateAccessTokens();
 cognito.triggerResetPasswordMail({ username });
@@ -117,6 +118,12 @@ Call this (and wait for it to complete) in your application route!
 ### authenticate({ username, password })
 
 Try to login with the given username & password.
+Will reject with an Error, or resolve if successfull.
+
+### authenticateUser({ username, password })
+
+Verify only the given username & password.
+This will _not_ sign the user in, but can be used to e.g. guard special places in your app behind a repeated password check.
 Will reject with an Error, or resolve if successfull.
 
 ### logout()
@@ -261,6 +268,132 @@ After that, the user will be signed in (or it will throw an error if the MFA cod
 
 You can find example components in the dummy app to see how a concrete implementation could look like.
 
+## Mocking Cognito
+
+You might want to mock Cognito either for testing or for development/demoing.
+For these cases, this addon provides helpful utilities.
+
+In order for the Cognito mocking to work, you will need to enable mocks.
+You can do that in your `ember-cli-build.js`:
+
+```js
+let app = new EmberApp(defaults, {
+  '@embroider/macros': {
+    setConfig: {
+      'ember-cognito-identity': {
+        // If this is set to true, mock classes will be included in the build & used for all processes
+        enableMocks: true,
+
+        // Optional overwrite these defaults to your liking
+        mockUsername: 'jane@example.com',
+        mockPassword: 'test1234',
+        mockCode: 123456,
+        mockJwtToken: 'TEST-ACCESS-TOKEN-AUTO',
+      },
+    },
+  },
+});
+```
+
+For example, if you want to use mocks only when testing, you could configure it like this:
+
+```js
+let env = process.env.EMBER_ENV || 'development';
+
+let app = new EmberApp(defaults, {
+  '@embroider/macros': {
+    setConfig: {
+      'ember-cognito-identity': {
+        enableMocks: env === 'test',
+      },
+    },
+  },
+});
+```
+
+### Mocked processes
+
+When mocks are enabled, the cognito service will not hit any API but will handle all processes locally by mocked classes.
+
+You will be able to normally do all processes, like signing in, resetting your password, etc.
+
+The mocks will validate all input based on the configuration. The defaults are:
+
+- mockUsername: `'jane@example.com'`,
+- mockPassword: `'test1234'`,
+- mockCode: `123456`,
+- mockJwtToken: `'TEST-ACCESS-TOKEN-AUTO'`,
+
+This means, if you try to sign in with a different username or password you will get an error.
+This can be used to test various states.
+The `mockCode` is used for both MFA authorization as well as for password resetting.
+
+### Mocking specific processes
+
+There are two special cases that you can manually opt-in to, e.g. for testing purposes: Requiring an MFA code or a new password.
+
+To trigger these processes, you can do the following:
+
+```js
+import { MOCK_COGNITO_CONFIG } from 'ember-cognito-identity/utils/mocks/cognito-user';
+
+test('it works with MFA code required', function (assert) {
+  MOCK_COGNITO_CONFIG.mustEnterMfaCode = true;
+
+  // test it
+
+  // make sure to reset it afterwards
+  MOCK_COGNITO_CONFIG.mustEnterMfaCode = false;
+});
+
+test('it works with new password required', function (assert) {
+  MOCK_COGNITO_CONFIG.mustEnterNewPassword = true;
+
+  // test it
+
+  // make sure to reset it afterwards
+  MOCK_COGNITO_CONFIG.mustEnterNewPassword = false;
+});
+```
+
+### Generating mocked data
+
+You can generate mocked cognitoData with the provided utils:
+
+```js
+import ApplicationInstance from '@ember/application/instance';
+import { isTesting } from '@embroider/macros';
+import CognitoService from 'ember-cognito-identity/services/cognito';
+import { mockCognitoData } from 'ember-cognito-identity/utils/mock/cognito-data';
+
+export function initialize(appInstance: ApplicationInstance): void {
+  let cognitoData = mockCognitoData();
+  if (cognitoData) {
+    let cognito = appInstance.lookup('service:cognito');
+    cognito.cognitoData = cognitoData;
+  }
+}
+
+export default {
+  initialize,
+};
+```
+
+Note that `mockCognitoData()` (and all other utils it uses under the hood) will return `undefined` if mocks are not enabled.
+In that case, all the mocking code is stripped out and the utils remain as empty wrappers only.
+
+The above example would automatically sign a user in with a simulated user when running the app with mocks enabled.
+
+You can also provide some configuration to `mockCognitoData`:
+
+```js
+let cognitoData = mockCognitoData({
+  username = 'my-custom-user@test.com',
+  // To test states with enabled or disabled MFA
+  mfaEnabled = false,
+});
+```
+
 ## Testing
 
 You can use the provided test helpers for testing.
@@ -271,103 +404,45 @@ so calling `settled()` will wait for them to complete.
 ### Mocking a logged in state
 
 ```js
-import { mockCognito } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
+import { mockCognitoAuthenticated } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
 
-test('test helper correctly mocks a cognito session', async function (assert) {
-  mockCognito(this, { accessToken: 'TEST-ACCESS-TOKEN' });
-
-  await visit('/');
-
-  let cognito = this.owner.lookup('service:cognito');
-
-  assert.equal(
-    cognito.cognitoData.jwtToken,
-    'TEST-ACCESS-TOKEN',
-    'correct dummy access token is generated'
-  );
+module('my-module', function (hooks) {
+  mockCognitoAuthenticated(hooks);
 });
 ```
+
+You can optionally also provide some additional configuration:
+
+```js
+ mockCognitoAuthenticated(hooks, {
+  // If this is true, it will include assert.step() invocations for all cognito steps
+  // This can be useful to test that the correct cognito stuff is happening behind the scenes
+  includeAssertSteps = true,
+  // If you need your user to be signed in with a special username
+  username = 'my-custom-user@test.com',
+ });
+```
+
+This uses `mockCognitoData` under the hood, and sets everything up correctly.
 
 Alternatively, you can also use `mockCognitoData` to build your own state, like this:
 
 ```js
-import { mockCognitoData } from 'ember-cognito-identity/test-support/helpers/mock-cognito-data';
+import { mockCognitoData } from 'ember-cognito-identity/utils/mock/cognito-data';
 
 test('test helper correctly mocks a cognito session', async function (assert) {
   let cognito = this.owner.lookup('service:cognito');
-  let cognitoData = mockCognitoData({ accessToken: 'TEST-ACCESS-TOKEN' });\
-  // Maybe edit the data here?
+
+  let cognitoData = mockCognitoData({
+    username = 'my-custom-user@test.com',
+    mfaEnabled = false,
+    // If you pass in `assert`, it will include assert.step() invocations for all cognito steps
+    assert,
+  });
+
   cognito.cognitoData = cognitoData;
 });
 ```
-
-### Mocking Cognito processes
-
-If necessary, you can also mock Cognito processes.
-This actually uses Pretender under the hood and mocks the API endpoints for Cognito.
-
-Using this requires some additional setup in your application:
-
-- Install ember-auto-import & Pretender (`ember install ember-auto-import` && `npm install pretender --dev`)
-- or install ember-cli-pretender: `ember install ember-cli-pretender`
-
-This will not add anything to your production build.
-
-```js
-import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
-import {
-  setupPretenderSuccessfulLogin,
-  setupPretenderInvalidPassword,
-  setupPretenderNeedsInitialPassword,
-} from 'ember-cognito-identity/test-support/pretender/login';
-import { setupPretenderResetPassword } from 'ember-cognito-identity/test-support/pretender/reset-password';
-
-module('test cognito processes', function (hooks) {
-  setupCognitoMocks(hooks);
-
-  test('test login', async function (assert) {
-    setupPretenderSuccessfulLogin(this);
-    let { cognitoAccessToken } = this;
-
-    // Now fill into login fields and submit the form, at the end the `cognitoAccessToken` will be set
-  });
-
-  test('test failed login', async function (assert) {
-    setupPretenderInvalidPassword(this);
-    // ...
-  });
-
-  test('test user with required password change', async function (assert) {
-    setupPretenderNeedsInitialPassword(this);
-    // ...
-  });
-
-  test('resetting password', async function (assert) {
-    setupPretenderResetPassword(this);
-    // ...
-  });
-});
-```
-
-#### Usage with ember-cli-mirage
-
-Using `setupCognitoMocks(hooks)` will setup & tear down a Pretender server for you before/after each test.
-If you use ember-cli-mirage, that will conflict with the mirage pretender server.
-
-In this case, you can set up the Cognito mocks like this:
-
-```js
-import { setupCognitoMocks } from 'ember-cognito-identity/test-support/pretender';
-
-module('test cognito processes', function (hooks) {
-  hooks.beforeEach(function () {
-    this.cognitoPretenderServer = this.server;
-  });
-  setupCognitoMocks(hooks);
-});
-```
-
-This instructs Cognito to register it's handlers on an existing Pretender server instance.
 
 ## Contributing
 
