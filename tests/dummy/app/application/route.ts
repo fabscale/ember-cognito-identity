@@ -1,10 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import CognitoService from 'ember-cognito-identity/services/cognito';
 
 export default class ApplicationRoute extends Route {
-  @service cognito;
+  @service cognito: CognitoService;
 
-  async beforeModel() {
+  async beforeModel(): Promise<void> {
     try {
       await this.cognito.restoreAndLoad();
     } catch (error) {

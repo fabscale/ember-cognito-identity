@@ -56,11 +56,11 @@ export default class CognitoService extends Service {
   // Can be set in tests to generate assert.step() logs
   _assert?: any;
 
-  get isAuthenticated() {
+  get isAuthenticated(): boolean {
     return Boolean(this.cognitoData);
   }
 
-  get config() {
+  get config(): { userPoolId: string; clientId: string; endpoint?: string } {
     let config = getOwner(this).resolveRegistration('config:environment');
     return config.cognito;
   }
@@ -97,6 +97,7 @@ export default class CognitoService extends Service {
       endpoint,
     };
 
+    // eslint-disable-next-line ember/no-side-effects
     this._userPool = macroCondition(getOwnConfig<any>().enableMocks)
       ? (mockCognitoUserPool() as unknown as CognitoUserPool)
       : new CognitoUserPool(poolData);
@@ -284,12 +285,12 @@ export default class CognitoService extends Service {
   authenticateUser(
     cognitoUser: CognitoUser,
     { username, password }: { username: string; password: string }
-  ) {
+  ): Promise<CognitoUser> {
     return authenticateUser(cognitoUser, { username, password });
   }
 
   @restartableTask
-  *_debouncedRefreshAccessToken() {
+  *_debouncedRefreshAccessToken(): any {
     yield timeout(this.autoRefreshInterval);
 
     try {

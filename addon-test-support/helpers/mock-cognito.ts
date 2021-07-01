@@ -4,7 +4,7 @@ import { getOwnConfig } from '@embroider/macros';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 
 export function mockCognitoAuthenticated(
-  hooks: any,
+  hooks: NestedHooks,
   {
     includeAssertSteps = false,
     jwtToken = getOwnConfig<any>().mockJwtToken,
@@ -14,7 +14,7 @@ export function mockCognitoAuthenticated(
     jwtToken?: string;
     username?: string;
   } = {}
-) {
+): void {
   assert(
     `You have to set enableMocks=true in your ember-cli-build.js file:
 
@@ -49,7 +49,7 @@ export function mockCognitoAuthenticated(
   });
 }
 
-export function mockCognito() {
+export function mockCognito(): void {
   assert(`'mockCognito' has been replaced with 'mockCognitoAuthenticated'. Use it like this:
   
 mockCognitoAuthenticated(hooks);
