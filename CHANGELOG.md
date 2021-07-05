@@ -16,6 +16,14 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v3.0.1 (2021-07-05)
+
+#### :bug: Bug Fix
+* [#569](https://github.com/fabscale/ember-cognito-identity/pull/569) Fix default `enableMocks` config ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.0.0 (2021-07-01)
 
 #### :rocket: Enhancement
