@@ -75,6 +75,13 @@ export default class CognitoService extends Service {
       return this._userPool;
     }
 
+    if (macroCondition(getOwnConfig<any>().enableMocks)) {
+      // eslint-disable-next-line ember/no-side-effects
+      this._userPool = mockCognitoUserPool() as unknown as CognitoUserPool;
+
+      return this._userPool;
+    }
+
     assert(
       'A `cognito` configuration object needs to be defined in config/environment.js',
       this.config
@@ -98,9 +105,7 @@ export default class CognitoService extends Service {
     };
 
     // eslint-disable-next-line ember/no-side-effects
-    this._userPool = macroCondition(getOwnConfig<any>().enableMocks)
-      ? (mockCognitoUserPool() as unknown as CognitoUserPool)
-      : new CognitoUserPool(poolData);
+    this._userPool = new CognitoUserPool(poolData);
 
     return this._userPool;
   }
