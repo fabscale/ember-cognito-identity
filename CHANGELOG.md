@@ -16,6 +16,14 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v3.1.1 (2021-07-22)
+
+#### :bug: Bug Fix
+* [#573](https://github.com/fabscale/ember-cognito-identity/pull/573) fix: Do not require userPoolId config to be set when mocks are enabled ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.1.0 (2021-07-22)
 
 #### :rocket: Enhancement
