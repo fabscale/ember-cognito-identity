@@ -48,12 +48,3 @@ export function mockCognitoAuthenticated(
     this.cognito = cognito;
   });
 }
-
-export function mockCognito(): void {
-  assert(`'mockCognito' has been replaced with 'mockCognitoAuthenticated'. Use it like this:
-  
-mockCognitoAuthenticated(hooks);
-`);
-}
-
-export default mockCognito;
