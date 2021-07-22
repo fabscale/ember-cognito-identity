@@ -48,3 +48,10 @@ export function mockCognitoAuthenticated(
     this.cognito = cognito;
   });
 }
+
+export function mockCognitoLogoutCurrentUser(cognito: CognitoService): void {
+  cognito.cognitoData = null;
+
+  // @ts-ignore
+  cognito.userPool.setCurrentUser(undefined);
+}
