@@ -335,7 +335,7 @@ There are two special cases that you can manually opt-in to, e.g. for testing pu
 To trigger these processes, you can do the following:
 
 ```js
-import { MOCK_COGNITO_CONFIG } from 'ember-cognito-identity/utils/mocks/cognito-user';
+import { MOCK_COGNITO_CONFIG } from 'ember-cognito-identity/utils/mock/cognito-user';
 
 test('it works with MFA code required', function (assert) {
   MOCK_COGNITO_CONFIG.mustEnterMfaCode = true;
