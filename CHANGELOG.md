@@ -16,6 +16,17 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v3.1.0 (2021-07-22)
+
+#### :rocket: Enhancement
+* [#572](https://github.com/fabscale/ember-cognito-identity/pull/572) feat: Add `mockCognitoLogoutCurrentUser` test helper ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#571](https://github.com/fabscale/ember-cognito-identity/pull/571) Remove old mockCognito test helper ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.0.2 (2021-07-22)
 
 #### :house: Internal
