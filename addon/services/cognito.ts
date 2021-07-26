@@ -134,7 +134,7 @@ export default class CognitoService extends Service {
     let { cognitoUser, cognitoUserSession } = this.cognitoData!;
 
     await refreshAccessToken(cognitoUserSession, cognitoUser);
-    await loadUserDataAndAccessToken(this.userPool);
+    this.cognitoData = await loadUserDataAndAccessToken(this.userPool);
   }
 
   async authenticate({
