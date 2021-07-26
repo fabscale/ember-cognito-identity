@@ -163,7 +163,7 @@ Returns a promise.
 
 ## Token expiration
 
-This addon will automatically refresh the JWT Token every 45 minutes.
+This addon will automatically refresh the JWT Token every 15 minutes before it expires.
 The tokens have a lifespan of 60 minutes, so this should ensure that the local token never experies in the middle of a session.
 
 ## Multi-Factor Authentication (MFA)

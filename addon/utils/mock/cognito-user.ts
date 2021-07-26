@@ -157,6 +157,13 @@ class MockCognitoUser {
 
   refreshSession(_: string, callback: (error: null | Error) => void) {
     this.#assert?.step(`cognitoUser.refreshSession()`);
+
+    let jwtToken = `${this.#cognitoUserSession
+      .getAccessToken()
+      .getJwtToken()}-REFRESHED`;
+
+    this.#cognitoUserSession = mockCognitoUserSession({ jwtToken });
+
     callback(null);
   }
 
