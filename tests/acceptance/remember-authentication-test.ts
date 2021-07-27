@@ -50,7 +50,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.equal(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
@@ -60,29 +60,40 @@ module('Acceptance | remember-authentication', function (hooks) {
 
     test('it correctly refreshes the access token', async function (this: TestContext, assert) {
       let { cognito } = this;
-      cognito.autoRefreshInterval = 500;
 
       await visit('/');
 
       assert.equal(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
+
+      // setExpireIn is only available on MockCognitoUserSession
+      // @ts-ignore
+      cognito.cognitoData?.cognitoUserSession.setExpireIn(2 + 15 * 60);
 
       assert.step('now run auto-refresh');
       taskFor(cognito._debouncedRefreshAccessToken).perform();
 
       await timeout(1400);
 
+      assert.step('still not refreshed');
+
+      await timeout(1000);
+
+      assert.equal(
+        cognito.cognitoData?.jwtToken,
+        `${getMockConfig().mockJwtToken}-REFRESHED`,
+        'correct jwtToken is updated on service'
+      );
+
       assert.verifySteps([
         'cognitoUser.getUserData({"bypassCache":false})',
         'now run auto-refresh',
-        'cognitoUser.refreshSession()',
-        'cognitoUser.getSession()',
-        'cognitoUser.getUserData({"bypassCache":false})',
+        'still not refreshed',
         'cognitoUser.refreshSession()',
         'cognitoUser.getSession()',
         'cognitoUser.getUserData({"bypassCache":false})',
@@ -107,17 +118,21 @@ module('Acceptance | remember-authentication', function (hooks) {
     });
 
     test('it handles an API error when trying to refresh token', async function (this: TestContext, assert) {
-      let cognito = this.owner.lookup('service:cognito');
+      let cognito = this.owner.lookup('service:cognito') as CognitoService;
 
       cognito.cognitoData = mockCognitoData({
         assert,
-      });
+      })!;
 
       cognito.cognitoData.cognitoUser.refreshSession = (
         _: any,
         callback: (error: null | AmazonCognitoIdentityJsError) => void
       ) => {
         assert.step(`cognitoUser.refreshSession()`);
+
+        // setExpireIn is only available on MockCognitoUserSession
+        // @ts-ignore
+        cognito.cognitoData!.cognitoUserSession.setExpireIn(20 * 60);
 
         callback({
           code: 'UserNotFoundException',
@@ -126,17 +141,19 @@ module('Acceptance | remember-authentication', function (hooks) {
         });
       };
 
-      cognito.autoRefreshInterval = 500;
-
       await visit('/');
 
       assert.equal(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
+
+      // setExpireIn is only available on MockCognitoUserSession
+      // @ts-ignore
+      cognito.cognitoData.cognitoUserSession.setExpireIn(1 + 15 * 60);
 
       assert.step('now run auto-refresh');
       taskFor(cognito._debouncedRefreshAccessToken).perform();
@@ -146,7 +163,7 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.equal(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
       assert.equal(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
       );
@@ -154,7 +171,6 @@ module('Acceptance | remember-authentication', function (hooks) {
       assert.verifySteps([
         'cognitoUser.getUserData({"bypassCache":false})',
         'now run auto-refresh',
-        'cognitoUser.refreshSession()',
         'cognitoUser.refreshSession()',
       ]);
     });

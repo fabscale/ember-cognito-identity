@@ -24,6 +24,7 @@ import { triggerResetPasswordMail } from 'ember-cognito-identity/utils/cognito/t
 import { updatePassword } from 'ember-cognito-identity/utils/cognito/update-password';
 import { updateResetPassword } from 'ember-cognito-identity/utils/cognito/update-reset-password';
 import { updateUserAttributes } from 'ember-cognito-identity/utils/cognito/update-user-attributes';
+import { getTokenRefreshWait } from 'ember-cognito-identity/utils/get-token-refresh-wait';
 import { getUserAttributes } from 'ember-cognito-identity/utils/get-user-attributes';
 import { loadUserDataAndAccessToken } from 'ember-cognito-identity/utils/load-user-data-and-access-token';
 import { mockCognitoUser } from 'ember-cognito-identity/utils/mock/cognito-user';
@@ -66,8 +67,6 @@ export default class CognitoService extends Service {
   }
 
   shouldAutoRefresh = !isTesting();
-
-  autoRefreshInterval = 1000 * 60 * 45; // Tokens expire after 1h, so we refresh them every 45 minutes, to have a bit of leeway
 
   _userPool: CognitoUserPool | undefined;
   get userPool(): CognitoUserPool {
@@ -134,7 +133,7 @@ export default class CognitoService extends Service {
     let { cognitoUser, cognitoUserSession } = this.cognitoData!;
 
     await refreshAccessToken(cognitoUserSession, cognitoUser);
-    await loadUserDataAndAccessToken(this.userPool);
+    this.cognitoData = await loadUserDataAndAccessToken(this.userPool);
   }
 
   async authenticate({
@@ -296,7 +295,16 @@ export default class CognitoService extends Service {
 
   @restartableTask
   *_debouncedRefreshAccessToken(): any {
-    yield timeout(this.autoRefreshInterval);
+    assert(
+      'cognitoData is not set, make sure to be authenticated before calling `_debouncedRefreshAccessToken.perform()`',
+      !!this.cognitoData
+    );
+
+    let autoRefreshWait = getTokenRefreshWait(
+      this.cognitoData.cognitoUserSession
+    );
+
+    yield timeout(autoRefreshWait);
 
     try {
       yield this.refreshAccessToken();

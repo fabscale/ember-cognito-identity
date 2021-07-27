@@ -6,11 +6,14 @@ interface Args {
 
 class MockCognitoUserSession {
   #jwtToken = getOwnConfig<any>().mockJwtToken;
+  #expirationDate: Date;
 
   constructor({ jwtToken }: Args = {}) {
     if (jwtToken) {
       this.#jwtToken = jwtToken;
     }
+
+    this.#expirationDate = new Date(+new Date() + 1000 * 60 * 60);
   }
 
   getAccessToken() {
@@ -18,15 +21,23 @@ class MockCognitoUserSession {
       getJwtToken: () => {
         return this.#jwtToken;
       },
+
+      getExpiration: () => {
+        return Math.floor(+this.#expirationDate / 1000);
+      },
     };
   }
 
   get refreshToken() {
     return {
       getToken: () => {
-        return `${this.#jwtToken}-REFRESHED`;
+        return `${this.#jwtToken}-REFRESH`;
       },
     };
+  }
+
+  setExpireIn(seconds: number) {
+    this.#expirationDate = new Date(+new Date() + 1000 * seconds);
   }
 }
 
