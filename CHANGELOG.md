@@ -16,6 +16,8 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+## v3.2.0 (2021-07-27)
+
 ## v3.1.1 (2021-07-22)
 
 #### :bug: Bug Fix
