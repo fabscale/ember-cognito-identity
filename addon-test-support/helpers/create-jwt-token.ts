@@ -1,11 +1,9 @@
-import { assign } from '@ember/polyfills';
-
 export function createJWTToken(payload: Record<string, any>): string {
   let header = {
     alg: 'RS256',
   };
 
-  let data = assign(
+  let data = Object.assign(
     {
       exp: Math.round(+new Date() / 1000) + 3600,
       iat: Math.round(+new Date() / 1000),
