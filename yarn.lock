@@ -1827,9 +1827,9 @@
     defer-to-connect "^2.0.0"
 
 "@types/amazon-cognito-auth-js@^1.2.2":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@types/amazon-cognito-auth-js/-/amazon-cognito-auth-js-1.2.3.tgz#b10a3cf21e8919ef9d052d2de785e0057b88247c"
-  integrity sha512-OwzJGRKpxedI2cCdZveY9npCMvE4uDHVP9Tq7qcWkMiQaMKowfstifQDk1m9UUtWQ1eCsZ7neKVyZybF9v7SPA==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/amazon-cognito-auth-js/-/amazon-cognito-auth-js-1.3.0.tgz#362fbd9dfc2b516c22098b90e0c7cd382eac4b70"
+  integrity sha512-LC3khKkazRjyX0qaGUA3SyNHOxe1qXdBc86hmFCW+iZuavz5uWpFQE4RcLfsffPBibG1brlbC45n7MPl/bHPpA==
 
 "@types/body-parser@*":
   version "1.19.0"
