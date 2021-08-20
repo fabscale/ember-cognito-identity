@@ -16,6 +16,22 @@
 * Hooks dropped in favor of manually handling this.
 * Major dependency update might be incompatible with other dependencies.
 
+
+## v3.3.0 (2021-08-20)
+
+#### :house: Internal
+* [#606](https://github.com/fabscale/ember-cognito-identity/pull/606) chore(deps): bump @ember/test-waiters from 2.4.5 to 3.0.0 ([@mydea](https://github.com/mydea))
+* [#602](https://github.com/fabscale/ember-cognito-identity/pull/602) chore(deps): bump ember-auto-import from 2.0.2 to 2.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#598](https://github.com/fabscale/ember-cognito-identity/pull/598) chore(deps): bump @types/amazon-cognito-auth-js from 1.2.3 to 1.3.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#590](https://github.com/fabscale/ember-cognito-identity/pull/590) chore(deps): bump ember-concurrency from 2.1.0 to 2.1.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#577](https://github.com/fabscale/ember-cognito-identity/pull/577) chore(deps): bump amazon-cognito-identity-js from 5.0.3 to 5.0.6 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#580](https://github.com/fabscale/ember-cognito-identity/pull/580) chore(deps): bump @ember/test-waiters from 2.4.4 to 2.4.5 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#585](https://github.com/fabscale/ember-cognito-identity/pull/585) chore(deps): bump @embroider/macros from 0.43.0 to 0.43.3 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#587](https://github.com/fabscale/ember-cognito-identity/pull/587) chore(deps): bump @types/amazon-cognito-auth-js from 1.2.2 to 1.2.3 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.2.0 (2021-07-27)
 
 ## v3.1.1 (2021-07-22)
