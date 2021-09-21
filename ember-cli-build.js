@@ -6,5 +6,11 @@ module.exports = function (defaults) {
   let app = new EmberAddon(defaults, {});
 
   let { maybeEmbroider } = require('@embroider/test-setup');
-  return maybeEmbroider(app);
+  return maybeEmbroider(app, {
+    skipBabel: [
+      {
+        package: 'qunit',
+      },
+    ],
+  });
 };
