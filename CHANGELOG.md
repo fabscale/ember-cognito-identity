@@ -17,6 +17,20 @@
 * Major dependency update might be incompatible with other dependencies.
 
 
+
+## v3.4.0 (2021-10-25)
+
+#### :rocket: Enhancement
+* [#631](https://github.com/fabscale/ember-cognito-identity/pull/631) feat: add `logoutForce` method to allow to handle inconsistent state ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#614](https://github.com/fabscale/ember-cognito-identity/pull/614) chore(deps-dev): bump ember-cli from 3.27.0 to 3.28.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#608](https://github.com/fabscale/ember-cognito-identity/pull/608) chore(deps): bump ember-auto-import from 2.1.0 to 2.2.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#615](https://github.com/fabscale/ember-cognito-identity/pull/615) chore(deps): bump amazon-cognito-identity-js from 5.0.6 to 5.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.3.0 (2021-08-20)
 
 #### :house: Internal
