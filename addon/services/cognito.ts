@@ -160,6 +160,14 @@ export default class CognitoService extends Service {
     }
   }
 
+  // Only call this if you are in an inconsistent state
+  logoutForce(): void {
+    this.userPool.getCurrentUser()?.signOut();
+    this.cognitoData = null;
+
+    taskFor(this._debouncedRefreshAccessToken).cancelAll();
+  }
+
   invalidateAccessTokens(): Promise<void> {
     assert(
       'cognitoData is not set, make sure to be authenticated before calling `invalidateAccessTokens()`',
