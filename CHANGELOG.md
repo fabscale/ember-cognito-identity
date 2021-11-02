@@ -18,6 +18,17 @@
 
 
 
+
+## v3.5.0 (2021-11-02)
+
+#### :house: Internal
+* [#636](https://github.com/fabscale/ember-cognito-identity/pull/636) chore(deps): bump ember-cli-htmlbars from 5.7.1 to 6.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#634](https://github.com/fabscale/ember-cognito-identity/pull/634) chore(deps): bump @embroider/macros from 0.45.0 to 0.47.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#644](https://github.com/fabscale/ember-cognito-identity/pull/644) chore(deps): bump ember-concurrency from 2.1.2 to 2.2.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.4.0 (2021-10-25)
 
 #### :rocket: Enhancement
