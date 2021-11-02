@@ -16,14 +16,14 @@ module('Unit | Utility | errors/cognito', function () {
     // @ts-ignore
     let result = dispatchError('test error');
     assert.ok(result instanceof CognitoError);
-    assert.equal(result.message, 'test error');
+    assert.strictEqual(result.message, 'test error');
   });
 
   test('it works with null', function (assert) {
     // @ts-ignore
     let result = dispatchError(null);
     assert.ok(result instanceof CognitoError);
-    assert.equal(result.message, 'An error has occurred.');
+    assert.strictEqual(result.message, 'An error has occurred.');
   });
 
   test('it works for PasswordResetRequiredException', function (assert) {
@@ -34,7 +34,7 @@ module('Unit | Utility | errors/cognito', function () {
     });
 
     assert.ok(result instanceof PasswordResetRequiredError);
-    assert.equal(result.message, 'Password reset required for the user.');
+    assert.strictEqual(result.message, 'Password reset required for the user.');
   });
 
   test('it works for NotAuthorizedException', function (assert) {
@@ -45,7 +45,10 @@ module('Unit | Utility | errors/cognito', function () {
     });
 
     assert.ok(result instanceof InvalidAuthorizationError);
-    assert.equal(result.message, 'The password you provided is incorrect.');
+    assert.strictEqual(
+      result.message,
+      'The password you provided is incorrect.'
+    );
   });
 
   test('it works for CodeMismatchException', function (assert) {
@@ -56,7 +59,7 @@ module('Unit | Utility | errors/cognito', function () {
     });
 
     assert.ok(result instanceof VerificationCodeMismatchError);
-    assert.equal(
+    assert.strictEqual(
       result.message,
       'Invalid verification code provided, please try again.'
     );
@@ -70,7 +73,7 @@ module('Unit | Utility | errors/cognito', function () {
     });
 
     assert.ok(result instanceof InvalidPasswordError);
-    assert.equal(result.message, 'test message');
+    assert.strictEqual(result.message, 'test message');
   });
 
   test('it works for InvalidParameterException', function (assert) {
@@ -81,7 +84,7 @@ module('Unit | Utility | errors/cognito', function () {
     });
 
     assert.ok(result instanceof InvalidPasswordError);
-    assert.equal(result.message, 'test message');
+    assert.strictEqual(result.message, 'test message');
   });
 
   test('it works for UserNotFoundException', function (assert) {
@@ -92,7 +95,7 @@ module('Unit | Utility | errors/cognito', function () {
     });
 
     assert.ok(result instanceof UserNotFoundError);
-    assert.equal(result.message, 'This user does not exist.');
+    assert.strictEqual(result.message, 'This user does not exist.');
   });
 
   test('it works for ExpiredCodeException', function (assert) {
@@ -103,7 +106,7 @@ module('Unit | Utility | errors/cognito', function () {
     });
 
     assert.ok(result instanceof VerificationCodeExpiredError);
-    assert.equal(
+    assert.strictEqual(
       result.message,
       'The verification code is expired, please request a new one.'
     );
@@ -118,7 +121,7 @@ module('Unit | Utility | errors/cognito', function () {
       });
 
       assert.ok(result instanceof CognitoError);
-      assert.equal(
+      assert.strictEqual(
         result.message,
         'A client attempted to write unauthorized attribute'
       );
@@ -132,7 +135,7 @@ module('Unit | Utility | errors/cognito', function () {
       });
 
       assert.ok(result instanceof PasswordCannotBeResetError);
-      assert.equal(
+      assert.strictEqual(
         result.message,
         'The user you are trying to reset the password for is not active.'
       );

@@ -30,7 +30,7 @@ module('Acceptance | remember-authentication', function (hooks) {
 
     await visit('/');
 
-    assert.equal(currentRouteName(), 'login', 'user is on login page');
+    assert.strictEqual(currentRouteName(), 'login', 'user is on login page');
     assert.notOk(cognito.isAuthenticated, 'user is not authenticated');
   });
 
@@ -47,9 +47,9 @@ module('Acceptance | remember-authentication', function (hooks) {
 
       await visit('/');
 
-      assert.equal(currentRouteName(), 'index', 'user is on index page');
+      assert.strictEqual(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
@@ -63,9 +63,9 @@ module('Acceptance | remember-authentication', function (hooks) {
 
       await visit('/');
 
-      assert.equal(currentRouteName(), 'index', 'user is on index page');
+      assert.strictEqual(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
@@ -84,7 +84,7 @@ module('Acceptance | remember-authentication', function (hooks) {
 
       await timeout(1000);
 
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData?.jwtToken,
         `${getMockConfig().mockJwtToken}-REFRESHED`,
         'correct jwtToken is updated on service'
@@ -143,9 +143,9 @@ module('Acceptance | remember-authentication', function (hooks) {
 
       await visit('/');
 
-      assert.equal(currentRouteName(), 'index', 'user is on index page');
+      assert.strictEqual(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'
@@ -160,9 +160,9 @@ module('Acceptance | remember-authentication', function (hooks) {
 
       await timeout(1400);
 
-      assert.equal(currentRouteName(), 'index', 'user is on index page');
+      assert.strictEqual(currentRouteName(), 'index', 'user is on index page');
       assert.ok(cognito.isAuthenticated, 'user is authenticated');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData?.jwtToken,
         getMockConfig().mockJwtToken,
         'correct jwtToken is set on service'

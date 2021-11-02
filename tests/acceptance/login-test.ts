@@ -38,7 +38,7 @@ module('Acceptance | login', function (hooks) {
     await click('[data-test-login-form-submit]');
 
     assert.ok(cognito.isAuthenticated, 'user is authenticated now');
-    assert.equal(
+    assert.strictEqual(
       cognito.cognitoData && cognito.cognitoData.jwtToken,
       JWT_TOKEN,
       'correct jwtToken is set on service'
@@ -129,7 +129,7 @@ module('Acceptance | login', function (hooks) {
       await click('[data-test-login-form-submit]');
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
@@ -225,7 +225,7 @@ module('Acceptance | login', function (hooks) {
       await click('[data-test-login-form-submit]');
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'

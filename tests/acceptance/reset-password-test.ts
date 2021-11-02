@@ -54,7 +54,7 @@ module('Acceptance | reset-password', function (hooks) {
       await click('[data-test-reset-password-submit]');
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
@@ -91,7 +91,7 @@ module('Acceptance | reset-password', function (hooks) {
       await click('[data-test-reset-password-submit]');
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
@@ -130,7 +130,7 @@ module('Acceptance | reset-password', function (hooks) {
       await click('[data-test-reset-password-submit]');
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
-      assert.equal(
+      assert.strictEqual(
         cognito.cognitoData && cognito.cognitoData.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
@@ -173,7 +173,7 @@ module('Acceptance | reset-password', function (hooks) {
       );
       await click('[data-test-reset-password-send-verification-code]');
 
-      assert.equal(
+      assert.strictEqual(
         currentRouteName(),
         'reset-password',
         'user is still on reset-password page'
@@ -197,7 +197,7 @@ module('Acceptance | reset-password', function (hooks) {
       await fillIn('[data-test-reset-password-new-password]', PASSWORD);
       await click('[data-test-reset-password-submit]');
 
-      assert.equal(
+      assert.strictEqual(
         currentRouteName(),
         'reset-password',
         'user is still on reset-password page'
@@ -221,7 +221,7 @@ module('Acceptance | reset-password', function (hooks) {
       await fillIn('[data-test-reset-password-new-password]', 'test');
       await click('[data-test-reset-password-submit]');
 
-      assert.equal(
+      assert.strictEqual(
         currentRouteName(),
         'reset-password',
         'user is still on reset-password page'
@@ -248,7 +248,7 @@ module('Acceptance | reset-password', function (hooks) {
       await fillIn('[data-test-reset-password-new-password]', 'test5678');
       await click('[data-test-reset-password-submit]');
 
-      assert.equal(
+      assert.strictEqual(
         currentRouteName(),
         'reset-password',
         'user is still on reset-password page'
