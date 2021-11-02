@@ -17,7 +17,7 @@ module('Unit | Utility | get-token-refresh-wait', function () {
     let result = getTokenRefreshWait(mockSession);
 
     // 45 minutes
-    assert.equal(result, 2700000);
+    assert.strictEqual(result, 2700000);
   });
 
   test('it works with expiration in the future', function (assert) {
@@ -36,7 +36,7 @@ module('Unit | Utility | get-token-refresh-wait', function () {
     let result = getTokenRefreshWait(mockSession);
 
     // 5 minutes
-    assert.equal(result, 300000);
+    assert.strictEqual(result, 300000);
   });
 
   test('it works with expiration in the past', function (assert) {
@@ -55,7 +55,7 @@ module('Unit | Utility | get-token-refresh-wait', function () {
     let result = getTokenRefreshWait(mockSession);
 
     // 5 minutes
-    assert.equal(result, 0);
+    assert.strictEqual(result, 0);
   });
 
   test('it works with expiration in the future, but below margin/threshold', function (assert) {
@@ -74,6 +74,6 @@ module('Unit | Utility | get-token-refresh-wait', function () {
     let result = getTokenRefreshWait(mockSession);
 
     // 5 minutes
-    assert.equal(result, 0);
+    assert.strictEqual(result, 0);
   });
 });

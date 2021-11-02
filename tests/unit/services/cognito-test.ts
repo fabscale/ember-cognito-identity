@@ -97,7 +97,7 @@ module('Unit | Service | cognito', function (hooks) {
         });
       } catch (error) {
         assert.step('error occurred');
-        assert.equal(
+        assert.strictEqual(
           error.message,
           'A client attempted to write unauthorized attribute'
         );
@@ -161,7 +161,10 @@ module('Unit | Service | cognito', function (hooks) {
           newPassword: 'new-test1234',
         });
       } catch (error) {
-        assert.equal(error.message, 'The password you provided is incorrect.');
+        assert.strictEqual(
+          error.message,
+          'The password you provided is incorrect.'
+        );
         assert.step('error occurred');
       }
 
