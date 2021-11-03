@@ -98,7 +98,7 @@ export default class CognitoLoginForm extends Component {
   }
 
   // This can be overwritten
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   _getNewPasswordAttributes(_: UserAttributes): undefined | UserAttributes {
     return undefined;
   }
