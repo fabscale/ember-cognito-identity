@@ -19,6 +19,22 @@
 
 
 
+
+## v3.6.0 (2022-01-04)
+
+#### :rocket: Enhancement
+* [#672](https://github.com/fabscale/ember-cognito-identity/pull/672) feat: Ensure licence is correctly MIT ([@mydea](https://github.com/mydea))
+* [#668](https://github.com/fabscale/ember-cognito-identity/pull/668) chore: Use `Object.assign` instead of `assign` ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#669](https://github.com/fabscale/ember-cognito-identity/pull/669) chore(deps-dev): bump ember-cli from 3.28.4 to 4.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#670](https://github.com/fabscale/ember-cognito-identity/pull/670) Update dev dependencies ([@mydea](https://github.com/mydea))
+* [#665](https://github.com/fabscale/ember-cognito-identity/pull/665) chore(deps): bump @embroider/macros from 0.47.2 to 0.49.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#649](https://github.com/fabscale/ember-cognito-identity/pull/649) chore(deps-dev): Update dev dependencies ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.5.0 (2021-11-02)
 
 #### :house: Internal
