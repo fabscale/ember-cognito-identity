@@ -20,6 +20,22 @@
 
 
 
+
+## v3.7.0 (2022-01-17)
+
+#### :rocket: Enhancement
+* [#676](https://github.com/fabscale/ember-cognito-identity/pull/676) chore(deps): bump amazon-cognito-identity-js from 5.0.3 to 5.2.4 ([@mydea](https://github.com/mydea))
+
+#### :bug: Bug Fix
+* [#675](https://github.com/fabscale/ember-cognito-identity/pull/675) Ensure @babel/eslint-parser is a devDependency ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#677](https://github.com/fabscale/ember-cognito-identity/pull/677) Update dev dependencies ([@mydea](https://github.com/mydea))
+* [#674](https://github.com/fabscale/ember-cognito-identity/pull/674) chore(deps): bump @embroider/macros from 0.49.0 to 0.50.2 ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.6.0 (2022-01-04)
 
 #### :rocket: Enhancement
