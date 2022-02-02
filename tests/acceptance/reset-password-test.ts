@@ -5,12 +5,12 @@ import {
   resetOnerror,
   setupOnerror,
   visit,
+  TestContext as Context,
 } from '@ember/test-helpers';
 import { CognitoError } from 'ember-cognito-identity/errors/cognito';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 import { mockCognitoAuthenticated } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
 import { setupApplicationTest } from 'ember-qunit';
-import { TestContext as Context } from 'ember-test-helpers';
 import { module, test } from 'qunit';
 import { getMockConfig } from '../helpers/get-mock-config';
 
@@ -154,7 +154,7 @@ module('Acceptance | reset-password', function (hooks) {
         throw error;
       });
 
-      this.cognito = this.owner.lookup('service:cognito');
+      this.cognito = this.owner.lookup('service:cognito') as CognitoService;
       this.cognito._assert = assert;
     });
 

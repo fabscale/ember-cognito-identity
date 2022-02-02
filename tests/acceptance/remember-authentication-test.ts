@@ -3,6 +3,7 @@ import {
   resetOnerror,
   setupOnerror,
   visit,
+  TestContext as Context,
 } from '@ember/test-helpers';
 import {
   AmazonCognitoIdentityJsError,
@@ -14,7 +15,6 @@ import { mockCognitoData } from 'ember-cognito-identity/utils/mock/cognito-data'
 import { timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
 import { setupApplicationTest } from 'ember-qunit';
-import { TestContext as Context } from 'ember-test-helpers';
 import { module, test } from 'qunit';
 import { getMockConfig } from '../helpers/get-mock-config';
 
@@ -26,7 +26,7 @@ module('Acceptance | remember-authentication', function (hooks) {
   setupApplicationTest(hooks);
 
   test('it correctly redirects to login if no cache is available', async function (this: TestContext, assert) {
-    let cognito = this.owner.lookup('service:cognito');
+    let cognito = this.owner.lookup('service:cognito') as CognitoService;
 
     await visit('/');
 
@@ -38,7 +38,7 @@ module('Acceptance | remember-authentication', function (hooks) {
     mockCognitoAuthenticated(hooks, { includeAssertSteps: true });
 
     hooks.beforeEach(function (this: TestContext) {
-      let cognito = this.owner.lookup('service:cognito');
+      let cognito = this.owner.lookup('service:cognito') as CognitoService;
       this.cognito = cognito;
     });
 

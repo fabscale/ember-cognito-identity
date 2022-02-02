@@ -31,6 +31,7 @@ import { mockCognitoUser } from 'ember-cognito-identity/utils/mock/cognito-user'
 import { mockCognitoUserPool } from 'ember-cognito-identity/utils/mock/cognito-user-pool';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
+import type ApplicationInstance from '@ember/application/instance';
 
 export interface CognitoData {
   cognitoUser: CognitoUser;
@@ -62,7 +63,9 @@ export default class CognitoService extends Service {
   }
 
   get config(): { userPoolId: string; clientId: string; endpoint?: string } {
-    let config = getOwner(this).resolveRegistration('config:environment');
+    let config = (getOwner(this) as ApplicationInstance).resolveRegistration(
+      'config:environment'
+    ) as any;
     return config.cognito;
   }
 
@@ -83,7 +86,7 @@ export default class CognitoService extends Service {
 
     assert(
       'A `cognito` configuration object needs to be defined in config/environment.js',
-      this.config
+      typeof this.config === 'object'
     );
     let { userPoolId, clientId, endpoint } = this.config;
 
