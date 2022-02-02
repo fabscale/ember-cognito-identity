@@ -1,4 +1,8 @@
-import { resetOnerror, setupOnerror } from '@ember/test-helpers';
+import {
+  resetOnerror,
+  setupOnerror,
+  TestContext as Context,
+} from '@ember/test-helpers';
 import {
   AmazonCognitoIdentityJsError,
   CognitoError,
@@ -7,7 +11,6 @@ import {
 import CognitoService from 'ember-cognito-identity/services/cognito';
 import { mockCognitoAuthenticated } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
 import { setupTest } from 'ember-qunit';
-import { TestContext as Context } from 'ember-test-helpers';
 import { module, test } from 'qunit';
 
 type TestContext = Context & {
@@ -18,7 +21,7 @@ module('Unit | Service | cognito', function (hooks) {
   setupTest(hooks);
 
   test('restoreAndLoad rejects with null if not signed in', async function (this: TestContext, assert) {
-    let service = this.owner.lookup('service:cognito');
+    let service = this.owner.lookup('service:cognito') as CognitoService;
 
     try {
       await service.restoreAndLoad();

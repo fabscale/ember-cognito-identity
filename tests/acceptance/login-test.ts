@@ -1,8 +1,12 @@
-import { click, fillIn, visit } from '@ember/test-helpers';
+import {
+  click,
+  fillIn,
+  visit,
+  TestContext as Context,
+} from '@ember/test-helpers';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 import { MOCK_COGNITO_CONFIG } from 'ember-cognito-identity/utils/mock/cognito-user';
 import { setupApplicationTest } from 'ember-qunit';
-import { TestContext as Context } from 'ember-test-helpers';
 import { module, test } from 'qunit';
 import { getMockConfig } from '../helpers/get-mock-config';
 
@@ -19,7 +23,7 @@ module('Acceptance | login', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(function (this: TestContext, assert) {
-    this.cognito = this.owner.lookup('service:cognito');
+    this.cognito = this.owner.lookup('service:cognito') as CognitoService;
     this.cognito._assert = assert;
   });
 

@@ -1,10 +1,12 @@
-import { visit } from '@ember/test-helpers';
-import click from '@ember/test-helpers/dom/click';
-import fillIn from '@ember/test-helpers/dom/fill-in';
+import {
+  visit,
+  click,
+  fillIn,
+  TestContext as Context,
+} from '@ember/test-helpers';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 import { mockCognitoAuthenticated } from 'ember-cognito-identity/test-support/helpers/mock-cognito';
 import { setupApplicationTest } from 'ember-qunit';
-import { TestContext as Context } from 'ember-test-helpers';
 import { module, test } from 'qunit';
 import { getMockConfig } from '../helpers/get-mock-config';
 
