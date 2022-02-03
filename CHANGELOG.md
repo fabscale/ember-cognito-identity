@@ -21,6 +21,18 @@
 
 
 
+
+## v3.8.0 (2022-02-03)
+
+#### :house: Internal
+* [#689](https://github.com/fabscale/ember-cognito-identity/pull/689) Update dev depenendencies ([@mydea](https://github.com/mydea))
+* [#690](https://github.com/fabscale/ember-cognito-identity/pull/690) Update ember types to v4 ([@mydea](https://github.com/mydea))
+* [#679](https://github.com/fabscale/ember-cognito-identity/pull/679) chore(deps): bump ember-auto-import from 2.2.4 to 2.4.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#686](https://github.com/fabscale/ember-cognito-identity/pull/686) chore(deps): bump @embroider/macros from 0.50.2 to 1.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.7.0 (2022-01-17)
 
 #### :rocket: Enhancement
