@@ -22,6 +22,20 @@
 
 
 
+
+## v3.8.1 (2022-03-11)
+
+#### :bug: Bug Fix
+* [#707](https://github.com/fabscale/ember-cognito-identity/pull/707) fix: Remove unneeded CSS from addon ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#693](https://github.com/fabscale/ember-cognito-identity/pull/693) chore(deps): bump @embroider/macros from 1.0.0 to 1.2.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#706](https://github.com/fabscale/ember-cognito-identity/pull/706) Update dev dependencies ([@mydea](https://github.com/mydea))
+* [#696](https://github.com/fabscale/ember-cognito-identity/pull/696) chore(deps): bump ember-cli-typescript from 4.2.1 to 5.0.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.8.0 (2022-02-03)
 
 #### :house: Internal
