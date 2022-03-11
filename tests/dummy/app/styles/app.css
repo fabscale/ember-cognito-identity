@@ -1,0 +1,12 @@
+.cognito-password-input {
+  padding-right: 50px;
+}
+
+.cognito-password-input-toggle-button {
+  position: absolute;
+  transform: translateX(-100%);
+}
+
+.cognito-error {
+  color: red;
+}
