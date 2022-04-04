@@ -28,6 +28,10 @@ class MockCognitoUserSession {
     };
   }
 
+  getIdToken() {
+    return this.getAccessToken();
+  }
+
   get refreshToken() {
     return {
       getToken: () => {

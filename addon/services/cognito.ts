@@ -5,6 +5,8 @@ import Service, { inject as service } from '@ember/service';
 import { getOwnConfig, isTesting, macroCondition } from '@embroider/macros';
 import { tracked } from '@glimmer/tracking';
 import {
+  CognitoAccessToken,
+  CognitoIdToken,
   CognitoUser,
   CognitoUserPool,
   CognitoUserSession,
@@ -38,6 +40,8 @@ export interface CognitoData {
   userAttributes: UserAttributes;
   cognitoUserSession: CognitoUserSession;
   jwtToken: string;
+  getAccessToken: () => CognitoAccessToken;
+  getIdToken: () => CognitoIdToken;
   mfa: CognitoUserMfa;
 }
 

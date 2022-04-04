@@ -36,6 +36,8 @@ export async function loadUserDataAndAccessToken(
     userAttributes,
     cognitoUserSession,
     jwtToken,
+    getAccessToken: () => cognitoUserSession.getAccessToken(),
+    getIdToken: () => cognitoUserSession.getIdToken(),
     mfa: new CognitoUserMfa(cognitoUser),
   };
 

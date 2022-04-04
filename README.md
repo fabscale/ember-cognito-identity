@@ -98,6 +98,8 @@ let cognitoData = {
   cognitoUserSession: CognitoUserSession,
   jwtToken: 'xxxxx',
   userAttributes: { Email: '...' },
+  getAccessToken: () => CognitoAccessToken,
+  getIdToken: () => CognitoIdToken,
   mfa: {
     enable: () => {},
     disable: () => {},
