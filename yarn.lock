@@ -1327,11 +1327,11 @@
     semver "^7.3.2"
 
 "@embroider/macros@^1.0.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@embroider/macros/-/macros-1.2.0.tgz#9a2d99225fba6dcb69e795cddad9f4948c2a2b6b"
-  integrity sha512-WD2V3OKXZB73OymI/zC2+MbqIYaAskhjtSOVVY6yG6kWILyVsJ6+fcbNHEnZyGqs4sm0TvHVJfevmA2OXV8Pww==
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@embroider/macros/-/macros-1.5.0.tgz#8c67666359e7814d91cdeac2fd96c896080473b3"
+  integrity sha512-QqNsWmIJ8LvwWg+YAfB+nfcRZ49hAJNTJAKt2IDpgZDKa/FYj/Mp75UWfJ1BJvB3KUq50OQCOv4TZ3ZcU9h/TQ==
   dependencies:
-    "@embroider/shared-internals" "1.2.0"
+    "@embroider/shared-internals" "1.5.0"
     assert-never "^1.2.1"
     babel-import-util "^1.1.0"
     ember-cli-babel "^7.26.6"
@@ -1340,10 +1340,10 @@
     resolve "^1.20.0"
     semver "^7.3.2"
 
-"@embroider/shared-internals@1.2.0", "@embroider/shared-internals@^1.0.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@embroider/shared-internals/-/shared-internals-1.2.0.tgz#edb3ca7e8528be713dab01818e8caad2dc937fba"
-  integrity sha512-11RfGuXxT+m2xPcpny/ENHjw53CuKPcrx7222LFQ53+I09hLxsvPCsH8be5E99LePDA46YGX41vxOxxfowD4OQ==
+"@embroider/shared-internals@1.5.0", "@embroider/shared-internals@^1.0.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@embroider/shared-internals/-/shared-internals-1.5.0.tgz#d3883f13571be36fcdbc59c65c785db7b6d8186e"
+  integrity sha512-kdR7Fh2YdzsNofJO+DJxLfrlMbW4/NNf78aMXgE21z/tg9GO5W2mKlI1DzsO2JlO5yfZdiYfqb9C9vSLJEx14A==
   dependencies:
     babel-import-util "^1.1.0"
     ember-rfc176-data "^0.3.17"
