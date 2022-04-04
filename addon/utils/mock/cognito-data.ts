@@ -42,6 +42,8 @@ export function mockCognitoData({
     cognitoUserSession,
     userAttributes,
     jwtToken,
+    getAccessToken: () => cognitoUserSession.getAccessToken(),
+    getIdToken: () => cognitoUserSession.getIdToken(),
     mfa,
   };
 
