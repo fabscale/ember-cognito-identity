@@ -66,7 +66,12 @@ export default class CognitoService extends Service {
     return Boolean(this.cognitoData);
   }
 
-  get config(): { userPoolId: string; clientId: string; endpoint?: string } {
+  get config(): {
+    userPoolId: string;
+    clientId: string;
+    endpoint?: string;
+    authenticationFlowType?: 'USER_SRP_AUTH' | 'USER_PASSWORD_AUTH';
+  } {
     let config = (getOwner(this) as ApplicationInstance).resolveRegistration(
       'config:environment'
     ) as any;
@@ -371,12 +376,20 @@ export default class CognitoService extends Service {
       Storage: storage,
     };
 
-    return macroCondition(getOwnConfig<any>().enableMocks)
-      ? (mockCognitoUser({
-          username,
-          userPool,
-          assert: this._assert,
-        }) as unknown as CognitoUser)
-      : new CognitoUser(userData);
+    if (macroCondition(getOwnConfig<any>().enableMocks)) {
+      return mockCognitoUser({
+        username,
+        userPool,
+        assert: this._assert,
+      }) as unknown as CognitoUser;
+    }
+
+    let cognitoUser = new CognitoUser(userData);
+    let { config } = this;
+    if (config.authenticationFlowType) {
+      cognitoUser.setAuthenticationFlowType(config.authenticationFlowType);
+    }
+
+    return cognitoUser;
   }
 }

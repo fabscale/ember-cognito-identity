@@ -122,6 +122,16 @@ Call this (and wait for it to complete) in your application route!
 Try to login with the given username & password.
 Will reject with an Error, or resolve if successfull.
 
+If you want to use a specific authentication flow type, you can specify it in your `config/environment.js` like this:
+
+```js
+cognito: {
+  userPoolId: 'XXX',
+  clientId: 'YYY',
+  authenticationFlowType: 'USER_PASSWORD_AUTH'
+}
+```
+
 ### authenticateUser({ username, password })
 
 Verify only the given username & password.
