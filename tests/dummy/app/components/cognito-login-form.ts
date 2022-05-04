@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import {
-  CognitoError,
   MfaCodeRequiredError,
   NewPasswordRequiredError,
 } from 'ember-cognito-identity/errors/cognito';
@@ -14,15 +13,15 @@ import CognitoService, {
 import { dropTask } from 'ember-concurrency';
 
 export default class CognitoLoginForm extends Component {
-  @service cognito: CognitoService;
-  @service router: RouterService;
+  @service declare cognito: CognitoService;
+  @service declare router: RouterService;
 
   // Properties
-  @tracked username: string;
-  @tracked password: string;
-  @tracked newPassword: string;
+  @tracked username?: string;
+  @tracked password?: string;
+  @tracked newPassword?: string;
   @tracked mustEnterNewPassword = false;
-  @tracked error: CognitoError | null;
+  @tracked error: unknown | null;
 
   @tracked mustEnterMfaCode = false;
   @tracked mfaCode?: string;
@@ -59,6 +58,10 @@ export default class CognitoLoginForm extends Component {
     }
 
     if (mustEnterNewPassword) {
+      if (!username || !password || !newPassword) {
+        return;
+      }
+
       try {
         let newAttributes = this._getNewPasswordAttributes({ username });
         yield cognito.setNewPassword(

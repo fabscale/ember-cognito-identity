@@ -5,8 +5,8 @@ import CognitoService from 'ember-cognito-identity/services/cognito';
 import RouterService from '@ember/routing/router-service';
 
 export default class IndexController extends Controller {
-  @service cognito: CognitoService;
-  @service router: RouterService;
+  @service declare cognito: CognitoService;
+  @service declare router: RouterService;
 
   get jwtToken(): string {
     return this.cognito.cognitoData!.jwtToken;

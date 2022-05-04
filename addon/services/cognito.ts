@@ -48,7 +48,7 @@ export interface CognitoData {
 export type UserAttributes = { [key: string]: any };
 
 export default class CognitoService extends Service {
-  @service router: RouterService;
+  @service declare router: RouterService;
 
   // Overwrite for testing
   _cognitoStorage: undefined | ICognitoStorage;
@@ -294,7 +294,7 @@ export default class CognitoService extends Service {
     ).map((attributeName) => {
       return {
         Name: attributeName,
-        Value: attributes[attributeName],
+        Value: attributes[attributeName]!,
       };
     });
 
@@ -391,5 +391,12 @@ export default class CognitoService extends Service {
     }
 
     return cognitoUser;
+  }
+}
+
+// DO NOT DELETE: this is how TypeScript knows how to look up your services.
+declare module '@ember/service' {
+  interface Registry {
+    cognito: CognitoService;
   }
 }

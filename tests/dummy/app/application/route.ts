@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 
 export default class ApplicationRoute extends Route {
-  @service cognito: CognitoService;
+  @service declare cognito: CognitoService;
 
   async beforeModel(): Promise<void> {
     try {
