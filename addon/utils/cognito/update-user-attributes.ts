@@ -14,17 +14,14 @@ export function updateUserAttributes(
   attributeList: ICognitoUserAttributeData[]
 ): Promise<void> {
   let promise = new RSVPPromise<void>((resolve, reject) => {
-    cognitoUser.updateAttributes(
-      attributeList,
-      (error: AmazonCognitoIdentityJsError) => {
-        if (error) {
-          reject(dispatchError(error));
-          return;
-        }
-
-        resolve();
+    cognitoUser.updateAttributes(attributeList, (error: unknown) => {
+      if (error) {
+        reject(dispatchError(error as AmazonCognitoIdentityJsError));
+        return;
       }
-    );
+
+      resolve();
+    });
   });
 
   return waitForPromise(promise);

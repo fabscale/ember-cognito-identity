@@ -3,7 +3,6 @@ import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { CognitoError } from 'ember-cognito-identity/errors/cognito';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 import { dropTask } from 'ember-concurrency';
 import { taskFor } from 'ember-concurrency-ts';
@@ -14,14 +13,14 @@ interface Args {
 }
 
 export default class CognitoResetPasswordForm extends Component<Args> {
-  @service cognito: CognitoService;
-  @service router: RouterService;
+  @service declare cognito: CognitoService;
+  @service declare router: RouterService;
 
   // Properties
   @tracked password?: string;
   @tracked selectedUsername?: string;
   @tracked selectedVerificationCode?: string;
-  @tracked error: CognitoError | null;
+  @tracked error: unknown | null;
   @tracked showPasswordForm = false;
 
   get isPending(): boolean {

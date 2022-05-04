@@ -4,8 +4,8 @@ import RouterService from '@ember/routing/router-service';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 
 export default class LoginRoute extends Route {
-  @service cognito: CognitoService;
-  @service router: RouterService;
+  @service declare cognito: CognitoService;
+  @service declare router: RouterService;
 
   beforeModel(): void {
     if (this.cognito.isAuthenticated) {

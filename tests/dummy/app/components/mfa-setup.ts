@@ -8,7 +8,7 @@ import { CognitoUserMfa } from 'ember-cognito-identity/utils/cognito-mfa';
 type Args = any;
 
 export default class MfaSetup extends Component<Args> {
-  @service cognito: CognitoService;
+  @service declare cognito: CognitoService;
 
   @tracked secret?: string;
   @tracked isMfaEnabled = false;
@@ -81,7 +81,7 @@ export default class MfaSetup extends Component<Args> {
       await this.mfa.verifyDevice(mfaCode);
       await this.mfa.enable();
     } catch (error) {
-      this.error = error.message;
+      this.error = (error as any).message;
       return;
     }
 

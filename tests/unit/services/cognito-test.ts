@@ -101,7 +101,7 @@ module('Unit | Service | cognito', function (hooks) {
       } catch (error) {
         assert.step('error occurred');
         assert.strictEqual(
-          error.message,
+          (error as any).message,
           'A client attempted to write unauthorized attribute'
         );
       }
@@ -165,7 +165,7 @@ module('Unit | Service | cognito', function (hooks) {
         });
       } catch (error) {
         assert.strictEqual(
-          error.message,
+          (error as any).message,
           'The password you provided is incorrect.'
         );
         assert.step('error occurred');
