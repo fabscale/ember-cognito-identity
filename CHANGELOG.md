@@ -23,6 +23,24 @@
 
 
 
+
+## v3.8.2 (2022-05-04)
+
+#### :rocket: Enhancement
+* [#725](https://github.com/fabscale/ember-cognito-identity/pull/725) feat: Expose `getAccessToken` and `getIdToken` on `cognitoData` ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#738](https://github.com/fabscale/ember-cognito-identity/pull/738) Update dev dependencies ([@mydea](https://github.com/mydea))
+* [#733](https://github.com/fabscale/ember-cognito-identity/pull/733) chore(deps): bump ember-cli-typescript from 5.0.0 to 5.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#736](https://github.com/fabscale/ember-cognito-identity/pull/736) chore(deps): bump @embroider/macros from 1.5.0 to 1.6.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#726](https://github.com/fabscale/ember-cognito-identity/pull/726) Update dev dependencies ([@mydea](https://github.com/mydea))
+* [#712](https://github.com/fabscale/ember-cognito-identity/pull/712) chore(deps): bump @embroider/macros from 1.2.0 to 1.5.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#715](https://github.com/fabscale/ember-cognito-identity/pull/715) chore(deps): bump @glimmer/component from 1.0.4 to 1.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#720](https://github.com/fabscale/ember-cognito-identity/pull/720) chore(deps): bump @glimmer/tracking from 1.0.4 to 1.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.8.1 (2022-03-11)
 
 #### :bug: Bug Fix
