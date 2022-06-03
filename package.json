@@ -50,7 +50,7 @@
     "@ember/edition-utils": "~1.2.0",
     "@ember/optional-features": "~2.0.0",
     "@ember/test-helpers": "~2.8.1",
-    "@embroider/test-setup": "~1.6.0",
+    "@embroider/test-setup": "~1.7.1",
     "@simple-dom/interface": "~1.4.0",
     "@types/ember": "~4.0.0",
     "@types/ember-qunit": "~5.0.0",
