@@ -54,7 +54,7 @@
     "@simple-dom/interface": "~1.4.0",
     "@types/ember": "~4.0.0",
     "@types/ember-qunit": "~5.0.0",
-    "@types/ember__test-helpers": "~2.6.1",
+    "@types/ember__test-helpers": "~2.8.0",
     "@types/rsvp": "~4.0.4",
     "@typescript-eslint/parser": "~5.30.3",
     "broccoli-asset-rev": "~3.0.0",
