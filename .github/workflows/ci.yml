@@ -14,9 +14,10 @@ jobs:
   test:
     name: "Tests"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: volta-cli/action@v1
       - uses: mydea/actions-ember-testing@v2
       - name: Install Dependencies
@@ -33,6 +34,7 @@ jobs:
     name: ${{ matrix.try-scenario }}
     runs-on: ubuntu-latest
     needs: "test"
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
@@ -48,7 +50,7 @@ jobs:
           - embroider-optimized
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: volta-cli/action@v1
       - uses: mydea/actions-ember-testing@v2
       - name: Install Dependencies
