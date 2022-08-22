@@ -7,13 +7,12 @@ import {
   AmazonCognitoIdentityJsError,
   dispatchError,
 } from 'ember-cognito-identity/errors/cognito';
-import { Promise as RSVPPromise } from 'rsvp';
 
 export function updateUserAttributes(
   cognitoUser: CognitoUser,
   attributeList: ICognitoUserAttributeData[]
 ): Promise<void> {
-  let promise = new RSVPPromise<void>((resolve, reject) => {
+  let promise = new Promise<void>((resolve, reject) => {
     cognitoUser.updateAttributes(attributeList, (error: unknown) => {
       if (error) {
         reject(dispatchError(error as AmazonCognitoIdentityJsError));

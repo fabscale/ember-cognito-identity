@@ -10,6 +10,7 @@ If all you need is a way to work with the JWT tokens priovded by Cognito, then t
 * Ember.js v3.24 or above
 * Ember CLI v3.24 or above
 * Node.js v14 or above
+* Native promise support required
 
 ## Installation
 
