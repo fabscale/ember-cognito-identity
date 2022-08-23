@@ -5,7 +5,6 @@ import {
   NewPasswordRequiredError,
   MfaCodeRequiredError,
 } from 'ember-cognito-identity/errors/cognito';
-import { Promise as RSVPPromise } from 'rsvp';
 
 /*
     Might reject with:
@@ -29,7 +28,7 @@ export function authenticateUser(
   };
   let authenticationDetails = new AuthenticationDetails(authenticationData);
 
-  let promise = new RSVPPromise<CognitoUser>((resolve, reject) => {
+  let promise = new Promise<CognitoUser>((resolve, reject) => {
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess() {
         resolve(cognitoUser);

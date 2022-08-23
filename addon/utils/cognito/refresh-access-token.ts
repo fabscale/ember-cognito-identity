@@ -1,7 +1,6 @@
 import { waitForPromise } from '@ember/test-waiters';
 import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js';
 import { dispatchError } from 'ember-cognito-identity/errors/cognito';
-import { Promise as RSVPPromise } from 'rsvp';
 
 export async function refreshAccessToken(
   cognitoUserSession: CognitoUserSession,
@@ -15,7 +14,7 @@ export async function refreshAccessToken(
     throw new Error('Cannot retrieve a refresh token');
   }
 
-  let promise = new RSVPPromise<void>((resolve, reject) => {
+  let promise = new Promise<void>((resolve, reject) => {
     cognitoUser.refreshSession(refreshToken, (error) => {
       if (error) {
         reject(dispatchError(error));

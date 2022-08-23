@@ -4,7 +4,6 @@ import {
   AmazonCognitoIdentityJsError,
   dispatchError,
 } from 'ember-cognito-identity/errors/cognito';
-import { Promise as RSVPPromise } from 'rsvp';
 
 export function updateResetPassword(
   cognitoUser: CognitoUser,
@@ -16,7 +15,7 @@ export function updateResetPassword(
     newPassword: string;
   }
 ): Promise<void> {
-  let promise = new RSVPPromise<void>((resolve, reject) => {
+  let promise = new Promise<void>((resolve, reject) => {
     cognitoUser.confirmPassword(code, newPassword, {
       onSuccess() {
         resolve();
