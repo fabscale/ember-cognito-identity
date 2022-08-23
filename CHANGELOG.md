@@ -24,6 +24,34 @@
 
 
 
+
+## v3.8.3 (2022-08-23)
+
+#### :house: Internal
+* [#771](https://github.com/fabscale/ember-cognito-identity/pull/771) chore(deps-dev): update release-it to 15.x ([@mydea](https://github.com/mydea))
+* [#762](https://github.com/fabscale/ember-cognito-identity/pull/762) chore(deps-dev): bump ember-cli from 4.4.0 to 4.6.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#768](https://github.com/fabscale/ember-cognito-identity/pull/768) chore(deps-dev): bump eslint from 8.18.0 to 8.21.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#770](https://github.com/fabscale/ember-cognito-identity/pull/770) chore(deps-dev): bump @typescript-eslint/parser from 5.30.3 to 5.32.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#769](https://github.com/fabscale/ember-cognito-identity/pull/769) chore(deps-dev): bump @types/ember__test-helpers from 2.6.1 to 2.8.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#766](https://github.com/fabscale/ember-cognito-identity/pull/766) chore(deps-dev): bump ember-truth-helpers from 3.0.0 to 3.1.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#765](https://github.com/fabscale/ember-cognito-identity/pull/765) chore(deps-dev): bump ember-source from 4.5.0 to 4.6.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#764](https://github.com/fabscale/ember-cognito-identity/pull/764) chore(deps-dev): bump webpack from 5.73.0 to 5.74.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#763](https://github.com/fabscale/ember-cognito-identity/pull/763) chore(deps): bump ember-cli-htmlbars from 6.0.1 to 6.1.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#761](https://github.com/fabscale/ember-cognito-identity/pull/761) chore(deps): bump terser from 4.8.0 to 4.8.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#757](https://github.com/fabscale/ember-cognito-identity/pull/757) chore(deps-dev): bump fabscale-eslint-config from 1.4.0 to 1.5.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#758](https://github.com/fabscale/ember-cognito-identity/pull/758) chore(deps): bump @embroider/macros from 1.7.1 to 1.8.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#760](https://github.com/fabscale/ember-cognito-identity/pull/760) chore(deps-dev): bump @typescript-eslint/parser from 5.27.0 to 5.30.3 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#759](https://github.com/fabscale/ember-cognito-identity/pull/759) chore(deps-dev): bump eslint from 8.16.0 to 8.18.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#756](https://github.com/fabscale/ember-cognito-identity/pull/756) chore(deps-dev): bump @embroider/test-setup from 1.7.1 to 1.8.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#755](https://github.com/fabscale/ember-cognito-identity/pull/755) chore(deps-dev): bump ember-source from 4.4.1 to 4.5.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#754](https://github.com/fabscale/ember-cognito-identity/pull/754) chore(deps-dev): bump webpack from 5.72.0 to 5.73.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#753](https://github.com/fabscale/ember-cognito-identity/pull/753) chore(deps-dev): bump prettier from 2.6.2 to 2.7.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#752](https://github.com/fabscale/ember-cognito-identity/pull/752) chore(deps): bump jsdom from 16.4.0 to 16.7.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#748](https://github.com/fabscale/ember-cognito-identity/pull/748) chore(deps): bump @embroider/macros from 1.6.0 to 1.7.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.8.2 (2022-05-04)
 
 #### :rocket: Enhancement
