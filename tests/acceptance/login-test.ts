@@ -1,8 +1,8 @@
 import {
   click,
   fillIn,
-  visit,
   TestContext as Context,
+  visit,
 } from '@ember/test-helpers';
 import CognitoService from 'ember-cognito-identity/services/cognito';
 import { MOCK_COGNITO_CONFIG } from 'ember-cognito-identity/utils/mock/cognito-user';
@@ -43,7 +43,7 @@ module('Acceptance | login', function (hooks) {
 
     assert.ok(cognito.isAuthenticated, 'user is authenticated now');
     assert.strictEqual(
-      cognito.cognitoData && cognito.cognitoData.jwtToken,
+      cognito.session?.jwtToken,
       JWT_TOKEN,
       'correct jwtToken is set on service'
     );
@@ -134,7 +134,7 @@ module('Acceptance | login', function (hooks) {
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.strictEqual(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.session?.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
       );
@@ -230,7 +230,7 @@ module('Acceptance | login', function (hooks) {
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.strictEqual(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.session?.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
       );

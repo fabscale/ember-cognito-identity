@@ -32,14 +32,16 @@ export function mockCognitoAuthenticated(
   hooks.beforeEach(function (this: any, assert: any) {
     let cognito = this.owner.lookup('service:cognito') as CognitoService;
 
-    cognito.cognitoData = mockCognitoData({
+    let data = mockCognitoData({
       jwtToken,
       username,
       assert: includeAssertSteps ? assert : undefined,
     })!;
 
+    cognito.setupSession(data);
+
     // @ts-ignore
-    cognito.userPool.setCurrentUser(cognito.cognitoData.cognitoUser!);
+    cognito.userPool.setCurrentUser(data.user.cognitoUser);
 
     if (includeAssertSteps) {
       cognito._assert = assert;
@@ -50,7 +52,7 @@ export function mockCognitoAuthenticated(
 }
 
 export function mockCognitoLogoutCurrentUser(cognito: CognitoService): void {
-  cognito.cognitoData = null;
+  cognito.setupSession(undefined);
 
   // @ts-ignore
   cognito.userPool.setCurrentUser(undefined);

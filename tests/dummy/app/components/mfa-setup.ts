@@ -16,22 +16,22 @@ export default class MfaSetup extends Component<Args> {
   @tracked error?: string;
 
   get mfa(): CognitoUserMfa {
-    return this.cognito.cognitoData!.mfa;
+    return this.cognito.user!.mfa;
   }
 
   get qrCodeData():
     | { secret: string; user: string; label: string }
     | undefined {
-    let { cognitoData } = this.cognito;
+    let { user } = this.cognito;
     let { secret } = this;
 
-    if (!secret || !cognitoData) {
+    if (!secret || !user) {
       return undefined;
     }
 
     return {
       secret,
-      user: cognitoData.cognitoUser.getUsername(),
+      user: user.cognitoUser.getUsername(),
       label: 'Fabscale',
     };
   }

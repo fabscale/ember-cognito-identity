@@ -48,7 +48,7 @@ export default class CognitoResetPasswordForm extends Component<Args> {
     this.error = null;
 
     try {
-      yield cognito.triggerResetPasswordMail({ username });
+      yield cognito.unauthenticated.triggerResetPasswordMail({ username });
     } catch (error) {
       this.error = error;
       return;
@@ -77,7 +77,7 @@ export default class CognitoResetPasswordForm extends Component<Args> {
     }
 
     try {
-      yield cognito.updateResetPassword({
+      yield cognito.unauthenticated.updateResetPassword({
         username,
         code: verificationCode,
         newPassword: password,

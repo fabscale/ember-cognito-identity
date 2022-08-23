@@ -1,11 +1,12 @@
 <div>
-  Token: {{this.jwtToken}}
+  Token:
+  {{this.jwtToken}}
 </div>
 
 <div>
   <MfaSetup />
 </div>
 
-<button type='button' {{on 'click' this.logout}}>
+<button type='button' {{on 'click' this.logout}} data-test-logout>
   Logout
 </button>

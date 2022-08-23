@@ -1,17 +1,35 @@
 import {
+  CognitoUser,
   CognitoUserPool,
   CognitoUserSession,
 } from 'amazon-cognito-identity-js';
 import { CognitoNotAuthenticatedError } from 'ember-cognito-identity/errors/cognito';
-import {
-  CognitoData,
-  UserAttributes,
-} from 'ember-cognito-identity/services/cognito';
-import { CognitoUserMfa } from './cognito-mfa';
+import { UserAttributes } from 'ember-cognito-identity/services/cognito';
 import { getUserSession } from './cognito/get-user-session';
 import { getUserAttributes } from './get-user-attributes';
 
-export async function loadUserDataAndAccessToken(
+export interface CognitoData {
+  cognitoUser: CognitoUser;
+  cognitoUserSession: CognitoUserSession;
+  userAttributes: { [key: string]: any };
+}
+
+export async function reloadUserSession(
+  cognitoUser: CognitoUser
+): Promise<CognitoUserSession> {
+  if (!cognitoUser) {
+    throw new CognitoNotAuthenticatedError();
+  }
+
+  try {
+    return await getUserSession(cognitoUser);
+  } catch (error) {
+    cognitoUser.signOut();
+    throw error;
+  }
+}
+
+export async function loadUserFromUserPool(
   userPool: CognitoUserPool
 ): Promise<CognitoData> {
   let cognitoUser = userPool.getCurrentUser();
@@ -29,17 +47,9 @@ export async function loadUserDataAndAccessToken(
     throw error;
   }
 
-  let jwtToken = cognitoUserSession.getAccessToken().getJwtToken();
-
-  let cognitoData: CognitoData = {
+  return {
     cognitoUser,
     userAttributes,
     cognitoUserSession,
-    jwtToken,
-    getAccessToken: () => cognitoUserSession.getAccessToken(),
-    getIdToken: () => cognitoUserSession.getIdToken(),
-    mfa: new CognitoUserMfa(cognitoUser),
   };
-
-  return cognitoData;
 }

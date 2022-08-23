@@ -55,7 +55,7 @@ module('Acceptance | reset-password', function (hooks) {
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.strictEqual(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.session?.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
       );
@@ -63,6 +63,8 @@ module('Acceptance | reset-password', function (hooks) {
       assert.verifySteps([
         'cognitoUser.forgotPassword()',
         'cognitoUser.confirmPassword(123456, test1234)',
+        'cognitoUser.authenticateUser(jane@example.com, test1234)',
+        'cognitoUser.getUserData({"bypassCache":false})',
       ]);
     });
 
@@ -92,12 +94,16 @@ module('Acceptance | reset-password', function (hooks) {
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.strictEqual(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.session?.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
       );
 
-      assert.verifySteps(['cognitoUser.confirmPassword(123456, test1234)']);
+      assert.verifySteps([
+        'cognitoUser.confirmPassword(123456, test1234)',
+        'cognitoUser.authenticateUser(jane@example.com, test1234)',
+        'cognitoUser.getUserData({"bypassCache":false})',
+      ]);
     });
 
     test('it allows to resend a code & reset the password', async function (this: TestContext, assert) {
@@ -131,7 +137,7 @@ module('Acceptance | reset-password', function (hooks) {
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.strictEqual(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.session?.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
       );
@@ -139,6 +145,8 @@ module('Acceptance | reset-password', function (hooks) {
       assert.verifySteps([
         'cognitoUser.forgotPassword()',
         'cognitoUser.confirmPassword(123456, test1234)',
+        'cognitoUser.authenticateUser(jane@example.com, test1234)',
+        'cognitoUser.getUserData({"bypassCache":false})',
       ]);
     });
   });
