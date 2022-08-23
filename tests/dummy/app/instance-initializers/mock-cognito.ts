@@ -4,10 +4,11 @@ import CognitoService from 'ember-cognito-identity/services/cognito';
 import { mockCognitoData } from 'ember-cognito-identity/utils/mock/cognito-data';
 
 export function initialize(appInstance: ApplicationInstance): void {
-  let cognitoData = mockCognitoData();
-  if (cognitoData && !isTesting()) {
+  let data = mockCognitoData();
+  if (data && !isTesting()) {
     let cognito = appInstance.lookup('service:cognito') as CognitoService;
-    cognito.cognitoData = cognitoData;
+
+    cognito.setupSession(data);
   }
 }
 

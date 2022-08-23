@@ -64,7 +64,7 @@ export default class CognitoLoginForm extends Component {
 
       try {
         let newAttributes = this._getNewPasswordAttributes({ username });
-        yield cognito.setNewPassword(
+        yield cognito.unauthenticated.setInitialPassword(
           { username, password, newPassword },
           newAttributes
         );

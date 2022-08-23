@@ -5,12 +5,14 @@ Interact with AWS Cognito from your Ember app.
 This uses `amazon-cognito-identity-js` under the hood, which is considerably smaller in footprint than the quite enormous AWS Amplify SDK.
 If all you need is a way to work with the JWT tokens priovded by Cognito, then this addon is perfect for you.
 
+[Upgrading from 3.x to 4.x](MIGRATION_v4.md)
+
 ## Compatibility
 
-* Ember.js v3.24 or above
-* Ember CLI v3.24 or above
-* Node.js v14 or above
-* Native promise support required
+- Ember.js v3.24 or above
+- Ember CLI v3.24 or above
+- Node.js v14 or above
+- Native promise support required
 
 ## Installation
 
@@ -59,66 +61,79 @@ export default class ApplicationRoute extends Route {
 After logging in (see below) you can access the JTW token like this:
 
 ```js
-let token = this.cognito.cognitoData.jwtToken;
+let token = this.cognito.session.jwtToken;
 ```
 
 Here is a summary of the most important available methods - all methods return a promise:
 
 ```js
+// methods that result in authentication/unauthentication
 cognito.restoreAndLoad();
 cognito.authenticate({ username, password });
-cognito.authenticateUser({ username, password });
+cognito.mfaCompleteAuthentication(code);
 cognito.logout();
 cognito.invalidateAccessTokens();
-cognito.triggerResetPasswordMail({ username });
-cognito.updateResetPassword({ username, code, newPassword });
-cognito.setNewPassword({ username, password, newPassword });
-cognito.updatePassword({ oldPassword, newPassword });
-cognito.updateAttributes(attributeMap);
+
+// methods for unauthenticated users
+cognito.unauthenticated.verifyUserAuthentication({ username, password });
+cognito.unauthenticated.triggerResetPasswordMail({ username });
+cognito.unauthenticated.updateResetPassword({ username, code, newPassword });
+cognito.unauthenticated.setInitialPassword({ username, password, newPassword });
+
+// the following are only available if authenticated
+cognito.user.updatePassword();
+cognito.user.updateAttributes();
+
+cognito.session.refresh();
+cognito.session.refreshIfNeeded();
+cognito.session.secondsUntilExpires();
+
+cognito.user.mfa.enable();
+cognito.user.mfa.disable();
+cognito.user.mfa.isEnabled();
+cognito.user.mfa.setupDevice();
+cognito.user.mfa.verifyDevice(token);
 ```
 
 ## Cognito service
 
 The `cognito` service provides promise-ified methods to work with AWS Cognito.
 
-### isAuthenticated
-
-Will be true if a user is currently logged in.
-This means that you can safely access `cognitoData` and work with it.
-
-### cognitoData
-
-This property will contain an object with your main Cognito-related information, if the user is logged in.
-If the user is not logged in, this will be `null`.
-
-This is an object that looks like this:
-
 ```js
-let cognitoData = {
-  cognitoUser: CognitoUser,
-  cognitoUserSession: CognitoUserSession,
-  jwtToken: 'xxxxx',
-  userAttributes: { Email: '...' },
-  getAccessToken: () => CognitoAccessToken,
-  getIdToken: () => CognitoIdToken,
-  mfa: {
-    enable: () => {},
-    disable: () => {},
-    isEnabled: () => {},
-    setupDevice: () => {},
-    verifyDevice: (code) => {},
-  },
-};
+let { cognito } = this;
+
+// A boolean to indicate the current status
+let { isAuthenticated } = cognito;
+
+// Methods for dealing with unauthenticated users
+let { unauthenticated } = cognito;
+
+// Methods for dealing with the current user/session - only available if authenticated!
+let { user, session } = cognito;
+
+// Methods to authenticate a user
+await cognito.restoreAndLoad();
+await cognito.authenticate({ username, password });
+await cognito.mfaCompleteAuthentication(code);
+
+// Methods to unauthenticate a user
+cognito.logout();
+await cognito.invalidateAccessTokens();
 ```
 
-### restoreAndLoad()
+### `isAuthenticated`
+
+Will be true if a user is currently logged in.
+This means that you can safely access `session` and `user` and work with it.
+
+### `restoreAndLoad()`
 
 Will try to lookup a prior session in local storage and authenticate the user.
 
 If this resolves, you can assume that the user is logged in. It will reject if the user is not logged in.
 Call this (and wait for it to complete) in your application route!
 
-### authenticate({ username, password })
+### `authenticate({ username, password })`
 
 Try to login with the given username & password.
 Will reject with an Error, or resolve if successfull.
@@ -133,53 +148,149 @@ cognito: {
 }
 ```
 
-### authenticateUser({ username, password })
+### `mfaCompleteAuthentication(code)`
 
-Verify only the given username & password.
-This will _not_ sign the user in, but can be used to e.g. guard special places in your app behind a repeated password check.
-Will reject with an Error, or resolve if successfull.
+This has to be called when `authenticate()` rejects with `MfaCodeRequiredError`.
 
-### logout()
+Returns a promise & signs the user in (if successful).
+
+### `logout()`
 
 Log out the user from the current device.
 
-### invalidateAccessTokens()
+### `invalidateAccessTokens()`
 
-Logout & invalidate all issues access tokens (also on other devices).
+Logout & invalidate all issued access tokens (also on other devices).
 In contrast, `logout()` does not revoke access tokens, it only removes them locally.
 
 Returns a promise.
 
-### triggerResetPasswordMail({ username })
+## session
 
-Trigger an email to get a verification code to reset the password.
+The `session` object is available when the user is signed in.
+
+Example usage:
+
+```js
+cognito.session.jwtToken;
+```
+
+It provides the following functionality:
+
+### `jwtToken`
+
+The current JWT access token.
+This is a tracked property and may be updated in the background.
+
+### `getAccessToken()`
+
+Get the AWS access token object.
+This includes metadata.
+
+### `getIdToken()`
+
+Get the AWS id token object.
+This includes metadata.
+
+### `needsRefresh()`
+
+Returns true if the session is expired.
+
+### `needsRefreshSoon()`
+
+Returns true if the session will expire soon (in the next 15 minutes).
+
+### `secondsUntilExpires()`
+
+Returns the number of seconds until the session will expire.
+
+### `refresh()`
+
+Refresh the session, generating new JWT tokens.
+
+This will debounce when being run multiple times simultaneously.
 
 Returns a promise.
 
-### updateResetPassword({ username, code, newPassword })
+### `refreshIfNeeded()`
 
-Set a new password for a user.
+Refresh the session only if it will expire soon.
 
-Returns a promise.
-
-### setNewPassword({ username, password, newPassword })
-
-Set a new password, if a user requires a new password to be set (e.g. after an admin created the user).
+This will debounce when being run multiple times simultaneously.
 
 Returns a promise.
 
-### updatePassword({ oldPassword, newPassword })
+## user
+
+The `user` object is available when the user is signed in.
+
+Example usage:
+
+```js
+cognito.user.updatePassword({ oldPassword, newPassword });
+```
+
+It provides the following functionality:
+
+### `userAttributes`
+
+This tracked property provides access to a key-value pair object of user attributes.
+
+### `updatePassword({ oldPassword, newPassword })`
 
 Update the password of the currently logged in user.
 
 Returns a promise.
 
-## Token expiration
+### `updateAttributes(attributes)`
 
-This addon will automatically refresh the JWT Token every 15 minutes before it expires.
-The tokens have a lifespan of 60 minutes, so this should ensure that the local token never experies in the middle of a session.
+Update the attributes of the currently logged in user.
 
-## Multi-Factor Authentication (MFA)
+This expects an object with key-value pairs, e.g.:
+
+```js
+user.updateAttributes({ Email: 'my@email.com', Name: 'John Doe' });
+```
+
+Returns a promise.
+
+### unauthenticated
+
+The `unauthenticated` object is always available.
+
+Example usage:
+
+```js
+cognito.unauthenticated.triggerResetPasswordMail({ username });
+```
+
+It provides the following functionality:
+
+### `verifyUserAuthentication({ username, password })`
+
+Verify only the given username & password.
+This will _not_ sign the user in, but can be used to e.g. guard special places in your app behind a repeated password check.
+Will reject with an Error, or resolve if successfull.
+
+### `triggerResetPasswordMail({ username })`
+
+Trigger an email to get a verification code to reset the password.
+
+Returns a promise.
+
+### `updateResetPassword({ username, code, newPassword })`
+
+Set a new password for a user.
+
+Returns a promise.
+
+### `setInitialPassword({ username, password, newPassword })`
+
+Set a new password, if a user requires a new password to be set (e.g. after an admin created the user).
+
+Returns a promise.
+
+## mfa (Multi-Factor Authentication)
 
 This addon allows you to work with optional TOTP (Temporary One Time Password) MFA.
 SMS-based MFA is not supported for now (to reduce complexity, and since it is less secure than TOTP).
@@ -190,10 +301,10 @@ Using MFA in your app requires changes in two places: The sign in process, and a
 
 ### Setting up MFA
 
-A user can opt into MFA for their own account. For this, you can use the `mfa` object on the `cognitoData` object:
+A user can opt into MFA for their own account. For this, you can use the `mfa` object on the `user` object:
 
 ```js
-let { mfa } = this.cognito.cognitoData;
+let { mfa } = this.cognito.user;
 
 // Available methods
 await mfa.enable();
@@ -276,6 +387,16 @@ await this.cognito.mfaCompleteAuthentication(mfaCode);
 ```
 
 After that, the user will be signed in (or it will throw an error if the MFA code is incorrect).
+
+## Token expiration
+
+The generated JWT tokens have a lifespan of 60 minutes. After that, you need to refresh the session.
+
+You can call `cognito.session.enableAutoRefresh()` to start an automated background job,
+which will refresh the token every 45 minutes.
+
+Alternatively, you can also manually handle this with the provided `session.needsRefresh()`,
+`session.needsRefreshSoon()`, `session.refresh()` and `session.refreshIfNeeded()` methods.
 
 ## Example
 
@@ -371,7 +492,7 @@ test('it works with new password required', function (assert) {
 
 ### Generating mocked data
 
-You can generate mocked cognitoData with the provided utils:
+You can generate a mocked user/session with the provided utils:
 
 ```js
 import ApplicationInstance from '@ember/application/instance';
@@ -383,7 +504,7 @@ export function initialize(appInstance: ApplicationInstance): void {
   let cognitoData = mockCognitoData();
   if (cognitoData) {
     let cognito = appInstance.lookup('service:cognito');
-    cognito.cognitoData = cognitoData;
+    cognito.setupSession(cognitoData);
   }
 }
 
@@ -453,7 +574,7 @@ test('test helper correctly mocks a cognito session', async function (assert) {
     assert,
   });
 
-  cognito.cognitoData = cognitoData;
+  cognito.setupSession(cognitoData);
 });
 ```
 

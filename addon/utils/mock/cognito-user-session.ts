@@ -32,6 +32,16 @@ class MockCognitoUserSession {
     return this.getAccessToken();
   }
 
+  isValid() {
+    let now = +new Date();
+
+    return now < +this.#expirationDate;
+  }
+
+  getClockDrift() {
+    return 0;
+  }
+
   get refreshToken() {
     return {
       getToken: () => {

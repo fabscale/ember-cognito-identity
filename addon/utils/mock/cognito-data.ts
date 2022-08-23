@@ -1,7 +1,7 @@
 import { getOwnConfig, macroCondition } from '@embroider/macros';
-import { CognitoUser } from 'amazon-cognito-identity-js';
-import { CognitoData } from 'ember-cognito-identity/services/cognito';
-import { CognitoUserMfa } from '../cognito-mfa';
+import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoAuthenticatedUser } from '../cognito-authenticated-user';
+import { CognitoSession } from '../cognito-session';
 import { mockCognitoUser } from './cognito-user';
 import { mockCognitoUserSession } from './cognito-user-session';
 
@@ -15,20 +15,23 @@ export function mockCognitoData({
   username?: string;
   mfaEnabled?: boolean;
   assert?: any;
-} = {}): CognitoData | undefined {
+} = {}):
+  | { session: CognitoSession; user: CognitoAuthenticatedUser }
+  | undefined {
   if (macroCondition(!getOwnConfig<any>()?.enableMocks)) {
     return undefined;
   }
 
-  let cognitoUserSession = mockCognitoUserSession({ jwtToken })!;
+  let cognitoUserSession = mockCognitoUserSession({
+    jwtToken,
+  }) as unknown as CognitoUserSession;
+
   let cognitoUser = mockCognitoUser({
     username,
     cognitoUserSession,
     mfaEnabled,
     assert,
-  })!;
-
-  let mfa = new CognitoUserMfa(cognitoUser as unknown as CognitoUser);
+  }) as unknown as CognitoUser;
 
   /* eslint-disable camelcase */
   let userAttributes = {
@@ -37,15 +40,8 @@ export function mockCognitoData({
   };
   /* eslint-enable camelcase */
 
-  let cognitoData: unknown = {
-    cognitoUser,
-    cognitoUserSession,
-    userAttributes,
-    jwtToken,
-    getAccessToken: () => cognitoUserSession.getAccessToken(),
-    getIdToken: () => cognitoUserSession.getIdToken(),
-    mfa,
-  };
+  let session = new CognitoSession(cognitoUser, cognitoUserSession);
+  let user = new CognitoAuthenticatedUser(cognitoUser, userAttributes);
 
-  return cognitoData as CognitoData;
+  return { session, user };
 }

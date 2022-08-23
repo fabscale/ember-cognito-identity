@@ -8,8 +8,8 @@ export default class IndexController extends Controller {
   @service declare cognito: CognitoService;
   @service declare router: RouterService;
 
-  get jwtToken(): string {
-    return this.cognito.cognitoData!.jwtToken;
+  get jwtToken(): string | undefined {
+    return this.cognito.session?.jwtToken;
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
