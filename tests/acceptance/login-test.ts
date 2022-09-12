@@ -43,7 +43,7 @@ module('Acceptance | login', function (hooks) {
 
     assert.ok(cognito.isAuthenticated, 'user is authenticated now');
     assert.strictEqual(
-      cognito.cognitoData && cognito.cognitoData.jwtToken,
+      cognito.cognitoData?.jwtToken,
       JWT_TOKEN,
       'correct jwtToken is set on service'
     );
@@ -134,7 +134,7 @@ module('Acceptance | login', function (hooks) {
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.strictEqual(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.cognitoData?.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
       );
@@ -230,7 +230,7 @@ module('Acceptance | login', function (hooks) {
 
       assert.ok(cognito.isAuthenticated, 'user is authenticated now');
       assert.strictEqual(
-        cognito.cognitoData && cognito.cognitoData.jwtToken,
+        cognito.cognitoData?.jwtToken,
         JWT_TOKEN,
         'correct jwtToken is set on service'
       );
