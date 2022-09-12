@@ -2,6 +2,7 @@ import { getOwnConfig, macroCondition } from '@embroider/macros';
 import { CognitoUserSession, UserData } from 'amazon-cognito-identity-js';
 import { AmazonCognitoIdentityJsError } from 'ember-cognito-identity/errors/cognito';
 import { UserAttributes } from 'ember-cognito-identity/services/cognito';
+import { mockCognitoUserPool } from './cognito-user-pool';
 import { mockCognitoUserSession } from './cognito-user-session';
 
 interface Args {
@@ -42,16 +43,18 @@ class MockCognitoUser {
     this.#username = username;
     this.#mfaEnabled = mfaEnabled || false;
     this.#cognitoUserSession = cognitoUserSession || mockCognitoUserSession();
-    this.#userPool = userPool;
+    this.#userPool = userPool || mockCognitoUserPool();
     this.#assert = assert;
   }
 
   signOut() {
     this.#assert?.step('cognitoUser.signOut()');
+    this.#userPool.setCurrentUser(undefined);
   }
 
   globalSignOut(callback: { onSuccess: () => void; onFailure: () => void }) {
     this.#assert?.step('cognitoUser.globalSignOut()');
+    this.#userPool.setCurrentUser(undefined);
     callback.onSuccess();
   }
 
