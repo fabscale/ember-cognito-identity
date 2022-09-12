@@ -25,6 +25,28 @@
 
 
 
+
+## v3.9.0 (2022-09-12)
+
+#### :rocket: Enhancement
+* [#772](https://github.com/fabscale/ember-cognito-identity/pull/772) Use native `Promise` instead of RSVP ([@mydea](https://github.com/mydea))
+
+#### :bug: Bug Fix
+* [#781](https://github.com/fabscale/ember-cognito-identity/pull/781) Ensure mock user pool is always correctly set up ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#782](https://github.com/fabscale/ember-cognito-identity/pull/782) Fix tests ([@mydea](https://github.com/mydea))
+* [#778](https://github.com/fabscale/ember-cognito-identity/pull/778) chore(deps-dev): bump fabscale-eslint-config from 1.5.0 to 1.6.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#780](https://github.com/fabscale/ember-cognito-identity/pull/780) chore(deps-dev): bump release-it from 15.2.0 to 15.4.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#779](https://github.com/fabscale/ember-cognito-identity/pull/779) chore(deps-dev): bump @typescript-eslint/parser from 5.32.0 to 5.36.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#777](https://github.com/fabscale/ember-cognito-identity/pull/777) chore(deps-dev): bump typescript from 4.7.2 to 4.8.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#776](https://github.com/fabscale/ember-cognito-identity/pull/776) chore(deps-dev): bump ember-template-lint from 4.10.1 to 4.13.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#775](https://github.com/fabscale/ember-cognito-identity/pull/775) chore(deps-dev): bump eslint from 8.21.0 to 8.23.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#774](https://github.com/fabscale/ember-cognito-identity/pull/774) chore(deps): bump ember-concurrency from 2.2.0 to 2.3.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v3.8.3 (2022-08-23)
 
 #### :house: Internal
