@@ -1,15 +1,7 @@
 import { getOwnConfig, macroCondition } from '@embroider/macros';
 
-interface Args {
-  cognitoUser?: any;
-}
-
 class MockCognitoUserPool {
   #cognitoUser: any;
-
-  constructor({ cognitoUser }: Args = {}) {
-    this.#cognitoUser = cognitoUser;
-  }
 
   getCurrentUser() {
     return this.#cognitoUser;
@@ -20,11 +12,9 @@ class MockCognitoUserPool {
   }
 }
 
-export function mockCognitoUserPool(
-  args?: Args
-): MockCognitoUserPool | undefined {
+export function mockCognitoUserPool(): MockCognitoUserPool | undefined {
   if (macroCondition(getOwnConfig<any>().enableMocks)) {
-    return new MockCognitoUserPool(args);
+    return new MockCognitoUserPool();
   }
 
   return undefined;

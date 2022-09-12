@@ -124,6 +124,9 @@ module('Acceptance | remember-authentication', function (hooks) {
         assert,
       })!;
 
+      // @ts-ignore
+      cognito.userPool.setCurrentUser(cognito.cognitoData.cognitoUser!);
+
       cognito.cognitoData.cognitoUser.refreshSession = (
         _: any,
         callback: (error: null | AmazonCognitoIdentityJsError) => void
