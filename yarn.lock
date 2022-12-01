@@ -1081,11 +1081,11 @@
     semver "^7.3.2"
 
 "@embroider/macros@^1.0.0", "@embroider/macros@^1.6.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@embroider/macros/-/macros-1.9.0.tgz#0df2a56fdd93f11fddea450b6ca83cc2119b5008"
-  integrity sha512-12ElrRT+mX3aSixGHjHnfsnyoH1hw5nM+P+Ax0ITZdp6TaAvWZ8dENnVHltdnv4ssHiX0EsVEXmqbIIdMN4nLA==
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@embroider/macros/-/macros-1.10.0.tgz#af3844d5db48f001b85cfb096c76727c72ad6c1e"
+  integrity sha512-LMbfQGk/a+f6xtvAv5fq/wf2LRxETnbgSCLUf/z6ebzmuskOUxrke+uP55chF/loWrARi9g6erFQ7RDOUoBMSg==
   dependencies:
-    "@embroider/shared-internals" "1.8.3"
+    "@embroider/shared-internals" "2.0.0"
     assert-never "^1.2.1"
     babel-import-util "^1.1.0"
     ember-cli-babel "^7.26.6"
@@ -1108,7 +1108,7 @@
     semver "^7.3.5"
     typescript-memoize "^1.0.1"
 
-"@embroider/shared-internals@^2.0.0":
+"@embroider/shared-internals@2.0.0", "@embroider/shared-internals@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@embroider/shared-internals/-/shared-internals-2.0.0.tgz#d8205ec6944362aeecfbb51143db352430ced316"
   integrity sha512-qZ2/xky9mWm5YC6noOa6AiAwgISEQ78YTZNv4SNu2PFgEK/H+Ha/3ddngzGSsnXkVnIHZyxIBzhxETonQYHY9g==
