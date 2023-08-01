@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@ember/test-waiters": "^3.0.0",
-    "@embroider/macros": "~1.8.3",
+    "@embroider/macros": "~1.13.0",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
     "@types/amazon-cognito-auth-js": "^1.2.2",
