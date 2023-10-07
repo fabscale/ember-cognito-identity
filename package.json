@@ -38,7 +38,7 @@
     "@types/amazon-cognito-auth-js": "^1.2.2",
     "amazon-cognito-identity-js": "^6.3.1",
     "ember-auto-import": "^2.4.2",
-    "ember-cli-babel": "^7.26.11",
+    "ember-cli-babel": "^8.1.0",
     "ember-cli-htmlbars": "^6.1.0",
     "ember-cli-typescript": "^5.0.0",
     "ember-concurrency": "^2.0.1",
