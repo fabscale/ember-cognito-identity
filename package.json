@@ -86,7 +86,7 @@
     "qunit-dom": "~2.0.0",
     "release-it": "~15.11.0",
     "typescript": "~5.2.2",
-    "webpack": "~5.88.1"
+    "webpack": "~5.89.0"
   },
   "resolutions": {
     "**/package-json/got": "12.3.1",
